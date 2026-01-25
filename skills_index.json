@@ -21,7 +21,7 @@
     "id": "ab-test-setup",
     "path": "skills/ab-test-setup",
     "name": "ab-test-setup",
-    "description": "When the user wants to plan, design, or implement an A/B test or experiment. Also use when the user mentions \"A/B test,\" \"split test,\" \"experiment,\" \"test this change,\" \"variant copy,\" \"multivariate test,\" or \"hypothesis.\" For tracking implementation, see analytics-tracking."
+    "description": "Structured guide for setting up A/B tests with mandatory gates for hypothesis, metrics, and execution readiness."
   },
   {
     "id": "active-directory-attacks",
@@ -225,7 +225,7 @@
     "id": "brainstorming",
     "path": "skills/brainstorming",
     "name": "brainstorming",
-    "description": "\"You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation.\""
+    "description": ">"
   },
   {
     "id": "brand-guidelines-community",
@@ -405,7 +405,7 @@
     "id": "copywriting",
     "path": "skills/copywriting",
     "name": "copywriting",
-    "description": "When the user wants to write, rewrite, or improve marketing copy for any page \u2014 including homepage, landing pages, pricing pages, feature pages, about pages, or product pages. Also use when the user says \"write copy for,\" \"improve this copy,\" \"rewrite this page,\" \"marketing copy,\" \"headline help,\" or \"CTA copy.\" For email copy, see email-sequence. For popup copy, see popup-cro."
+    "description": ">"
   },
   {
     "id": "core-components",
@@ -442,6 +442,12 @@
     "path": "skills/deployment-procedures",
     "name": "deployment-procedures",
     "description": "Production deployment principles and decision-making. Safe deployment workflows, rollback strategies, and verification. Teaches thinking, not scripts."
+  },
+  {
+    "id": "design-orchestration",
+    "path": "skills/design-orchestration",
+    "name": "design-orchestration",
+    "description": ">"
   },
   {
     "id": "discord-bot-architect",
@@ -790,6 +796,12 @@
     "path": "skills/moodle-external-api-development",
     "name": "moodle-external-api-development",
     "description": "Create custom external web service APIs for Moodle LMS. Use when implementing web services for course management, user tracking, quiz operations, or custom plugin functionality. Covers parameter validation, database operations, error handling, service registration, and Moodle coding standards."
+  },
+  {
+    "id": "multi-agent-brainstorming",
+    "path": "skills/multi-agent-brainstorming",
+    "name": "multi-agent-brainstorming",
+    "description": ">"
   },
   {
     "id": "multiplayer",

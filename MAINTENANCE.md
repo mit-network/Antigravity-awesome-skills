@@ -33,7 +33,7 @@ Running the scripts is **MANDATORY** after any change to `skills/`.
 
 ## 3. Documentation Updates
 
-- [ ] **Update README**: Run the automation script to sync counts and the registry table.
+- [ ] **Update README**: Run the automation script to sync counts and the registry table and also the number of skills
 
   ```bash
   python3 scripts/update_readme.py
@@ -52,3 +52,31 @@ Running the scripts is **MANDATORY** after any change to `skills/`.
 ## 5. Agent Artifacts (Internal)
 
 - [ ] **Walkthrough**: Update `walkthrough.md` in the brain/artifact directory to reflect the session's achievements.
+
+## 6. Release Management
+
+When creating a new version release:
+
+- [ ] **Tag**: Create an annotated git tag.
+
+  ```bash
+  git tag -a vX.Y.Z -m "Release X.Y.Z: Title"
+  ```
+
+- [ ] **Push Tag**:
+
+  ```bash
+  git push origin vX.Y.Z
+  ```
+
+- [ ] **Set Default Repo**: Ensure the `gh` CLI knows the upstream repo (crucial if you have multiple remotes).
+
+  ```bash
+  gh repo set-default sickn33/antigravity-awesome-skills
+  ```
+
+- [ ] **Create GitHub Release**: This creates the visible release on GitHub.
+
+  ```bash
+  gh release create vX.Y.Z --title "Release X.Y.Z: Title" --generate-notes
+  ```
