@@ -25,3 +25,8 @@ Open blockers per lane. Update each operator session. Remove when resolved.
 | ID | Resolved | Resolution |
 |----|----------|------------|
 | _(none yet)_ | | |
+
+## Resolved
+- B-009: G1 repo was missing → created at G:\DOWNLOADS5\reidchunes\residencysolutions-core, remote https://github.com/soccerwiz/residencysolutions-core.git.
+- B-010: Guard script missing → implemented as scripts/guard-no-ui.ps1 in G1 repo.
+

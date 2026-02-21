@@ -34,3 +34,7 @@ Prioritized roadmap snapshot across all lanes. Update each operator session.
 | 12 | Residency Quest | Social features, leaderboard UI | Low | Depends on RQ-005 |
 | 13 | Cross-lane | VST full compile matrix | High | Night run only |
 | 14 | Cross-lane | Clip render pipeline scaling | High | Night run only |
+
+## NOW (Unblocked)
+- ResidencySolutions G1: scaffold entitlements core (NO UI) in G:\DOWNLOADS5\reidchunes\residencysolutions-core (add spec + verify script + commit)
+

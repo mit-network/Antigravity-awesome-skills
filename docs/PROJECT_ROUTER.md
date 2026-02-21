@@ -43,3 +43,9 @@ Single-page map of all active lanes. Scan this first every session.
 | `docs/lanes/RESIDENCYSOLUTIONS.md` | ResidencySolutions lane doc (G1 + G2) |
 | `docs/NOW_NEXT_LATER.md` | Prioritized roadmap |
 | `docs/BLOCKERS.md` | Open blockers |
+
+### G1) ResidencySolutions Core (Entitlements, NO UI)
+- Path: G:\DOWNLOADS5\reidchunes\residencysolutions-core
+- Remote: https://github.com/soccerwiz/residencysolutions-core.git
+- Guard: scripts/guard-no-ui.ps1 (must pass before commits)
+
