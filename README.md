@@ -168,6 +168,9 @@ npx antigravity-awesome-skills --kiro
 # OpenCode
 npx antigravity-awesome-skills --path .agents/skills
 
+# AdaL CLI
+npx antigravity-awesome-skills --path .adal/skills
+
 # Workspace-specific (e.g. .agent/skills for Antigravity workspace)
 npx antigravity-awesome-skills --path ~/.agent/skills
 
@@ -211,6 +214,9 @@ git clone https://github.com/sickn33/antigravity-awesome-skills.git .cursor/skil
 
 # OpenCode
 git clone https://github.com/sickn33/antigravity-awesome-skills.git .agents/skills
+
+# AdaL CLI specific
+git clone https://github.com/sickn33/antigravity-awesome-skills.git .adal/skills
 ```
 
 ### Option C: Kiro IDE Import (GUI)
