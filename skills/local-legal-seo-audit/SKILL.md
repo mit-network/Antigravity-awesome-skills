@@ -1,6 +1,6 @@
 ---
 name: local-legal-seo-audit
-description: When the user wants to audit or improve SEO for a law firm, legal services provider, forensic expert, or other professional services site with local presence. Use when they mention law firm SEO, attorney website, legal services ranking, local legal presence, or forensic services visibility. For general SEO audits, see seo-audit. For technical SEO incidents, see seo-forensic-incident-response.
+description: Audit and improve SEO for law firms and local professional services. Focuses on local pack, E-E-A-T, and directories. For general audits or traffic crashes, see related SEO skills.
 risk: safe
 source: original
 date_added: "2026-02-27"
@@ -15,10 +15,12 @@ This skill is scoped to the **specific needs of legal and professional services 
 ## When to Use
 
 Use this skill when:
+
 - You need to audit or improve local SEO for a law firm, attorney, forensic expert, or similar legal/professional services website.
 - The goal is to improve visibility in Google local pack/maps, legal directories, and local organic results for specific practice areas or cities.
 
 Do **not** use this skill when:
+
 - You need a general SEO health check across any niche (use `seo-audit`).
 - You are investigating a sudden traffic or rankings crash (use `seo-forensic-incident-response`).
 
@@ -72,6 +74,7 @@ Before auditing, gather context:
 For legal services, GBP is often the single highest-ROI local SEO asset.
 
 **Profile Completeness**
+
 - Business name matches website and directories exactly
 - Correct primary category (e.g., "Law Firm", "Attorney", "Forensic Consultant")
 - Secondary categories added where relevant
@@ -83,12 +86,14 @@ For legal services, GBP is often the single highest-ROI local SEO asset.
 - Q&A section populated with common questions
 
 **Photos & Visual Content**
+
 - Office exterior and interior photos
 - Team photos (humanize the brand)
 - Logo uploaded
 - Regular photo updates (signals active profile)
 
 **Reviews**
+
 - Total number of reviews vs. local competitors
 - Average star rating
 - Owner responses to reviews (all, especially negative)
@@ -96,6 +101,7 @@ For legal services, GBP is often the single highest-ROI local SEO asset.
 - Strategy for ethically requesting reviews from satisfied clients
 
 **GBP Posts**
+
 - Regular posts (news, case type highlights, legal tips)
 - Event posts for seminars or free consultations
 - Offer posts if applicable
@@ -107,12 +113,14 @@ For legal services, GBP is often the single highest-ROI local SEO asset.
 Legal sites fall under Google's YMYL (Your Money or Your Life) classification. E-E-A-T signals are heavily weighted.
 
 ### Experience
+
 - Does the site demonstrate real case experience?
 - Are there case studies, results, or anonymized client outcomes?
 - Does the attorney/expert have documented field experience? (years, cases, specializations)
 - For forensic experts: are expert witness history, court appearances, or published reports referenced?
 
 ### Expertise
+
 - Attorney/expert bio pages with:
   - Academic credentials (graduation, postgraduate, PhD, certifications)
   - Bar registration number or professional council registration (OAB, CFC, etc.)
@@ -123,6 +131,7 @@ Legal sites fall under Google's YMYL (Your Money or Your Life) classification. E
 - Accurate, up-to-date legal information
 
 ### Authoritativeness
+
 - Is the firm/expert cited or referenced by external sources?
 - Are they listed in authoritative legal directories?
 - Media mentions, interviews, or press coverage
@@ -130,6 +139,7 @@ Legal sites fall under Google's YMYL (Your Money or Your Life) classification. E
 - Academic publications or research (especially relevant for forensic experts)
 
 ### Trustworthiness
+
 - Clear "About" page with real people and credentials
 - Physical address visible and verifiable
 - Contact page with phone, email, and address
@@ -147,6 +157,7 @@ Legal sites fall under Google's YMYL (Your Money or Your Life) classification. E
 Each major practice area or service should have a dedicated, optimized page.
 
 **Check for:**
+
 - One page per distinct practice area (e.g., "Defesa Criminal", "Perícia Digital", "Laudo Grafotécnico")
 - Primary keyword in title tag, H1, and URL
 - Unique, expert-written content per page
@@ -155,6 +166,7 @@ Each major practice area or service should have a dedicated, optimized page.
 - Schema markup for LegalService or ProfessionalService (see schema-markup skill)
 
 **Common issues:**
+
 - All services crammed onto a single page
 - Generic content not differentiated by specialty
 - No clear geographic signal on practice area pages
@@ -199,27 +211,32 @@ For firms serving multiple cities or regions:
 Focus on issues most common in legal site CMS platforms (WordPress, Wix, Squarespace):
 
 **Mobile Experience**
+
 - Most legal searches happen on mobile
 - Click-to-call button prominent on mobile
 - Fast load time on 4G/mobile networks
 - No intrusive pop-ups that block content on mobile
 
 **Core Web Vitals**
+
 - LCP < 2.5s (especially homepage and practice area pages)
 - CLS < 0.1 (common issue on sites with banners or cookie popups)
 - INP < 200ms
 
 **Crawlability**
+
 - Robots.txt not blocking key pages
 - XML sitemap submitted to Google Search Console
 - All practice area and location pages indexed
 
 **HTTPS & Security**
+
 - Full HTTPS with valid certificate
 - No mixed content
 - Privacy policy accessible
 
 **URL Structure**
+
 - Clean, readable URLs: `/advogado-criminal-belo-horizonte/`
 - No session IDs or unnecessary parameters
 - Consistent trailing slash handling
@@ -231,12 +248,14 @@ Focus on issues most common in legal site CMS platforms (WordPress, Wix, Squares
 For local legal SEO, citations in authoritative directories are a significant ranking factor.
 
 **Core Legal Directories (Brazil)**
+
 - OAB (Ordem dos Advogados do Brasil) — official listing
 - Jusbrasil — attorney profile and articles
 - Escavador — academic and professional profile
 - ORCID — for forensic experts with publications
 
 **Core Legal Directories (International)**
+
 - Avvo
 - FindLaw
 - Justia
@@ -244,10 +263,12 @@ For local legal SEO, citations in authoritative directories are a significant ra
 - Google Business Profile (primary)
 
 **General Citation Sources**
+
 - Yelp, Facebook Business, Apple Maps, Bing Places
 - Industry associations
 
 **NAP Audit**
+
 - Name, Address, and Phone are identical across all listings
 - No outdated addresses or old phone numbers
 - Duplicate listings identified and removed or merged
@@ -298,12 +319,14 @@ Legal FAQ pages rank well for long-tail queries and build trust.
 ### Audit Report Structure
 
 **Executive Summary**
+
 - Overall local visibility assessment
 - Top 3–5 priority issues
 - Quick wins identified (e.g., incomplete GBP, missing practice area pages)
 
 **GBP Findings**
 For each issue:
+
 - **Issue**: What is missing or wrong
 - **Impact**: High/Medium/Low
 - **Fix**: Specific action
@@ -321,6 +344,7 @@ Same format
 Same format
 
 **Prioritized Action Plan**
+
 1. Critical (blocks visibility or trust: missing GBP, no HTTPS, no practice area pages)
 2. High impact (E-E-A-T improvements, location pages, review strategy)
 3. Quick wins (title tags, meta descriptions, GBP photos, FAQ schema)

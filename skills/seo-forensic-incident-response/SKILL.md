@@ -1,6 +1,6 @@
 ---
 name: seo-forensic-incident-response
-description: When the user needs to investigate sudden drops in organic traffic or rankings and perform a forensic SEO incident response. Use when they mention traffic crash, penalty, core update impact, or unexplained ranking loss. For general SEO audits, see seo-audit.
+description: Investigate sudden organic traffic drops and perform forensic SEO response. Use for traffic crashes, penalties, or core update impacts. For general audits, use seo-audit.
 risk: safe
 source: original
 date_added: "2026-02-27"
@@ -15,10 +15,12 @@ This skill is not a generic SEO audit. It is designed for **incident scenarios**
 ## When to Use
 
 Use this skill when:
+
 - You need to understand and resolve a sudden, significant drop in organic traffic or rankings.
 - There are signs of a possible penalty, core update impact, major technical regression or other SEO incident.
 
 Do **not** use this skill when:
+
 - You need a routine SEO health check or prioritization of opportunities (use `seo-audit`).
 - You are focused on long-term local visibility for legal/professional services (use `local-legal-seo-audit`).
 
@@ -99,6 +101,7 @@ When you have GSC and analytics access, structure the analysis like a forensic i
   - Whether it affects all countries/devices or specific segments
 
 Use this to narrow likely causes:
+
 - **Step-like drop** → technical issue, manual action, deployment.
 - **Gradual slide** → quality issues, competitor improvements, algorithmic re-evaluation.
 
@@ -112,6 +115,7 @@ Segment the impact by:
 - **Page type**: home, category, product, blog, docs, etc.
 
 Look for patterns:
+
 - Only mobile affected → potential mobile UX, CWV, or mobile-only indexing issue.
 - Specific country affected → geo-targeting, hreflang, local factors.
 - Non-branded hit harder than branded → often algorithm/quality-related.

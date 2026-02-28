@@ -1,6 +1,6 @@
 ---
 name: angular
-description: "Modern Angular (v20+) expert with deep knowledge of Signals, Standalone Components, Zoneless applications, SSR/Hydration, and reactive patterns. Use PROACTIVELY for Angular development, component architecture, state"
+description: Modern Angular (v20+) expert: Signals, Standalone Components, Zoneless, and SSR. Use for Angular development, component architecture, and reactive state management.
 risk: safe
 source: self
 date_added: "2026-02-27"
