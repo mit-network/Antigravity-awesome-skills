@@ -4380,6 +4380,26 @@
     "date_added": "2026-02-27"
   },
   {
+    "id": "fda-food-safety-auditor",
+    "path": "skills/fda-food-safety-auditor",
+    "category": "uncategorized",
+    "name": "fda-food-safety-auditor",
+    "description": "Expert AI auditor for FDA Food Safety (FSMA), HACCP, and PCQI compliance. Reviews food facility records and preventive controls.",
+    "risk": "unknown",
+    "source": "unknown",
+    "date_added": null
+  },
+  {
+    "id": "fda-medtech-compliance-auditor",
+    "path": "skills/fda-medtech-compliance-auditor",
+    "category": "uncategorized",
+    "name": "fda-medtech-compliance-auditor",
+    "description": "Expert AI auditor for Medical Device (SaMD) compliance, IEC 62304, and 21 CFR Part 820. Reviews DHFs, technical files, and software validation.",
+    "risk": "unknown",
+    "source": "unknown",
+    "date_added": null
+  },
+  {
     "id": "ffuf-claude-skill",
     "path": "skills/ffuf-claude-skill",
     "category": "uncategorized",
