@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-02-08T00:00:00.000Z",
-  "total": 1235,
+  "total": 1237,
   "skills": [
     {
       "id": "00-andruia-consultant",
@@ -24577,6 +24577,36 @@
         "cli"
       ],
       "path": "skills/security/aws-security-audit/SKILL.md"
+    },
+    {
+      "id": "seek-and-analyze-video",
+      "name": "seek-and-analyze-video",
+      "description": "Seek and analyze video content using Memories.ai Large Visual Memory Model for persistent video intelligence",
+      "category": "data-ai",
+      "tags": [
+        "video",
+        "ai",
+        "memories",
+        "social-media",
+        "youtube",
+        "tiktok",
+        "analysis"
+      ],
+      "triggers": [
+        "video",
+        "ai",
+        "memories",
+        "social-media",
+        "youtube",
+        "tiktok",
+        "analysis",
+        "seek",
+        "analyze",
+        "content",
+        "large",
+        "visual"
+      ],
+      "path": "skills/seek-and-analyze-video/SKILL.md"
     },
     {
       "id": "segment-automation",

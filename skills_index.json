@@ -9900,6 +9900,16 @@
     "date_added": "2026-02-27"
   },
   {
+    "id": "seek-and-analyze-video",
+    "path": "skills/seek-and-analyze-video",
+    "category": "data-ai",
+    "name": "seek-and-analyze-video",
+    "description": "Seek and analyze video content using Memories.ai Large Visual Memory Model for persistent video intelligence",
+    "risk": "safe",
+    "source": "https://github.com/kennyzheng-builds/seek-and-analyze-video",
+    "date_added": "2026-03-09"
+  },
+  {
     "id": "segment-automation",
     "path": "skills/segment-automation",
     "category": "uncategorized",

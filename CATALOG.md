@@ -2,7 +2,7 @@
 
 Generated at: 2026-02-08T00:00:00.000Z
 
-Total skills: 1235
+Total skills: 1237
 
 ## architecture (80)
 
@@ -167,7 +167,7 @@ calculations | startup, business, analyst, market, opportunity | startup, busine
 | `warren-buffett` | Agente que simula Warren Buffett — o maior investidor do seculo XX e XXI, CEO da Berkshire Hathaway, discipulo de Benjamin Graham e socio intelectual de Char... | persona, investing, value-investing, business | persona, investing, value-investing, business, warren, buffett, agente, que, simula, maior, investidor, do |
 | `whatsapp-automation` | Automate WhatsApp Business tasks via Rube MCP (Composio): send messages, manage templates, upload media, and handle contacts. Always search tools first for c... | whatsapp | whatsapp, automation, automate, business, tasks, via, rube, mcp, composio, send, messages, upload |
 
-## data-ai (226)
+## data-ai (227)
 
 | Skill | Description | Tags | Triggers |
 | --- | --- | --- | --- |
@@ -369,6 +369,7 @@ Scope::with_data, save state, load state, serde,
 | `scala-pro` | Master enterprise-grade Scala development with functional programming, distributed systems, and big data processing. Expert in Apache Pekko, Akka, Spark, ZIO... | scala | scala, pro, enterprise, grade, development, functional, programming, distributed, big, data, processing, apache |
 | `schema-markup` | Design, validate, and optimize schema.org structured data for eligibility, correctness, and measurable SEO impact. | schema, markup | schema, markup, validate, optimize, org, structured, data, eligibility, correctness, measurable, seo, impact |
 | `scikit-learn` | Machine learning in Python with scikit-learn. Use for classification, regression, clustering, model evaluation, and ML pipelines. | scikit, learn | scikit, learn, machine, learning, python, classification, regression, clustering, model, evaluation, ml, pipelines |
+| `seek-and-analyze-video` | Seek and analyze video content using Memories.ai Large Visual Memory Model for persistent video intelligence | video, ai, memories, social-media, youtube, tiktok, analysis | video, ai, memories, social-media, youtube, tiktok, analysis, seek, analyze, content, large, visual |
 | `segment-cdp` | Expert patterns for Segment Customer Data Platform including Analytics.js, server-side tracking, tracking plans with Protocols, identity resolution, destinat... | segment, cdp | segment, cdp, customer, data, platform, including, analytics, js, server, side, tracking, plans |
 | `sendgrid-automation` | Automate SendGrid email operations including sending emails, managing contacts/lists, sender identities, templates, and analytics via Rube MCP (Composio). Al... | sendgrid | sendgrid, automation, automate, email, operations, including, sending, emails, managing, contacts, lists, sender |
 | `senior-architect` | Comprehensive software architecture skill for designing scalable, maintainable systems using ReactJS, NextJS, NodeJS, Express, React Native, Swift, Kotlin, F... | senior | senior, architect, software, architecture, skill, designing, scalable, maintainable, reactjs, nextjs, nodejs, express |
