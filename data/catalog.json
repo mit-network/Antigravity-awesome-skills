@@ -23954,6 +23954,35 @@
       "path": "skills/sam-altman/SKILL.md"
     },
     {
+      "id": "sankhya-dashboard-html-jsp-custom-best-pratices",
+      "name": "sankhya-dashboard-html-jsp-custom-best-pratices",
+      "description": "This skill should be used when the user asks for patterns, best practices, creation, or fixing of Sankhya dashboards using HTML, JSP, Java, and SQL.",
+      "category": "data-ai",
+      "tags": [
+        "sankhya",
+        "dashboard",
+        "jsp",
+        "html",
+        "sql",
+        "best-practices"
+      ],
+      "triggers": [
+        "sankhya",
+        "dashboard",
+        "jsp",
+        "html",
+        "sql",
+        "best-practices",
+        "custom",
+        "pratices",
+        "skill",
+        "should",
+        "used",
+        "user"
+      ],
+      "path": "skills/sankhya-dashboard-html-jsp-custom-best-pratices/SKILL.md"
+    },
+    {
       "id": "sast-configuration",
       "name": "sast-configuration",
       "description": "Configure Static Application Security Testing (SAST) tools for automated vulnerability detection in application code. Use when setting up security scanning, implementing DevSecOps practices, or aut...",

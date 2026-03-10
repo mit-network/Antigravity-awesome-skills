@@ -13,6 +13,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [7.4.0] - 2026-03-10 - "Planning & Dashboards"
+
+> **Blueprint planning skill, Sankhya dashboard best‑practices, and registry sync to 1,236+ skills.**
+
+This release focuses on better multi-session planning and domain dashboards. It adds a Blueprint skill for cold-start construction plans that any coding agent can execute, plus a Sankhya dashboard best-practices skill with SQL/JSP and UI guidance. The registry, catalog, and README counts are synced to 1,236+ skills, and the web app build is verified clean for this version.
+
+## 🚀 New Skills
+
+### 🧱 [blueprint](skills/blueprint/)
+
+**Cold-start construction planning for multi-step projects.**
+Generates dependency-aware plans where every step has its own context brief, tasks, rollback, verification, and exit criteria so fresh agents can execute steps independently.
+
+### 📊 [sankhya-dashboard-html-jsp-custom-best-pratices](skills/sankhya-dashboard-html-jsp-custom-best-pratices/)
+
+**Sankhya dashboard structure, SQL/JSP patterns, and UI best practices.**
+Documents resilient dashboard patterns, recommended SQL/JSP layout, and UX guidelines for production Sankhya deployments.
+
+## 📦 Improvements
+
+- **Registry Update**: Now tracking **1,236+** skills across the catalog.
+- **Docs & Catalog**: `README.md`, `skills_index.json`, `data/catalog.json`, and `CATALOG.md` regenerated and validated for 7.4.0.
+- **Web App**: `npm run app:build` run successfully to ensure the skills browser is up to date.
+
+## 👥 Credits
+
+- **@antbotlab** for `blueprint` (PR #259).
+- **@Guilherme-ruy** for the Sankhya dashboard skill (PR #258).
+
+---
+
 ## [7.2.0] - 2026-03-08 - "Community PR Harvest & Cleanup"
 
 > **Eight PRs merged: 44 broken skills removed, zebbern attribution restored, Chinese docs, new skills (audit-skills, senior-frontend, shadcn, frontend-slides update, pakistan-payments-stack), and explainable auto-categorization.**

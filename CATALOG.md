@@ -167,7 +167,7 @@ calculations | startup, business, analyst, market, opportunity | startup, busine
 | `warren-buffett` | Agente que simula Warren Buffett — o maior investidor do seculo XX e XXI, CEO da Berkshire Hathaway, discipulo de Benjamin Graham e socio intelectual de Char... | persona, investing, value-investing, business | persona, investing, value-investing, business, warren, buffett, agente, que, simula, maior, investidor, do |
 | `whatsapp-automation` | Automate WhatsApp Business tasks via Rube MCP (Composio): send messages, manage templates, upload media, and handle contacts. Always search tools first for c... | whatsapp | whatsapp, automation, automate, business, tasks, via, rube, mcp, composio, send, messages, upload |
 
-## data-ai (225)
+## data-ai (226)
 
 | Skill | Description | Tags | Triggers |
 | --- | --- | --- | --- |
@@ -365,6 +365,7 @@ applications. | php | php, pro, write, idiomatic, code, generators, iterators, s
 AppState, persistence, theme switch, 状态管理,
 Scope::with_data, save state, load state, serde,
 ... | robius, state | robius, state, critical, triggers, appstate, persistence, theme, switch, scope, data, save, load |
+| `sankhya-dashboard-html-jsp-custom-best-pratices` | This skill should be used when the user asks for patterns, best practices, creation, or fixing of Sankhya dashboards using HTML, JSP, Java, and SQL. | sankhya, dashboard, jsp, html, sql, best-practices | sankhya, dashboard, jsp, html, sql, best-practices, custom, pratices, skill, should, used, user |
 | `scala-pro` | Master enterprise-grade Scala development with functional programming, distributed systems, and big data processing. Expert in Apache Pekko, Akka, Spark, ZIO... | scala | scala, pro, enterprise, grade, development, functional, programming, distributed, big, data, processing, apache |
 | `schema-markup` | Design, validate, and optimize schema.org structured data for eligibility, correctness, and measurable SEO impact. | schema, markup | schema, markup, validate, optimize, org, structured, data, eligibility, correctness, measurable, seo, impact |
 | `scikit-learn` | Machine learning in Python with scikit-learn. Use for classification, regression, clustering, model evaluation, and ML pipelines. | scikit, learn | scikit, learn, machine, learning, python, classification, regression, clustering, model, evaluation, ml, pipelines |
