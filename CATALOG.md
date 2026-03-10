@@ -595,7 +595,7 @@ no matching field, parse error, widget... | makepad, reference | makepad, refere
 | `zod-validation-expert` | Expert in Zod — TypeScript-first schema validation. Covers parsing, custom errors, refinements, type inference, and integration with React Hook Form, Next.js... | zod, validation | zod, validation, typescript, first, schema, covers, parsing, custom, errors, refinements, type, inference |
 | `zustand-store-ts` | Create Zustand stores with TypeScript, subscribeWithSelector middleware, and proper state/action separation. Use when building React state management, creati... | zustand, store, ts | zustand, store, ts, stores, typescript, subscribewithselector, middleware, proper, state, action, separation, building |
 
-## general (292)
+## general (293)
 
 | Skill | Description | Tags | Triggers |
 | --- | --- | --- | --- |
@@ -626,6 +626,7 @@ no matching field, parse error, widget... | makepad, reference | makepad, refere
 | `bill-gates` | Agente que simula Bill Gates — cofundador da Microsoft, arquiteto da industria de software comercial, estrategista tecnologico global, investidor sistemico e... | persona, business-strategy, technology, philanthropy | persona, business-strategy, technology, philanthropy, bill, gates, agente, que, simula, cofundador, da, microsoft |
 | `blockchain-developer` | Build production-ready Web3 applications, smart contracts, and decentralized systems. Implements DeFi protocols, NFT platforms, DAOs, and enterprise blockcha... | blockchain | blockchain, developer, web3, applications, smart, contracts, decentralized, implements, defi, protocols, nft, platforms |
 | `blog-writing-guide` | Write, review, and improve blog posts for the Sentry engineering blog following Sentry's specific writing standards, voice, and quality bar. Use this skill w... | blog, writing | blog, writing, write, review, improve, posts, sentry, engineering, following, specific, standards, voice |
+| `blueprint` | Turn a one-line objective into a step-by-step construction plan any coding agent can execute cold. Each step has a self-contained context brief — a fresh age... | blueprint | blueprint, turn, one, line, objective, step, construction, plan, any, coding, agent, execute |
 | `brand-guidelines-anthropic` | Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when brand co... | brand, guidelines, anthropic | brand, guidelines, anthropic, applies, official, colors, typography, any, sort, artifact, may, benefit |
 | `brand-guidelines-community` | Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when brand co... | brand, guidelines, community | brand, guidelines, community, applies, anthropic, official, colors, typography, any, sort, artifact, may |
 | `bug-hunter` | Systematically finds and fixes bugs using proven debugging techniques. Traces from symptoms to root cause, implements fixes, and prevents regression. | bug, hunter | bug, hunter, systematically, finds, fixes, bugs, proven, debugging, techniques, traces, symptoms, root |

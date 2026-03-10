@@ -6454,6 +6454,30 @@
       "path": "skills/blog-writing-guide/SKILL.md"
     },
     {
+      "id": "blueprint",
+      "name": "blueprint",
+      "description": "Turn a one-line objective into a step-by-step construction plan any coding agent can execute cold. Each step has a self-contained context brief — a fresh agent in a new session can pick up any step without reading prior steps.",
+      "category": "general",
+      "tags": [
+        "blueprint"
+      ],
+      "triggers": [
+        "blueprint",
+        "turn",
+        "one",
+        "line",
+        "objective",
+        "step",
+        "construction",
+        "plan",
+        "any",
+        "coding",
+        "agent",
+        "execute"
+      ],
+      "path": "skills/blueprint/SKILL.md"
+    },
+    {
       "id": "box-automation",
       "name": "box-automation",
       "description": "Automate Box cloud storage operations including file upload/download, search, folder management, sharing, collaborations, and metadata queries via Rube MCP (Composio). Always search tools first for...",
