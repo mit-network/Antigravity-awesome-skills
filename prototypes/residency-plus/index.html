@@ -768,6 +768,25 @@
     .ok {
       border-left: 3px solid #22c55e;
     }
+
+    /* ===== Quick action strip (always-visible) ===== */
+    .quickActs {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      padding: 8px 12px 4px;
+    }
+
+    .quickActs .btn {
+      font-size: .76rem;
+      padding: 5px 12px;
+    }
+
+    .trackLoading {
+      opacity: .45;
+      font-style: italic;
+    }
   </style>
 </head>
 
@@ -891,6 +910,12 @@
             <iframe id="scPlayer" allow="autoplay" src=""></iframe>
           </div>
 
+          <!-- Always-visible quick actions -->
+          <div class="quickActs">
+            <button id="saveBtn" class="btn" disabled>Save</button>
+            <button id="openBtn" class="btn" disabled>Open ↗</button>
+          </div>
+
           <div class="drawer" id="drawer">
             <div class="drawerHead" id="drawerHead">
               <div class="drawerTitle">controls</div>
@@ -922,8 +947,6 @@
               </div>
 
               <div class="row">
-                <button id="saveBtn" class="btn" disabled>Save</button>
-                <button id="openBtn" class="btn" disabled>Open ↗</button>
                 <button id="autoDigBtn" class="btn">Auto-Dig</button>
                 <button id="exportBtn" class="btn">Download</button>
                 <button id="clearStationsBtn" class="btn">Clear Stations</button>
@@ -1869,7 +1892,17 @@
       currentItem = item;
       clearStatus();
       setStatus("PLAYING");
-      trackTitleEl.textContent = item.title || "—";
+
+      const titleText = item.title || "—";
+      trackTitleEl.textContent = titleText;
+      trackTitleEl.title = titleText;   // tooltip for truncated titles
+      trackTitleEl.classList.remove("trackLoading");
+
+      // Populate miniNow with artist / bucket context
+      const artist = item.artist ? item.artist : "";
+      const bucket = item.bucket ? item.bucket : "";
+      const meta = [artist, bucket].filter(Boolean).join(" · ");
+      miniNow.textContent = meta || "Unknown";
 
       widgetLoad(item.url, autoplay);
 
@@ -2024,8 +2057,13 @@
       // Disable action buttons while request is in-flight
       shuffleBtn.disabled = true;
       nextArrow.style.pointerEvents = "none";
-      shuffleBtn.textContent = "…";
+      shuffleBtn.textContent = "\u2026";
 
+      // Show loading state on the track title
+      trackTitleEl.textContent = "Finding\u2026";
+      trackTitleEl.title = "";
+      trackTitleEl.classList.add("trackLoading");
+      miniNow.textContent = "";
       try {
         clearStatus();
 
