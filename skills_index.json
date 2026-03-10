@@ -9670,6 +9670,16 @@
     "date_added": "2026-03-06"
   },
   {
+    "id": "sankhya-dashboard-html-jsp-custom-best-pratices",
+    "path": "skills/sankhya-dashboard-html-jsp-custom-best-pratices",
+    "category": "code",
+    "name": "sankhya-dashboard-html-jsp-custom-best-pratices",
+    "description": "This skill should be used when the user asks for patterns, best practices, creation, or fixing of Sankhya dashboards using HTML, JSP, Java, and SQL.",
+    "risk": "safe",
+    "source": "community",
+    "date_added": "2026-03-10"
+  },
+  {
     "id": "sast-configuration",
     "path": "skills/sast-configuration",
     "category": "uncategorized",

@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-02-08T00:00:00.000Z",
-  "total": 1234,
+  "total": 1235,
   "skills": [
     {
       "id": "00-andruia-consultant",
@@ -23900,6 +23900,35 @@
         "da"
       ],
       "path": "skills/sam-altman/SKILL.md"
+    },
+    {
+      "id": "sankhya-dashboard-html-jsp-custom-best-pratices",
+      "name": "sankhya-dashboard-html-jsp-custom-best-pratices",
+      "description": "This skill should be used when the user asks for patterns, best practices, creation, or fixing of Sankhya dashboards using HTML, JSP, Java, and SQL.",
+      "category": "data-ai",
+      "tags": [
+        "sankhya",
+        "dashboard",
+        "jsp",
+        "html",
+        "sql",
+        "best-practices"
+      ],
+      "triggers": [
+        "sankhya",
+        "dashboard",
+        "jsp",
+        "html",
+        "sql",
+        "best-practices",
+        "custom",
+        "pratices",
+        "skill",
+        "should",
+        "used",
+        "user"
+      ],
+      "path": "skills/sankhya-dashboard-html-jsp-custom-best-pratices/SKILL.md"
     },
     {
       "id": "sast-configuration",
