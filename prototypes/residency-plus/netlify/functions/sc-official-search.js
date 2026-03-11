@@ -14,6 +14,8 @@
  */
 
 import { getAccessToken, allowOrigin, checkRateLimit, json, logTelemetry } from "./sc-auth-lib.js";
+import fs from "node:fs";
+import path from "node:path";
 
 const _SAFE_FIELDS = [
     "id", "title", "permalink_url", "genre", "artwork_url",
@@ -37,6 +39,17 @@ function shapeTrack(raw) {
 
 export default async function handler(req) {
     const startMs = Date.now();
+
+    if (process.env.DEV_FIXTURE_MODE === "true") {
+        try {
+            const fixturePath = path.resolve(process.cwd(), "netlify/functions/fixtures/search-ambient.json");
+            const raw = fs.readFileSync(fixturePath, "utf8");
+            const data = JSON.parse(raw);
+            return json(200, { collection: data.map(shapeTrack).filter(Boolean) }, "*");
+        } catch (e) {
+            return json(500, { error: "Fixture mode enabled but fixture file missing.", detail: e.message });
+        }
+    }
 
     // OPTIONS preflight
     if (req.method === "OPTIONS") {

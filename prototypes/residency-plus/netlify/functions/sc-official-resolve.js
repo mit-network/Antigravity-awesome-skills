@@ -13,6 +13,8 @@
  */
 
 import { getAccessToken, allowOrigin, checkRateLimit, json, logTelemetry } from "./sc-auth-lib.js";
+import fs from "node:fs";
+import path from "node:path";
 
 const _SAFE_TRACK_FIELDS = [
     "id", "kind", "title", "permalink_url", "genre", "artwork_url",
@@ -49,6 +51,17 @@ function shapeResource(raw) {
 
 export default async function handler(req) {
     const startMs = Date.now();
+
+    if (process.env.DEV_FIXTURE_MODE === "true") {
+        try {
+            const fixturePath = path.resolve(process.cwd(), "netlify/functions/fixtures/resolve-sample.json");
+            const raw = fs.readFileSync(fixturePath, "utf8");
+            const data = JSON.parse(raw);
+            return json(200, shapeResource(data), "*");
+        } catch (e) {
+            return json(500, { error: "Fixture mode enabled but fixture file missing.", detail: e.message });
+        }
+    }
 
     // OPTIONS preflight
     if (req.method === "OPTIONS") {

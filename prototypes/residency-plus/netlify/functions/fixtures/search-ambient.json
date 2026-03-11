@@ -1,0 +1,26 @@
+[
+    {
+        "id": 10001,
+        "title": "Ambient Fixture 1",
+        "permalink_url": "https://soundcloud.com/fixture/ambient-1",
+        "genre": "Ambient",
+        "artwork_url": "https://placekitten.com/200/200",
+        "duration": 240000,
+        "user": {
+            "username": "Fixture Artist",
+            "permalink_url": "https://soundcloud.com/fixture"
+        }
+    },
+    {
+        "id": 10002,
+        "title": "Ambient Fixture 2",
+        "permalink_url": "https://soundcloud.com/fixture/ambient-2",
+        "genre": "Ambient",
+        "artwork_url": "https://placekitten.com/201/201",
+        "duration": 300000,
+        "user": {
+            "username": "Fixture Artist",
+            "permalink_url": "https://soundcloud.com/fixture"
+        }
+    }
+]
