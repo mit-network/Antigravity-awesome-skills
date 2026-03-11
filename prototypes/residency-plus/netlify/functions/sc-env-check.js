@@ -4,12 +4,9 @@ exports.handler = async () => {
         statusCode: 200,
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
+            status: "ready",
             node: process.version,
-            hasFetch: typeof fetch !== "undefined",
-            globalFetch: typeof global.fetch !== "undefined",
-            arch: process.arch,
-            platform: process.platform,
-            envKeys: Object.keys(process.env).filter(k => k.includes("NETLIFY") || k.includes("NODE"))
-        }, null, 2)
+            fetch: typeof fetch !== "undefined"
+        })
     };
 };

@@ -147,6 +147,11 @@ exports.allowOrigin = function allowOrigin(origin) {
     return origin;
   }
 
+  // Automatically allow our own production netlify domain
+  if (o.includes(".netlify.app")) {
+    return origin;
+  }
+
   return null;
 };
 

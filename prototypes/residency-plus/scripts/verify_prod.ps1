@@ -22,7 +22,7 @@ $endpoints = @(
     @{ Name = "sc-health"; Url = "$baseUrl/.netlify/functions/sc-health" },
     @{ Name = "sc-official-search"; Url = "$baseUrl/.netlify/functions/sc-official-search?q=ambient" },
     # Use a real URL for resolve on prod instead of a fixture
-    @{ Name = "sc-official-resolve"; Url = "$baseUrl/.netlify/functions/sc-official-resolve?url=https://soundcloud.com/octobersveryown/drake-0-to-100" }
+    @{ Name = "sc-official-resolve"; Url = "$baseUrl/.netlify/functions/sc-official-resolve?url=https://soundcloud.com/tycho/awake" }
 )
 
 $hasError = $false

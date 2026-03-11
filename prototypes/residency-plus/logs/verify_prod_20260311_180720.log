@@ -1,0 +1,11 @@
+[18:07:20] Starting Production Verification...
+[18:07:20] Checking target: sc-health -> https://residencysolutions.netlify.app/.netlify/functions/sc-health
+[18:07:20] HTTP 200
+[18:07:20] Response: {"ok":true,"message":"SoundCloud client id detected."}
+[18:07:20] Checking target: sc-official-search -> https://residencysolutions.netlify.app/.netlify/functions/sc-official-search?q=ambient
+[18:07:23] HTTP 200
+[18:07:23] Response: {"collection":[{"id":1908505082,"title":"Bình Yên - Vu�?. ft. Binz x minhnhat.","permalink_url":"https://soundcloud.com/minhnhat-prod/binh-yen-vu-ft...
+[18:07:23] Checking target: sc-official-resolve -> https://residencysolutions.netlify.app/.netlify/functions/sc-official-resolve?url=https://soundcloud.com/octobersveryown/drake-0-to-100
+[18:07:24] Request Failed: The remote server returned an error: (404) Not Found.
+[18:07:24] 
+[18:07:24] RESULT: FAIL

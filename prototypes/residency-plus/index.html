@@ -967,9 +967,6 @@
             </select>
           </div>
           <button id="makeStationBtn" class="btn" disabled>Station</button>
-          <!-- ACCOUNT SHELL (Slice 2: wire to Supabase auth) -->
-          <button id="accountBtn" class="btn" title="Sign in for cloud sync" style="opacity:.7;" disabled>Sign
-            In</button>
           <button id="openDrawerBtn" class="btn dots" title="More">⋯</button>
         </div>
       </div>
@@ -1012,7 +1009,6 @@
           <!-- Always-visible quick actions -->
           <div class="quickActs">
             <button id="saveBtn" class="btn" disabled>Save</button>
-            <button id="addToPlaylistBtn" class="btn" disabled>+ Playlist</button>
             <button id="openBtn" class="btn" disabled>Open ↗</button>
           </div>
 
@@ -1087,56 +1083,12 @@
             <button class="miniBtn" id="clearHistory">clear</button>
           </div>
           <ul class="list" id="historyList"></ul>
-
-          <div style="height:12px;"></div>
-
-          <div class="panelHead">
-            <div style="display:flex;align-items:center;gap:4px;">
-              <strong>playlists</strong>
-              <span class="panelCount" id="playlistCount"></span>
-            </div>
-            <button class="miniBtn" id="newPlaylistBtn">new</button>
-          </div>
-          <div class="playlist-actions">
-            <select id="activePlaylistSelect" class="playlist-select">
-              <option value="">No Playlist Selected</option>
-            </select>
-            <button class="miniBtn" id="renamePlaylistBtn" disabled>rename</button>
-            <button class="miniBtn" id="deletePlaylistBtn" disabled>delete</button>
-          </div>
-          <ul class="list" id="playlistItemList"></ul>
-        </div>
-      </div>
-    </div>
-    <!-- Auth Modal (Slice 4) -->
-    <div class="drawer" id="authModal"
-      style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index:9000; width:90%; max-width:320px; box-shadow:0 8px 30px rgba(0,0,0,0.8);">
-      <div class="drawerHead">
-        <div class="drawerTitle" id="authTitle">Sign In</div>
-        <button class="miniBtn" id="closeAuthBtn">✕</button>
-      </div>
-      <div class="drawerBody" style="padding:16px; display:flex; flex-direction:column; gap:12px;">
-        <div id="authSignedOutState">
-          <input type="email" id="authEmail" placeholder="Email" class="playlist-select"
-            style="width:100%; box-sizing:border-box; margin-bottom:8px; padding:8px;">
-          <input type="password" id="authPassword" placeholder="Password" class="playlist-select"
-            style="width:100%; box-sizing:border-box; margin-bottom:12px; padding:8px;">
-          <button id="authSubmitBtn" class="btnPrimary" style="width:100%; justify-content:center;">Continue</button>
-          <div style="font-size:11px; margin-top:8px; opacity:0.7; text-align:center;" id="authToggleHint">Don't have an
-            account? <a href="#" id="authToggleMode" style="color:#a855f7;">Sign Up</a></div>
-          <div id="authError" style="color:#ef4444; font-size:12px; margin-top:8px; text-align:center; display:none;">
-          </div>
-        </div>
-        <div id="authSignedInState" style="display:none; text-align:center;">
-          <div style="margin-bottom:12px; font-size:14px;">Signed in as <strong id="authCurrentUser"></strong></div>
-          <button id="authSignOutBtn" class="btn" style="width:100%; justify-content:center;">Sign Out</button>
         </div>
       </div>
     </div>
   </div>
 
   <script src="https://w.soundcloud.com/player/api.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
     const MAX_TRACK_MS = 6 * 60 * 1000;
@@ -1145,7 +1097,6 @@
     const STORAGE_KEY_LIBRARY = "residencyLibrary_v20";
     const STORAGE_KEY_CRATE = "residencyCrate_v20";
     const STORAGE_KEY_HISTORY = "residencyHistory_v20";
-    const STORAGE_KEY_PLAYLISTS = "residencyPlaylists_v1";
     const STORAGE_KEY_LAST = "residencyLast_v20";
     const STORAGE_KEY_STATIONS = "residencyStations_v12";
     const STORAGE_KEY_PLAYEDMAP = "residencyPlayedMap_v12";
@@ -1220,7 +1171,6 @@
 
     const shuffleBtn = document.getElementById("shuffleBtn");
     const saveBtn = document.getElementById("saveBtn");
-    const addToPlaylistBtn = document.getElementById("addToPlaylistBtn");
     const openBtn = document.getElementById("openBtn");
     const autoDigBtn = document.getElementById("autoDigBtn");
     const exportBtn = document.getElementById("exportBtn");
@@ -1240,13 +1190,8 @@
 
     const crateList = document.getElementById("crateList");
     const historyList = document.getElementById("historyList");
-    const playlistItemList = document.getElementById("playlistItemList");
     const clearCrate = document.getElementById("clearCrate");
     const clearHistory = document.getElementById("clearHistory");
-    const newPlaylistBtn = document.getElementById("newPlaylistBtn");
-    const renamePlaylistBtn = document.getElementById("renamePlaylistBtn");
-    const deletePlaylistBtn = document.getElementById("deletePlaylistBtn");
-    const activePlaylistSelect = document.getElementById("activePlaylistSelect");
 
     const prevArrow = document.getElementById("prevArrow");
     const nextArrow = document.getElementById("nextArrow");
@@ -1345,180 +1290,6 @@
     }
     window.SC_OK = true;
 
-    // ===== SUPABASE AUTH & SYNC (Slice 4) =====
-    let library = [];
-    let currentItem = null;
-    let crate = [];
-    let history = [];
-    let playlists = [];
-    let activePlaylistId = null;
-    let localSearch = "";
-    let stations = [];
-    let stationId = "__all__";
-    let playedMap = {};
-    let playedSet = new Set();
-
-    // Fallback keys if env vars are missing during local dev
-    const SUPA_URL = "%%SUPABASE_URL%%";
-    const SUPA_KEY = "%%SUPABASE_ANON_KEY%%";
-
-    let supabase = null;
-    let currentUser = null;
-
-    try {
-      if (SUPA_URL && !SUPA_URL.includes("%%") && window.supabase) {
-        supabase = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-      }
-    } catch (e) { console.warn("Supabase init failed", e); }
-
-    const accountBtn = document.getElementById("accountBtn");
-    const authModal = document.getElementById("authModal");
-    const closeAuthBtn = document.getElementById("closeAuthBtn");
-    const authSignedOutState = document.getElementById("authSignedOutState");
-    const authSignedInState = document.getElementById("authSignedInState");
-    const authEmail = document.getElementById("authEmail");
-    const authPassword = document.getElementById("authPassword");
-    const authSubmitBtn = document.getElementById("authSubmitBtn");
-    const authToggleMode = document.getElementById("authToggleMode");
-    const authTitle = document.getElementById("authTitle");
-    const authToggleHint = document.getElementById("authToggleHint");
-    const authError = document.getElementById("authError");
-    const authCurrentUser = document.getElementById("authCurrentUser");
-    const authSignOutBtn = document.getElementById("authSignOutBtn");
-
-    let isSignUpMode = false;
-
-    function resetAuthUI() {
-      authError.style.display = "none";
-      authEmail.value = "";
-      authPassword.value = "";
-      isSignUpMode = false;
-      authTitle.textContent = "Sign In";
-      authToggleHint.innerHTML = "Don't have an account? <a href='#' id='authToggleMode' style='color:#a855f7;'>Sign Up</a>";
-      document.getElementById("authToggleMode").onclick = toggleAuthMode;
-    }
-
-    function toggleAuthMode(e) {
-      if (e) e.preventDefault();
-      isSignUpMode = !isSignUpMode;
-      authError.style.display = "none";
-      if (isSignUpMode) {
-        authTitle.textContent = "Create Account";
-        authToggleHint.innerHTML = "Already have an account? <a href='#' id='authToggleMode' style='color:#a855f7;'>Sign In</a>";
-      } else {
-        authTitle.textContent = "Sign In";
-        authToggleHint.innerHTML = "Don't have an account? <a href='#' id='authToggleMode' style='color:#a855f7;'>Sign Up</a>";
-      }
-      document.getElementById("authToggleMode").onclick = toggleAuthMode;
-    }
-
-    if (accountBtn) {
-      accountBtn.onclick = () => {
-        resetAuthUI();
-        authModal.style.display = "block";
-      };
-    }
-    if (closeAuthBtn) {
-      closeAuthBtn.onclick = () => {
-        authModal.style.display = "none";
-      };
-    }
-
-    if (authSignOutBtn) {
-      authSignOutBtn.onclick = async () => {
-        if (supabase) {
-          await supabase.auth.signOut();
-          authModal.style.display = "none";
-          // Local-first behavior: keep UI state, just stop syncing
-        }
-      };
-    }
-
-    if (authSubmitBtn) {
-      authSubmitBtn.onclick = async () => {
-        if (!supabase) return showError("Supabase not configured. Set environment variables.");
-        const email = authEmail.value.trim();
-        const password = authPassword.value;
-        if (!email || !password) {
-          authError.textContent = "Email and password required";
-          authError.style.display = "block";
-          return;
-        }
-        authSubmitBtn.disabled = true;
-        authSubmitBtn.textContent = "Working...";
-        authError.style.display = "none";
-
-        try {
-          if (isSignUpMode) {
-            const { error } = await supabase.auth.signUp({ email, password });
-            if (error) throw error;
-            authError.style.color = "#22c55e";
-            authError.textContent = "Success! Please sign in.";
-            authError.style.display = "block";
-            isSignUpMode = false; // flip to sign in
-          } else {
-            const { error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) throw error;
-            authModal.style.display = "none"; // onAuthStateChange handles rest
-          }
-        } catch (err) {
-          authError.style.color = "#ef4444";
-          authError.textContent = err.message;
-          authError.style.display = "block";
-        } finally {
-          authSubmitBtn.disabled = false;
-          authSubmitBtn.textContent = "Continue";
-        }
-      };
-    }
-
-    async function getNetlifyToken() {
-      if (!supabase) return null;
-      const { data: { session } } = await supabase.auth.getSession();
-      return session?.access_token || null;
-    }
-
-    // Wire Supabase state changes
-    if (supabase) {
-      if (accountBtn) {
-        accountBtn.disabled = false;
-        accountBtn.style.opacity = "1";
-      }
-
-      supabase.auth.onAuthStateChange(async (event, session) => {
-        const user = session?.user;
-        currentUser = user || null;
-
-        if (user) {
-          if (accountBtn) accountBtn.textContent = "Account";
-          if (authSignedOutState) authSignedOutState.style.display = "none";
-          if (authSignedInState) authSignedInState.style.display = "block";
-          if (authCurrentUser) authCurrentUser.textContent = user.email;
-
-          if (event === "SIGNED_IN") {
-            // 1. Prompt purely local data migration if needed
-            const hasLocalData = (typeof crate !== 'undefined' && crate.length > 0) ||
-              (typeof history !== 'undefined' && history.length > 0) ||
-              (typeof playlists !== 'undefined' && playlists.length > 0);
-            const migratedFlag = localStorage.getItem("residency_migrated_v1");
-            if (hasLocalData && !migratedFlag) {
-              if (confirm("You are signed in! Want to upload your existing local library to the cloud?")) {
-                if (typeof migrateToCloud === 'function') await migrateToCloud(session.access_token);
-              }
-              localStorage.setItem("residency_migrated_v1", "true");
-            }
-
-            // 2. Hydrate from Cloud to Local
-            if (typeof fetchCloudData === 'function') await fetchCloudData(session.access_token);
-          }
-        } else {
-          if (accountBtn) accountBtn.textContent = "Sign In";
-          if (authSignedOutState) authSignedOutState.style.display = "block";
-          if (authSignedInState) authSignedInState.style.display = "none";
-        }
-      });
-    }
-
     async function checkHealth() {
       try {
         const r = await fetch("/.netlify/functions/sc-health");
@@ -1549,330 +1320,25 @@
 
     function setProgress(msg) { progressLine.textContent = msg || ""; }
 
-    function normalizeUrl(u) {
-      if (!u) return "";
-      let s = String(u).trim();
-      const q = s.indexOf("?");
-      if (q !== -1) s = s.slice(0, q);
-      while (s.endsWith("/")) s = s.slice(0, -1);
-      return s;
-    }
-    function fmtMs(ms) {
-      const n = Math.max(0, Number(ms || 0));
-      if (!n) return "—";
-      const total = Math.floor(n / 1000);
-      const m = Math.floor(total / 60);
-      const s = total % 60;
-      return `${m}:${String(s).padStart(2, "0")}`;
-    }
-    function fmtDate(iso) {
-      if (!iso) return "—";
-      const d = new Date(iso);
-      if (Number.isNaN(d.getTime())) return "—";
-      const y = d.getFullYear();
-      const mo = String(d.getMonth() + 1).padStart(2, "0");
-      const da = String(d.getDate()).padStart(2, "0");
-      return `${y}-${mo}-${da}`;
-    }
-    function fmtNum(n) {
-      const x = Number(n || 0);
-      if (!Number.isFinite(x)) return "0";
-      if (x >= 1e6) return (x / 1e6).toFixed(1).replace(/\.0$/, "") + "M";
-      if (x >= 1e3) return (x / 1e3).toFixed(1).replace(/\.0$/, "") + "K";
-      return String(Math.round(x));
-    }
-
-    function parseBpmFromText(text) {
-      const t = (text || "").toLowerCase();
-      const m1 = t.match(/(?:^|[\s\[\(\-])(\d{2,3})\s*bpm\b/);
-      const m2 = t.match(/\bbpm\s*(\d{2,3})\b/);
-      const n = Number((m1?.[1] || m2?.[1] || 0));
-      if (!Number.isFinite(n)) return "";
-      if (n < 60 || n > 200) return "";
-      return String(Math.round(n));
-    }
-    function parseKeyFromText(text) {
-      const t = (text || "").toLowerCase().replace(/_/g, " ");
-      const sharpFlat = /([a-g])\s*([#b])\s*(major|minor)\b/;
-      const wordKey = /\b([a-g])\s*(major|minor)\b/;
-      const shortKey = /\b([a-g])\s*([#b])?\s*(m|maj|min)\b/;
-
-      let m = t.match(sharpFlat);
-      if (m) return `${m[1].toUpperCase()}${m[2]} ${m[3]}`;
-      m = t.match(wordKey);
-      if (m) return `${m[1].toUpperCase()} ${m[2]}`;
-      m = t.match(shortKey);
-      if (m) {
-        const note = m[1].toUpperCase() + (m[2] || "");
-        const qual = m[3];
-        if (qual === "m" || qual === "min") return `${note} minor`;
-        if (qual === "maj") return `${note} major`;
-      }
-      return "";
-    }
-
-    // ===== Playlists =====
-    function savePlaylists() {
-      saveJsonLS(STORAGE_KEY_PLAYLISTS, playlists);
-      if (typeof debouncedPlaylistSync === "function") debouncedPlaylistSync();
-    }
-
-    function createPlaylist() {
-      const name = prompt("Name your new playlist:");
-      if (!name || !name.trim()) return;
-      const pl = { id: crypto.randomUUID(), name: name.trim(), updated_at: new Date().toISOString(), items: [] };
-      playlists.push(pl);
-      activePlaylistId = pl.id;
-      savePlaylists();
-      renderPlaylistsSelect();
-      renderPlaylistItems();
-    }
-
-    function renamePlaylist() {
-      if (!activePlaylistId) return;
-      const pl = playlists.find(p => p.id === activePlaylistId);
-      if (!pl) return;
-      const name = prompt("Rename playlist:", pl.name);
-      if (name && name.trim()) {
-        pl.name = name.trim();
-        pl.updated_at = new Date().toISOString();
-        savePlaylists();
-        renderPlaylistsSelect();
-      }
-    }
-
-    function deletePlaylist() {
-      if (!activePlaylistId) return;
-      const pl = playlists.find(p => p.id === activePlaylistId);
-      if (!pl) return;
-      if (!confirm(`Delete playlist "${pl.name}"?`)) return;
-      playlists = playlists.filter(p => p.id !== activePlaylistId);
-      activePlaylistId = playlists.length > 0 ? playlists[0].id : null;
-      savePlaylists();
-      renderPlaylistsSelect();
-      renderPlaylistItems();
-    }
-
-    function renderPlaylistsSelect() {
-      activePlaylistSelect.innerHTML = playlists.length ? "" : '<option value="">No Playlist Selected</option>';
-      for (const pl of playlists) {
-        const opt = document.createElement("option");
-        opt.value = pl.id;
-        opt.textContent = safeShortName(pl.name, 25) + ` (${pl.items.length})`;
-        activePlaylistSelect.appendChild(opt);
-      }
-      activePlaylistSelect.value = activePlaylistId || "";
-      document.getElementById("playlistCount").textContent = playlists.length > 0 ? playlists.length : "";
-
-      const hasPl = playlists.length > 0;
-      renamePlaylistBtn.disabled = !hasPl;
-      deletePlaylistBtn.disabled = !hasPl;
-    }
-
-    function renderPlaylistItems() {
-      if (!activePlaylistId) {
-        playlistItemList.innerHTML = '<li class="hint">No playlist selected.</li>';
-        return;
-      }
-      const pl = playlists.find(p => p.id === activePlaylistId);
-      if (!pl) return;
-
-      playlistItemList.innerHTML = "";
-      if (!pl.items.length) {
-        const li = document.createElement("li");
-        li.className = "hint";
-        li.textContent = "Playlist is empty.";
-        playlistItemList.appendChild(li);
-        return;
-      }
-
-      for (let i = pl.items.length - 1; i >= 0; i--) {
-        const t = pl.items[i];
-        const li = document.createElement("li");
-        const L = document.createElement("div"); L.className = "left";
-        const titleSpan = document.createElement("span"); titleSpan.className = "title"; titleSpan.textContent = safeShortName(t.title, 40);
-        const artSpan = document.createElement("span"); artSpan.className = "artist"; artSpan.textContent = safeShortName(t.artist, 30);
-        L.appendChild(titleSpan); L.appendChild(artSpan);
-
-        const R = document.createElement("div"); R.className = "right";
-        const playBtn = document.createElement("button"); playBtn.className = "miniBtn"; playBtn.textContent = "▶";
-        playBtn.onclick = () => loadItem(t, true);
-        const rmBtn = document.createElement("button"); rmBtn.className = "miniBtn hint"; rmBtn.textContent = "✕";
-        rmBtn.onclick = () => {
-          pl.items.splice(i, 1);
-          pl.updated_at = new Date().toISOString();
-          savePlaylists();
-          renderPlaylistsSelect();
-          renderPlaylistItems();
-        };
-        R.appendChild(playBtn); R.appendChild(rmBtn);
-
-        li.appendChild(L); li.appendChild(R);
-        playlistItemList.appendChild(li);
-      }
-    }
-
-    newPlaylistBtn.onclick = createPlaylist;
-    renamePlaylistBtn.onclick = renamePlaylist;
-    deletePlaylistBtn.onclick = deletePlaylist;
-    addToPlaylistBtn.onclick = addCurrentToPlaylist;
-    activePlaylistSelect.onchange = () => {
-      activePlaylistId = activePlaylistSelect.value || null;
-      renderPlaylistItems();
-    };
-
-    // Add to playlist logic
-    function addCurrentToPlaylist() {
-      if (!currentItem) return;
-      if (!activePlaylistId) {
-        if (playlists.length === 0) createPlaylist();
-        if (!activePlaylistId) return; // cancelled
-      }
-      const pl = playlists.find(p => p.id === activePlaylistId);
-      if (!pl) return;
-
-      // Duplicate check within this playlist
-      if (pl.items.some(x => x.url === currentItem.url)) return;
-
-      pl.items.push(currentItem);
-      pl.updated_at = new Date().toISOString();
-      savePlaylists();
-      renderPlaylistsSelect();
-      renderPlaylistItems();
-    }
-
-    function isJunkText(text) {
-      const t = (text || "").toLowerCase();
-      const bad = [
-        "free type beat", "type beat", "typebeat", "free beat", "buy this beat", "purchase",
-        "leasing", "lease this beat", "dm for placement", "open verse", "promo only",
-        "sample pack", "loop kit", "midi pack", "drum kit", "preset pack", "stems pack",
-        "beat for sale", "beats for sale"
-      ];
-      return bad.some(b => t.includes(b));
-    }
-    function scTagListToArray(tagList) {
-      if (!tagList) return [];
-      if (Array.isArray(tagList)) return tagList.map(x => String(x).toLowerCase());
-      const raw = String(tagList);
-      return raw.replace(/"/g, "").split(/[\s,]+/).map(t => t.trim().toLowerCase()).filter(Boolean).slice(0, 35);
-    }
-    function safeShortName(s, max = 18) {
-      const t = (s || "").toString().trim();
-      if (!t) return "";
-      return t.length <= max ? t : t.slice(0, max - 1) + "…";
-    }
-
-    function classifyKindFromDuration(durationMs) {
-      const d = Number(durationMs || 0);
-      if (d && d >= MIN_SET_MS) return "set";
-      return "track";
-    }
-    function isAllowedByMode(kind, durationMs, mode) {
-      const d = Number(durationMs || 0);
-      if (!d) return true;
-      if (mode === "track") return kind === "track" && d <= MAX_TRACK_MS;
-      if (mode === "set") return kind === "set" && d >= MIN_SET_MS;
-      if (kind === "track") return d <= MAX_TRACK_MS;
-      if (kind === "set") return d >= MIN_SET_MS;
-      return true;
-    }
-    function setPill(el, text) {
-      if (!text) { el.classList.add("hidden"); return; }
-      el.classList.remove("hidden");
-      el.textContent = text;
-    }
-
-    // ===== GENRE BUCKETING (fixes dancehall vs dubstep) =====
-    const DUBSTEP_BLOCK = [
-      "dubstep", "brostep", "tearout", "briddim", "riddim dubstep", "uk dubstep", "wook",
-      "bass music", "140", "sub bass", "drop", "headbang", "filth", "banger", "tear out"
-    ];
-    const DANCEHALL_POS = [
-      "dancehall", "bashment", "jamaica", "yard", "riddim", "dubplate", "soundclash", "sound system", "sound system",
-      "kartel", "vybz", "shatta", "ragga", "dancehall mix", "bashment mix"
-    ];
-
-    function blobFor(it) {
-      const title = (it?.title || it?.name || "").toString();
-      const user = (it?.user?.username || "").toString();
-      const tags = (it?.tag_list || "").toString();
-      const genre = (it?.genre || "").toString();
-      const desc = (it?.description || "").toString();
-      return `${title} ${user} ${genre} ${tags} ${desc}`.toLowerCase();
-    }
-    function isDubstepish(blob) {
-      return DUBSTEP_BLOCK.some(w => blob.includes(w));
-    }
-    function isDancehallish(blob) {
-      return DANCEHALL_POS.some(w => blob.includes(w));
-    }
-
-    // If the user picked a bucket, we keep it as canonical BUT we still hard-block obvious wrong content.
-    function bucketPass(bucket, blob) {
-      if (bucket === "dancehall") {
-        // hard block: any dubstep/bass indicators => reject even if it says riddim
-        if (isDubstepish(blob) && !isDancehallish(blob)) return false;
-        if (isDubstepish(blob) && blob.includes("dubstep")) return false;
-        return true;
-      }
-      if (bucket === "dubstep") {
-        // ensure it's actually dubstep-ish
-        return isDubstepish(blob) || blob.includes("dubstep") || blob.includes("140");
-      }
-      return true;
-    }
-
-    // ===== SoundCloud Widget =====
-    let scWidget = null;
-    function ensureWidget() {
-      if (scWidget) return scWidget;
-      try {
-        scWidget = SC.Widget(playerFrame);
-        return scWidget;
-      } catch { return null; }
-    }
-    function buildEmbedUrl(url) {
-      return "https://w.soundcloud.com/player/?url=" + encodeURIComponent(url) +
-        "&auto_play=false&color=%238b5cf6&visual=true&show_comments=false";
-    }
-    function widgetLoad(url, autoplay = true) {
-      const w = ensureWidget();
-      if (!w) {
-        playerFrame.src = buildEmbedUrl(url);
-        return;
-      }
-      w.load(url, {
-        auto_play: !!autoplay,
-        show_artwork: true,
-        show_comments: false,
-        show_user: true,
-        visual: true,
-        buying: false,
-        sharing: true,
-        download: false,
-        liking: false
-      });
-    }
-    function widgetPause() {
-      const w = ensureWidget();
-      try { w && w.pause(); } catch { }
-    }
-
     // ===== Netlify functions =====
     let activeController = null;
     let lastReqAt = 0;
 
-    async function scSearch(q, kind = "tracks", limit = 80) {
-      if (Date.now() - lastReqAt < 600) return { collection: [] };
-      lastReqAt = Date.now();
+    async function scSearch(q, kind = "tracks", limit = 80, isPool = false) {
+      if (!isPool) {
+        if (Date.now() - lastReqAt < 600) return { collection: [] };
+        lastReqAt = Date.now();
+      }
 
-      if (activeController) activeController.abort();
-      activeController = new AbortController();
+      const controller = isPool ? new AbortController() : (activeController || new AbortController());
+      if (!isPool) {
+        if (activeController) activeController.abort();
+        activeController = controller;
+      }
 
       const url = `/.netlify/functions/sc-official-search?q=${encodeURIComponent(q)}&kind=${encodeURIComponent(kind)}&limit=${encodeURIComponent(limit)}`;
       try {
-        const r = await fetch(url, { cache: "no-store", signal: activeController.signal });
+        const r = await fetch(url, { cache: "no-store", signal: controller.signal });
         const text = await r.text();
         if (!r.ok) throw new Error(text || `HTTP ${r.status}`);
         return JSON.parse(text);
@@ -1893,6 +1359,16 @@
     const SEED_LIBRARY = [
       { kind: "track", title: "Seed", artist: "", url: "https://soundcloud.com/haszari/ambient-leftfield-dojo-twisted-frequency", bucket: "leftfield", tags: ["seed"], durationMs: 0, uploadedAt: "", bpmGuess: "", keyGuess: "", plays: null, likes: null, comments: null, _score: 50 }
     ];
+
+    let library = [];
+    let currentItem = null;
+    let crate = [];
+    let history = [];
+    let localSearch = "";
+    let stations = [];
+    let stationId = "__all__";
+    let playedMap = {};
+    let playedSet = new Set();
 
     // anti-skip / anti-double-shuffle
     let shuffleInFlight = false;
@@ -2118,19 +1594,7 @@
         const days = Math.max(0, (Date.now() - created) / (1000 * 60 * 60 * 24));
         recency = Math.max(0, 1 - days / 365) * 0.18;
       }
-
-      // Discovery Engine v1: Over-literal-title penalty
-      // Penalize titles that are exactly the bucket name or just "bucket name + edit/mix"
-      let literalPenalty = 0;
-      const tLower = (it?.title || "").toLowerCase().trim();
-      const bLower = (it?.bucket || "").toLowerCase();
-      if (bLower && tLower.includes(bLower)) {
-        if (tLower === bLower) literalPenalty = 40; // Extremely literal
-        else if (tLower.replace(/[^a-z]/g, "") === bLower.replace(/[^a-z]/g, "")) literalPenalty = 40;
-        else if (tLower.length < bLower.length + 8) literalPenalty = 20; // Likely just "genre mix"
-      }
-
-      const score = (engagement * 100) + (recency * 100) - (sizePenalty * 12) - literalPenalty;
+      const score = (engagement * 100) + (recency * 100) - (sizePenalty * 12);
       return Math.round(Math.max(0, Math.min(100, score)));
     }
 
@@ -2194,11 +1658,8 @@
         plays: it?.playback_count ?? null,
         likes: it?.favoritings_count ?? null,
         comments: it?.comment_count ?? null,
-        _discovery_pool: "v1_adjacent_blend", // Scaffold metadata
-        _penalty_applied: false, // Scaffold metadata
+        _score: computeDigScore(it)
       };
-      // calculate score AFTER forming the item so we have access to item.bucket
-      item._score = computeDigScore(item);
       return pushUnique(item);
     }
 
@@ -2270,72 +1731,61 @@
       return unplayed;
     }
 
-    // ===== Discovery Engine v1 (Seeds & Controlled Exploration) =====
+    // ===== Auto-dig (automatic per filter) =====
     const DIG_TOKENS = ["dub", "version", "edit", "refix", "bootleg", "flip", "vip", "white label", "test press", "promo", "unreleased", "demo", "instrumental", "acapella", "rough", "tape", "archive", "b-side", "tool", "live take"];
-
-    // Seed Packs: categorized terms to prevent repetitive/literal searches.
-    const DISCOVERY_SEEDS = {
-      leftfield: { anchors: ["deconstructed club", "outsider electronic", "leftfield"], adjacent: ["broken beat", "abstract club", "mutant bass"] },
-      dancehall: { anchors: ["dancehall", "bashment", "jamaican riddim"], adjacent: ["dubplate", "soundclash", "shatta"] },
-      hiphop: { anchors: ["underground rap", "alt rap"], adjacent: ["rap loosie", "indie rap", "boom bap demo"] },
-      rnb: { anchors: ["alt rnb", "neo soul", "future rnb"], adjacent: ["rnb demo", "rnb flip", "rnb edit"] },
-      afrobeats: { anchors: ["afrobeats", "amapiano"], adjacent: ["afro fusion", "afro rhythms", "sgija"] },
-      house: { anchors: ["deep house", "minimal house", "house dub"], adjacent: ["club tool", "lo-fi house", "outsider house"] },
-      techno: { anchors: ["hypnotic techno", "warehouse techno"], adjacent: ["techno tool", "techno dub", "raw techno"] },
-      dnb: { anchors: ["drum and bass", "jungle"], adjacent: ["liquid dnb", "rollers", "techstep"] },
-      dubstep: { anchors: ["dubstep", "140", "deep dubstep"], adjacent: ["uk dubstep", "trench", "wook bass"] },
-      futuregarage: { anchors: ["future garage", "2-step"], adjacent: ["ambient garage", "uk bass", "post-dubstep"] },
-      ukg: { anchors: ["uk garage", "speed garage", "ukg"], adjacent: ["niche ukg", "bassline", "ukg dub"] },
-      breakbeat: { anchors: ["breakbeat", "acid breaks"], adjacent: ["nu breaks", "electro breaks", "breakbeat hardcore"] },
-      bass: { anchors: ["halftime", "bass music"], adjacent: ["leftfield bass", "experimental bass", "mutant bass"] },
-      trance: { anchors: ["trance", "progressive trance"], adjacent: ["hard trance", "uplifting trance", "psybient"] },
-      electro: { anchors: ["electro", "electro breaks"], adjacent: ["electro tool", "drexciyan", "detroit electro"] },
-      idm: { anchors: ["idm", "braindance"], adjacent: ["glitch", "experimental electronic", "drill and bass"] },
-      experimental: { anchors: ["experimental", "outsider"], adjacent: ["abstract electronic", "weird electronic", "sound art"] },
-      reggae: { anchors: ["roots reggae", "dub reggae"], adjacent: ["reggae dub", "steppers", "rocksteady"] },
-      soca: { anchors: ["soca", "carnival"], adjacent: ["road march", "chutney soca", "power soca"] },
-      afrohouse: { anchors: ["afro house", "tribal house"], adjacent: ["afro tech", "ancestral", "deep afro"] },
-      brazil: { anchors: ["baile funk", "funk br"], adjacent: ["mandelao", "bruxaria", "funk rj"] },
-      latin: { anchors: ["reggaeton", "latin club"], adjacent: ["perreo", "neoperreo", "dembow"] },
-      world: { anchors: ["global beats", "world"], adjacent: ["folk", "traditional", "fusion"] },
-      ambient: { anchors: ["ambient", "drone"], adjacent: ["soundscape", "field recording", "dark ambient"] },
-      downtempo: { anchors: ["downtempo", "trip hop"], adjacent: ["leftfield chill", "illbient", "lounge"] },
-      lofi: { anchors: ["tape", "lofi"], adjacent: ["cassette", "beat tape", "sp404"] },
-      soul: { anchors: ["soul", "rare groove"], adjacent: ["samples", "crate dig", "sweet soul"] },
-      jazz: { anchors: ["jazz", "spiritual jazz"], adjacent: ["jazz fusion", "free jazz", "modal jazz"] },
-      classical: { anchors: ["modern classical", "neo classical"], adjacent: ["minimal piano", "avant-garde", "contemporary classical"] },
-      industrial: { anchors: ["industrial", "ebm"], adjacent: ["dark electro", "industrial techno", "rhythmic noise"] },
-      noise: { anchors: ["noise", "harsh noise"], adjacent: ["power electronics", "japanoise", "death industrial"] },
-      drone: { anchors: ["drone", "dark drone"], adjacent: ["ambient drone", "drifting", "sustained"] },
-      punk: { anchors: ["punk", "post punk"], adjacent: ["hardcore punk", "no wave", "art punk"] },
-      metal: { anchors: ["metal", "black metal"], adjacent: ["doom metal", "sludge", "atmospheric black metal"] },
-      other: { anchors: ["underground", "rare"], adjacent: ["archive", "demo", "unreleased"] }
+    const GENRE_PACKS = {
+      leftfield: ["deconstructed club", "outsider electronic", "broken beat", "abstract club", "leftfield"],
+      dancehall: ["dancehall", "bashment", "jamaican riddim", "dubplate", "soundclash"],
+      hiphop: ["underground rap", "alt rap", "rap loosie", "indie rap"],
+      rnb: ["alt rnb", "neo soul", "future rnb", "rnb demo"],
+      afrobeats: ["afrobeats", "amapiano", "afro fusion", "afro rhythms"],
+      house: ["deep house", "minimal house", "house dub", "club tool"],
+      techno: ["hypnotic techno", "warehouse techno", "techno tool", "techno dub"],
+      dnb: ["drum and bass", "jungle", "liquid dnb", "rollers"],
+      dubstep: ["dubstep", "140", "deep dubstep", "uk dubstep"],
+      futuregarage: ["future garage", "2-step", "ambient garage", "uk bass"],
+      ukg: ["uk garage", "2-step", "speed garage", "ukg"],
+      breakbeat: ["breakbeat", "breaks", "acid breaks", "nu breaks"],
+      bass: ["halftime", "bass music", "leftfield bass", "experimental bass"],
+      trance: ["trance", "progressive trance", "hard trance", "uplifting trance"],
+      electro: ["electro", "electro breaks", "electro tool"],
+      idm: ["idm", "braindance", "glitch", "experimental electronic"],
+      experimental: ["experimental", "outsider", "abstract electronic", "weird electronic"],
+      reggae: ["roots reggae", "dub reggae", "reggae", "dub"],
+      soca: ["soca", "carnival", "road march"],
+      afrohouse: ["afro house", "tribal house", "afro deep"],
+      brazil: ["baile funk", "funk br", "mandelao"],
+      latin: ["reggaeton", "latin club", "perreo"],
+      world: ["global beats", "world", "folk"],
+      ambient: ["ambient", "drone", "soundscape", "field recording"],
+      downtempo: ["downtempo", "trip hop", "leftfield chill"],
+      lofi: ["tape", "lofi", "cassette", "beat tape"],
+      soul: ["soul", "rare groove", "samples", "crate dig"],
+      jazz: ["jazz", "spiritual jazz", "jazz fusion"],
+      classical: ["modern classical", "neo classical", "minimal piano"],
+      industrial: ["industrial", "ebm", "dark electro"],
+      noise: ["noise", "harsh noise", "power electronics"],
+      drone: ["drone", "dark drone", "ambient drone"],
+      punk: ["punk", "post punk", "hardcore punk"],
+      metal: ["metal", "black metal", "doom metal"],
+      other: ["underground", "rare", "archive", "demo"]
     };
 
     function packKeyFor(bucket) {
       const x = (bucket || "").toLowerCase();
-      return DISCOVERY_SEEDS[x] ? x : "other";
+      return GENRE_PACKS[x] ? x : "other";
     }
 
     async function runPool(tasks, concurrency = 3) {
       const results = [];
       let i = 0;
-      let firstError = null;
       const workers = new Array(concurrency).fill(0).map(async () => {
         while (i < tasks.length) {
           const idx = i++;
-          try {
-            results[idx] = await tasks[idx]();
-          } catch (e) {
-            if (!firstError) firstError = e;
-            results[idx] = null;
-          }
+          try { results[idx] = await tasks[idx](); } catch (e) { results[idx] = null; }
         }
       });
       await Promise.all(workers);
-      if (results.every(r => r === null) && firstError) {
-        throw firstError;
-      }
       return results;
     }
 
@@ -2344,22 +1794,15 @@
       const mode = sourceSelect.value;
       const bucket = (bucketValue === "all") ? "other" : bucketValue;
       const packKey = packKeyFor(bucket);
-      const seedPack = DISCOVERY_SEEDS[packKey] || DISCOVERY_SEEDS.other;
+      const baseTerms = GENRE_PACKS[packKey] || GENRE_PACKS.other;
 
-      const getTerm = (arr) => arr[Math.floor(Math.random() * arr.length)];
-
-      const qAnchor = getTerm(seedPack.anchors);
-      // Blend 1: Anchor + Dig Token
-      const q1 = `${qAnchor} ${getTerm(DIG_TOKENS)}`;
-
-      // Blend 2: Adjacent + Dig Token OR Anchor + Adjacent
-      const qAdjacent = getTerm(seedPack.adjacent);
-      const q2 = Math.random() < 0.5 ? `${qAdjacent} ${getTerm(DIG_TOKENS)}` : `${qAnchor} ${qAdjacent}`;
-
-      // Blend 3: Pure Adjacent or Pure Anchor (Wildcard)
-      const q3 = Math.random() < 0.4 ? qAdjacent : qAnchor;
-
-      const queries = [q1, q2, q3];
+      const tA = DIG_TOKENS[Math.floor(Math.random() * DIG_TOKENS.length)];
+      const tB = DIG_TOKENS[Math.floor(Math.random() * DIG_TOKENS.length)];
+      const queries = [
+        `${baseTerms[0]} ${tA}`,
+        `${baseTerms[1] || baseTerms[0]} ${tB}`,
+        `${baseTerms[2] || baseTerms[0]}`
+      ];
 
       const wantTracks = (mode !== "set");
       const wantSets = (mode !== "track");
@@ -2367,12 +1810,18 @@
       const tasks = [];
       if (wantTracks) {
         for (const q of queries) {
-          tasks.push(async () => ({ kind: "tracks", data: await scSearch(q, "tracks", 80), bucket: packKey }));
+          tasks.push(async () => {
+            await sleep(Math.random() * 200); // jitter
+            return { kind: "tracks", data: await scSearch(q, "tracks", 80, true), bucket: packKey };
+          });
         }
       }
       if (wantSets) {
         for (const q of queries.slice(0, 2)) {
-          tasks.push(async () => ({ kind: "playlists", data: await scSearch(q, "playlists", 70), bucket: packKey }));
+          tasks.push(async () => {
+            await sleep(Math.random() * 200); // jitter
+            return { kind: "playlists", data: await scSearch(q, "playlists", 70, true), bucket: packKey };
+          });
         }
       }
 
@@ -2436,7 +1885,6 @@
 
       openBtn.disabled = false;
       saveBtn.disabled = false;
-      addToPlaylistBtn.disabled = false;
       makeStationBtn.disabled = false;
       openBtn.dataset.url = item.url;
       try { localStorage.setItem(STORAGE_KEY_LAST, JSON.stringify(item)); } catch { }
@@ -2512,155 +1960,6 @@
         // don’t spam UI; only show if user explicitly asked for stats and nothing is working
         // (silent fail keeps creative flow)
       }
-    }
-
-    // ===== Cloud State Hydration =====
-    async function fetchCloudData(token) {
-      if (!token) return;
-      try {
-        setProgress("Syncing cloud data...");
-        // Fetch Crate
-        const crateRes = await fetch("/.netlify/functions/sync-crate", {
-          headers: { "Authorization": `Bearer ${token}` }
-        });
-        if (crateRes.ok) {
-          const body = await crateRes.json();
-          if (body.hasData && Array.isArray(body.items)) {
-            crate = body.items;
-            saveJsonLS(STORAGE_KEY_CRATE, crate);
-            renderList(crateList, crate, "crate");
-          }
-        }
-
-        // Fetch History
-        const histRes = await fetch("/.netlify/functions/sync-history", {
-          headers: { "Authorization": `Bearer ${token}` }
-        });
-        if (histRes.ok) {
-          const body = await histRes.json();
-          if (body.hasData && Array.isArray(body.items)) {
-            history = body.items;
-            saveJsonLS(STORAGE_KEY_HISTORY, history);
-            renderList(historyList, history, "history");
-          }
-        }
-
-        // Fetch Playlists
-        const playRes = await fetch("/.netlify/functions/sync-playlists", {
-          headers: { "Authorization": `Bearer ${token}` }
-        });
-        if (playRes.ok) {
-          const body = await playRes.json();
-          if (body.hasData && Array.isArray(body.playlists)) {
-            playlists = body.playlists;
-            savePlaylists();
-            renderPlaylistsSelect();
-            renderPlaylistItems();
-          }
-        }
-
-        // Fetch Session State
-        const stateRes = await fetch("/.netlify/functions/sync-session-state", {
-          headers: { "Authorization": `Bearer ${token}` }
-        });
-        if (stateRes.ok) {
-          const body = await stateRes.json();
-          if (body.hasData && body.state) {
-            const s = body.state;
-            if (s.genre) { genreSelect.value = s.genre; localStorage.setItem(STORAGE_KEY_GENRE, s.genre); }
-            if (s.source) { sourceSelect.value = s.source; localStorage.setItem(STORAGE_KEY_SOURCE, s.source); }
-            if (s.dig_range) { obscureRange.value = s.dig_range; localStorage.setItem(STORAGE_KEY_RANGE, s.dig_range); }
-            if (s.station_id) { stationId = s.station_id; localStorage.setItem(STORAGE_KEY_STATION, s.station_id); renderStationsSelect(); }
-          }
-        }
-        setProgress("");
-        showOk("Cloud data synced.");
-        setTimeout(clearStatus, 3000);
-      } catch (err) {
-        console.warn("Hydration failed", err);
-      }
-    }
-
-    // ===== Cloud State Push / Auto-Sync =====
-    // These debounce hooks allow the UI to freely manipulate local arrays 
-    // and they silently synchronize to Supabase in the background
-    const debouncedCrateSync = debounce(async () => {
-      const t = await getNetlifyToken();
-      if (!t) return;
-      try {
-        await fetch("/.netlify/functions/sync-crate", {
-          method: "POST", headers: { "Authorization": `Bearer ${t}` },
-          body: JSON.stringify({ tracks: crate })
-        });
-      } catch (e) { console.warn("Crate sync fail", e); }
-    }, 2000);
-
-    const debouncedHistorySync = debounce(async () => {
-      const t = await getNetlifyToken();
-      if (!t) return;
-      try {
-        await fetch("/.netlify/functions/sync-history", {
-          method: "POST", headers: { "Authorization": `Bearer ${t}` },
-          body: JSON.stringify({ tracks: history })
-        });
-      } catch (e) { console.warn("History sync fail", e); }
-    }, 3000);
-
-    const debouncedPlaylistSync = debounce(async () => {
-      const t = await getNetlifyToken();
-      if (!t) return;
-      try {
-        await fetch("/.netlify/functions/sync-playlists", {
-          method: "POST", headers: { "Authorization": `Bearer ${t}` },
-          body: JSON.stringify({ playlists })
-        });
-      } catch (e) { console.warn("Playlist sync fail", e); }
-    }, 2000);
-
-    const debouncedStateSync = debounce(async () => {
-      const t = await getNetlifyToken();
-      if (!t) return;
-      try {
-        await fetch("/.netlify/functions/sync-session-state", {
-          method: "POST", headers: { "Authorization": `Bearer ${t}` },
-          body: JSON.stringify({
-            genre: genreSelect.value,
-            source: sourceSelect.value,
-            dig_range: obscureRange.value,
-            station_id: stationId
-          })
-        });
-      } catch (e) { console.warn("State sync fail", e); }
-    }, 4000);
-
-    // One-off forced migration from local anonymity -> cloud account
-    async function migrateToCloud(token) {
-      if (!token) return;
-      setProgress("Migrating local library...");
-      try {
-        const payload = {
-          crate: crate,
-          history: history,
-          playlists: playlists,
-          session: {
-            genre: genreSelect.value,
-            source: sourceSelect.value,
-            dig_range: obscureRange.value,
-            station_id: stationId
-          }
-        };
-        const res = await fetch("/.netlify/functions/migrate-local-data", {
-          method: "POST",
-          headers: { "Authorization": `Bearer ${token}` },
-          body: JSON.stringify(payload)
-        });
-        if (!res.ok) throw new Error("Migration failed " + res.status);
-        showOk("Local library merged upward.");
-        setTimeout(clearStatus, 3000);
-      } catch (e) {
-        showError("Migration error: " + e.message);
-      }
-      setProgress("");
     }
 
     // ===== Export =====
@@ -2751,46 +2050,22 @@
 
         if (!ok || !matches.length) {
           const genre = genreSelect.value === "all" ? "" : ` for "${genreSelect.value}"`;
-          showError(`No tracks found${genre}. Try a different genre or hit Auto-Dig.`);
-
-          // Attempt recovery from last good item if UI is blank
-          if (!currentItem) {
-            try {
-              const raw = localStorage.getItem(STORAGE_KEY_LAST);
-              if (raw) {
-                const last = JSON.parse(raw);
-                if (last && last.url) {
-                  loadItem(last, false);
-                  setStatus("DEGRADED (using last good)");
-                }
-              }
-            } catch { }
-          } else {
-            setStatus("READY");
-          }
+          showError(`No tracks found${genre}. Try a different genre or hit Auto-Dig to fill the library.`);
+          setStatus("READY");
           return;
+        }
+
+        // station filter
+        const st = currentStation();
+        if (st) {
+          // already sorted by station in getFilteredLibrary()
         }
 
         pickAndPlay(matches);
         setStatus("PLAYING");
       } catch (e) {
         showError(String(e?.message || e));
-
-        // Failover to last good if we have nothing
-        if (!currentItem) {
-          try {
-            const raw = localStorage.getItem(STORAGE_KEY_LAST);
-            if (raw) {
-              const last = JSON.parse(raw);
-              if (last && last.url) {
-                loadItem(last, false);
-                setStatus("DEGRADED (failover)");
-              }
-            }
-          } catch { }
-        } else {
-          setStatus("READY");
-        }
+        setStatus("READY");
       } finally {
         shuffleInFlight = false;
         shuffleBtn.disabled = false;
