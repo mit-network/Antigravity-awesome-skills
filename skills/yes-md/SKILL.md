@@ -19,6 +19,16 @@ Three pillars:
 2. **Evidence Rules** — No guessing, no assumptions, no vibes
 3. **Ripple Awareness** — Every fix has consequences; check them
 
+## When to Use This Skill
+
+- Use when AI modifies files, configs, databases, or deployments
+- Use when debugging hits 2+ failures on the same task
+- Use when AI guesses without evidence ("probably", "might be", "should be")
+- Use when AI deflects to user ("please check...", "you should manually...")
+- Use when AI finishes a fix without verifying it works
+- Use when AI makes a root-cause claim without supporting data
+- Use alongside persistence-focused skills (like PUA) for balanced governance
+
 ## The Problem: AI's Seven Deadly Shortcuts
 
 | Shortcut | What It Looks Like |
