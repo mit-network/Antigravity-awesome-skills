@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-02-08T00:00:00.000Z",
-  "total": 1239,
+  "total": 1240,
   "skills": [
     {
       "id": "00-andruia-consultant",
@@ -17263,6 +17263,34 @@
         "score"
       ],
       "path": "skills/leiloeiro-risco/SKILL.md"
+    },
+    {
+      "id": "lex",
+      "name": "lex",
+      "description": "Centralized 'Truth Engine' for cross-jurisdictional legal context (US, EU, CA) and contract scaffolding.",
+      "category": "security",
+      "tags": [
+        "legal",
+        "context",
+        "cross-jurisdictional",
+        "compliance",
+        "scaffolding"
+      ],
+      "triggers": [
+        "legal",
+        "context",
+        "cross-jurisdictional",
+        "compliance",
+        "scaffolding",
+        "lex",
+        "centralized",
+        "truth",
+        "engine",
+        "cross",
+        "jurisdictional",
+        "us"
+      ],
+      "path": "skills/lex/SKILL.md"
     },
     {
       "id": "libreoffice/base",

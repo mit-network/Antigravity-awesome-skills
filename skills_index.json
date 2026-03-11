@@ -6990,6 +6990,16 @@
     "date_added": "2026-03-06"
   },
   {
+    "id": "lex",
+    "path": "skills/lex",
+    "category": "business",
+    "name": "lex",
+    "description": "Centralized 'Truth Engine' for cross-jurisdictional legal context (US, EU, CA) and contract scaffolding.",
+    "risk": "safe",
+    "source": "community",
+    "date_added": "2026-03-10"
+  },
+  {
     "id": "lightning-architecture-review",
     "path": "skills/lightning-architecture-review",
     "category": "uncategorized",
