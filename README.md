@@ -1,4 +1,4 @@
-<!-- registry-sync: version=7.4.1; skills=1239; stars=22855; updated_at=2026-03-10T18:28:00+00:00 -->
+<!-- registry-sync: version=7.4.1; skills=1239; stars=23179; updated_at=2026-03-11T14:42:59+00:00 -->
 # 🌌 Antigravity Awesome Skills: 1,239+ Agentic Skills for Claude Code, Gemini CLI, Cursor, Copilot & More
 
 > **The Ultimate Collection of 1,239+ Universal Agentic Skills for AI Coding Assistants — Claude Code, Gemini CLI, Codex CLI, Antigravity IDE, GitHub Copilot, Cursor, OpenCode, AdaL**

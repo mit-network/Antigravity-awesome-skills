@@ -47,6 +47,20 @@ Start from:
 - ✅ Free for commercial use
 - ✅ You can modify them
 
+### How do these skills avoid overflowing the model context?
+
+Some host tools (for example custom agents built on Jetski/Cortex + Gemini) might be tempted to **concatenate every `SKILL.md` file into a single system prompt**.  
+This is **not** how this repository is designed to be used, and it will almost certainly overflow the model’s context window with 1,200+ skills.
+
+Instead, hosts should:
+
+- use `data/skills_index.json` as a **lightweight manifest** for discovery; and
+- load individual `SKILL.md` files **only when a skill is invoked** (e.g. via `@skill-id` in the conversation).
+
+For a concrete example (including pseudo‑code) see:
+
+- [`docs/integrations/jetski-cortex.md`](../integrations/jetski-cortex.md)
+
 ### Do skills work offline?
 
 The skill files themselves are stored locally on your computer, but your AI assistant needs an internet connection to function.

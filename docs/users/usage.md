@@ -314,6 +314,19 @@ Usually no, but if your AI doesn't recognize a skill:
 2. Check the installation path matches your tool
 3. Try the explicit path: `npx antigravity-awesome-skills --claude` (or `--cursor`, `--gemini`, etc.)
 
+### "Can I load all skills into the model at once?"
+
+No. Even though you have 1,200+ skills installed locally, you should **not** concatenate every `SKILL.md` into a single system prompt or context block.
+
+The intended pattern is:
+
+- use `data/skills_index.json` (the manifest) to discover which skills exist; and
+- only load the `SKILL.md` files for the specific `@skill-id` values you actually use in a conversation.
+
+If you are building your own host/agent (e.g. Jetski/Cortex + Gemini), see:
+
+- [`docs/integrations/jetski-cortex.md`](../integrations/jetski-cortex.md)
+
 ### "Can I create my own skills?"
 
 Yes! Use the `@skill-creator` skill:
