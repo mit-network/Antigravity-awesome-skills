@@ -9,6 +9,79 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- **pipecat-friday-agent** — Iron Man-inspired tactical voice assistant (F.R.I.D.A.Y.) with Pipecat, Gemini, and OpenAI.
+
+---
+
+## [7.4.1] - 2026-03-10 - "Documentation Consistency & Workflow Fixes"
+
+> **Resolved comprehensive documentation consistency issues and integrated community AI tools.**
+
+This patch release focuses on bringing the entire repository's documentation into strict compliance with the newly established maintenance protocols. It resolves conflicting skill counts, aligns the documentation "trinity", fixes workflow routing paths, and standardizes formats to prevent anchor breakage. It also includes new community skills like the `pipecat-friday-agent` and workflow enhancements.
+
+## 🚀 New Skills
+
+### 🤖 [pipecat-friday-agent](skills/pipecat-friday-agent/)
+
+**Iron Man-inspired tactical voice assistant (F.R.I.D.A.Y.).**
+Built with Pipecat, Google Gemini, and OpenAI, providing a blueprint for creating interactive voice-driven agents.
+
+### ⏱️ [progressive-estimation](skills/progressive-estimation/)
+
+**Agentic workflow for progressive task estimation.**
+Breaks down complex tasks to improve estimation accuracy and project planning.
+
+### 🎥 [seek-and-analyze-video](skills/seek-and-analyze-video/)
+
+**AI-powered video analysis toolkit.**
+Automates seeking and analyzing of video content, extracting key insights and moments.
+
+## 📦 Improvements
+
+- **Documentation Consistency**: Full audit and remediation of `.github/MAINTENANCE.md` rules.
+- **TOC Formatting**: Removed emojis from H2 headers in `README.md` to fix broken markdown anchors.
+- **Statistics Alignment**: Synced skill counts across `package.json` and `README.md` for accurate representation (1,239+).
+- **Workflow Routing**: Added the `design-ddd-core-domain` workflow to required path definitions and copy-paste examples in `skills/antigravity-workflows/SKILL.md`.
+- **Validation**: Passed all sync chains including `npm run validate:references`.
+
+## 👥 Credits
+
+A huge shoutout to our community contributors:
+
+- **@Enreign** for `progressive-estimation`
+- **@kennyzheng-builds** for `seek-and-analyze-video`
+
+---
+
+## [7.4.0] - 2026-03-10 - "Planning & Dashboards"
+
+> **Blueprint planning skill, Sankhya dashboard best‑practices, and registry sync to 1,236+ skills.**
+
+This release focuses on better multi-session planning and domain dashboards. It adds a Blueprint skill for cold-start construction plans that any coding agent can execute, plus a Sankhya dashboard best-practices skill with SQL/JSP and UI guidance. The registry, catalog, and README counts are synced to 1,236+ skills, and the web app build is verified clean for this version.
+
+## 🚀 New Skills
+
+### 🧱 [blueprint](skills/blueprint/)
+
+**Cold-start construction planning for multi-step projects.**
+Generates dependency-aware plans where every step has its own context brief, tasks, rollback, verification, and exit criteria so fresh agents can execute steps independently.
+
+### 📊 [sankhya-dashboard-html-jsp-custom-best-pratices](skills/sankhya-dashboard-html-jsp-custom-best-pratices/)
+
+**Sankhya dashboard structure, SQL/JSP patterns, and UI best practices.**
+Documents resilient dashboard patterns, recommended SQL/JSP layout, and UX guidelines for production Sankhya deployments.
+
+## 📦 Improvements
+
+- **Registry Update**: Now tracking **1,236+** skills across the catalog.
+- **Docs & Catalog**: `README.md`, `skills_index.json`, `data/catalog.json`, and `CATALOG.md` regenerated and validated for 7.4.0.
+- **Web App**: `npm run app:build` run successfully to ensure the skills browser is up to date.
+
+## 👥 Credits
+
+- **@antbotlab** for `blueprint` (PR #259).
+- **@Guilherme-ruy** for the Sankhya dashboard skill (PR #258).
+
 ---
 
 ## [7.2.0] - 2026-03-08 - "Community PR Harvest & Cleanup"

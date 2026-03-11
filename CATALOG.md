@@ -2,7 +2,7 @@
 
 Generated at: 2026-02-08T00:00:00.000Z
 
-Total skills: 1234
+Total skills: 1239
 
 ## architecture (80)
 
@@ -167,7 +167,7 @@ calculations | startup, business, analyst, market, opportunity | startup, busine
 | `warren-buffett` | Agente que simula Warren Buffett — o maior investidor do seculo XX e XXI, CEO da Berkshire Hathaway, discipulo de Benjamin Graham e socio intelectual de Char... | persona, investing, value-investing, business | persona, investing, value-investing, business, warren, buffett, agente, que, simula, maior, investidor, do |
 | `whatsapp-automation` | Automate WhatsApp Business tasks via Rube MCP (Composio): send messages, manage templates, upload media, and handle contacts. Always search tools first for c... | whatsapp | whatsapp, automation, automate, business, tasks, via, rube, mcp, composio, send, messages, upload |
 
-## data-ai (225)
+## data-ai (228)
 
 | Skill | Description | Tags | Triggers |
 | --- | --- | --- | --- |
@@ -355,6 +355,7 @@ applications. | php | php, pro, write, idiomatic, code, generators, iterators, s
 | `postgresql-optimization` | PostgreSQL database optimization workflow for query tuning, indexing strategies, performance analysis, and production database management. | postgresql, optimization | postgresql, optimization, database, query, tuning, indexing, performance, analysis |
 | `prisma-expert` | Prisma ORM expert for schema design, migrations, query optimization, relations modeling, and database operations. Use PROACTIVELY for Prisma schema issues, m... | prisma | prisma, orm, schema, migrations, query, optimization, relations, modeling, database, operations, proactively, issues |
 | `programmatic-seo` | Design and evaluate programmatic SEO strategies for creating SEO-driven pages at scale using templates and structured data. | programmatic, seo | programmatic, seo, evaluate, creating, driven, pages, scale, structured, data |
+| `progressive-estimation` | Estimate AI-assisted and hybrid human+agent development work with research-backed PERT statistics and calibration feedback loops | estimation, project-management, pert, sprint-planning, ai-agents | estimation, project-management, pert, sprint-planning, ai-agents, progressive, estimate, ai, assisted, hybrid, human, agent |
 | `prompt-caching` | Caching strategies for LLM prompts including Anthropic prompt caching, response caching, and CAG (Cache Augmented Generation) Use when: prompt caching, cache... | prompt, caching | prompt, caching, llm, prompts, including, anthropic, response, cag, cache, augmented, generation, augm |
 | `prompt-engineering-patterns` | Master advanced prompt engineering techniques to maximize LLM performance, reliability, and controllability in production. Use when optimizing prompts, impro... | prompt, engineering | prompt, engineering, techniques, maximize, llm, performance, reliability, controllability, optimizing, prompts, improving, outputs |
 | `pydantic-models-py` | Create Pydantic models following the multi-model pattern with Base, Create, Update, Response, and InDB variants. Use when defining API request/response schem... | pydantic, models, py | pydantic, models, py, following, multi, model, base, update, response, indb, variants, defining |
@@ -365,9 +366,11 @@ applications. | php | php, pro, write, idiomatic, code, generators, iterators, s
 AppState, persistence, theme switch, 状态管理,
 Scope::with_data, save state, load state, serde,
 ... | robius, state | robius, state, critical, triggers, appstate, persistence, theme, switch, scope, data, save, load |
+| `sankhya-dashboard-html-jsp-custom-best-pratices` | This skill should be used when the user asks for patterns, best practices, creation, or fixing of Sankhya dashboards using HTML, JSP, Java, and SQL. | sankhya, dashboard, jsp, html, sql, best-practices | sankhya, dashboard, jsp, html, sql, best-practices, custom, pratices, skill, should, used, user |
 | `scala-pro` | Master enterprise-grade Scala development with functional programming, distributed systems, and big data processing. Expert in Apache Pekko, Akka, Spark, ZIO... | scala | scala, pro, enterprise, grade, development, functional, programming, distributed, big, data, processing, apache |
 | `schema-markup` | Design, validate, and optimize schema.org structured data for eligibility, correctness, and measurable SEO impact. | schema, markup | schema, markup, validate, optimize, org, structured, data, eligibility, correctness, measurable, seo, impact |
 | `scikit-learn` | Machine learning in Python with scikit-learn. Use for classification, regression, clustering, model evaluation, and ML pipelines. | scikit, learn | scikit, learn, machine, learning, python, classification, regression, clustering, model, evaluation, ml, pipelines |
+| `seek-and-analyze-video` | Seek and analyze video content using Memories.ai Large Visual Memory Model for persistent video intelligence | video, ai, memories, social-media, youtube, tiktok, analysis | video, ai, memories, social-media, youtube, tiktok, analysis, seek, analyze, content, large, visual |
 | `segment-cdp` | Expert patterns for Segment Customer Data Platform including Analytics.js, server-side tracking, tracking plans with Protocols, identity resolution, destinat... | segment, cdp | segment, cdp, customer, data, platform, including, analytics, js, server, side, tracking, plans |
 | `sendgrid-automation` | Automate SendGrid email operations including sending emails, managing contacts/lists, sender identities, templates, and analytics via Rube MCP (Composio). Al... | sendgrid | sendgrid, automation, automate, email, operations, including, sending, emails, managing, contacts, lists, sender |
 | `senior-architect` | Comprehensive software architecture skill for designing scalable, maintainable systems using ReactJS, NextJS, NodeJS, Express, React Native, Swift, Kotlin, F... | senior | senior, architect, software, architecture, skill, designing, scalable, maintainable, reactjs, nextjs, nodejs, express |
@@ -407,7 +410,7 @@ Scope::with_data, save state, load state, serde,
 | `yann-lecun` | Agente que simula Yann LeCun — inventor das Convolutional Neural Networks, Chief AI Scientist da Meta, Prêmio Turing 2018. Use quando quiser: perspectivas so... | persona, cnn, meta, ai-safety-critic, open-source | persona, cnn, meta, ai-safety-critic, open-source, yann, lecun, agente, que, simula, inventor, das |
 | `youtube-automation` | Automate YouTube tasks via Rube MCP (Composio): upload videos, manage playlists, search content, get analytics, and handle comments. Always search tools firs... | youtube | youtube, automation, automate, tasks, via, rube, mcp, composio, upload, videos, playlists, search |
 
-## development (178)
+## development (179)
 
 | Skill | Description | Tags | Triggers |
 | --- | --- | --- | --- |
@@ -546,6 +549,7 @@ no matching field, parse error, widget... | makepad, reference | makepad, refere
 | `odoo-shopify-integration` | Connect Odoo with Shopify: sync products, inventory, orders, and customers using the Shopify API and Odoo's external API or connector modules. | odoo, shopify, integration | odoo, shopify, integration, connect, sync, products, inventory, orders, customers, api, external, connector |
 | `odoo-woocommerce-bridge` | Sync Odoo with WooCommerce: products, inventory, orders, and customers via WooCommerce REST API and Odoo external API. | odoo, woocommerce, bridge | odoo, woocommerce, bridge, sync, products, inventory, orders, customers, via, rest, api, external |
 | `pakistan-payments-stack` | Design and implement production-grade Pakistani payment integrations (JazzCash, Easypaisa, bank/PSP rails, optional Raast) for SaaS with PKR billing, webhook... | saas, payments, pakistan, nextjs, b2b, pkr, reconciliation | saas, payments, pakistan, nextjs, b2b, pkr, reconciliation, stack, grade, pakistani, payment, integrations |
+| `pipecat-friday-agent` | Build a low-latency, Iron Man-inspired tactical voice assistant (F.R.I.D.A.Y.) using Pipecat, Gemini, and OpenAI. | pipecat, voice, gemini, openai, python | pipecat, voice, gemini, openai, python, friday, agent, low, latency, iron, man, inspired |
 | `playwright-java` | Scaffold, write, debug, and enhance enterprise-grade Playwright E2E tests in Java using Page Object Model, JUnit 5, Allure reporting, and parallel execution. | playwright, java, e2e-testing, junit5, page-object-model, allure, selenium-alternative | playwright, java, e2e-testing, junit5, page-object-model, allure, selenium-alternative, scaffold, write, debug, enhance, enterprise |
 | `product-manager-toolkit` | Comprehensive toolkit for product managers including RICE prioritization, customer interview analysis, PRD templates, discovery frameworks, and go-to-market ... | product, manager | product, manager, toolkit, managers, including, rice, prioritization, customer, interview, analysis, prd, discovery |
 | `python-development-python-scaffold` | You are a Python project architecture expert specializing in scaffolding production-ready Python applications. Generate complete project structures with mode... | python | python, development, scaffold, architecture, specializing, scaffolding, applications, generate, complete, structures, tooling, uv |
@@ -594,7 +598,7 @@ no matching field, parse error, widget... | makepad, reference | makepad, refere
 | `zod-validation-expert` | Expert in Zod — TypeScript-first schema validation. Covers parsing, custom errors, refinements, type inference, and integration with React Hook Form, Next.js... | zod, validation | zod, validation, typescript, first, schema, covers, parsing, custom, errors, refinements, type, inference |
 | `zustand-store-ts` | Create Zustand stores with TypeScript, subscribeWithSelector middleware, and proper state/action separation. Use when building React state management, creati... | zustand, store, ts | zustand, store, ts, stores, typescript, subscribewithselector, middleware, proper, state, action, separation, building |
 
-## general (292)
+## general (293)
 
 | Skill | Description | Tags | Triggers |
 | --- | --- | --- | --- |
@@ -625,6 +629,7 @@ no matching field, parse error, widget... | makepad, reference | makepad, refere
 | `bill-gates` | Agente que simula Bill Gates — cofundador da Microsoft, arquiteto da industria de software comercial, estrategista tecnologico global, investidor sistemico e... | persona, business-strategy, technology, philanthropy | persona, business-strategy, technology, philanthropy, bill, gates, agente, que, simula, cofundador, da, microsoft |
 | `blockchain-developer` | Build production-ready Web3 applications, smart contracts, and decentralized systems. Implements DeFi protocols, NFT platforms, DAOs, and enterprise blockcha... | blockchain | blockchain, developer, web3, applications, smart, contracts, decentralized, implements, defi, protocols, nft, platforms |
 | `blog-writing-guide` | Write, review, and improve blog posts for the Sentry engineering blog following Sentry's specific writing standards, voice, and quality bar. Use this skill w... | blog, writing | blog, writing, write, review, improve, posts, sentry, engineering, following, specific, standards, voice |
+| `blueprint` | Turn a one-line objective into a step-by-step construction plan any coding agent can execute cold. Each step has a self-contained context brief — a fresh age... | blueprint | blueprint, turn, one, line, objective, step, construction, plan, any, coding, agent, execute |
 | `brand-guidelines-anthropic` | Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when brand co... | brand, guidelines, anthropic | brand, guidelines, anthropic, applies, official, colors, typography, any, sort, artifact, may, benefit |
 | `brand-guidelines-community` | Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when brand co... | brand, guidelines, community | brand, guidelines, community, applies, anthropic, official, colors, typography, any, sort, artifact, may |
 | `bug-hunter` | Systematically finds and fixes bugs using proven debugging techniques. Traces from symptoms to root cause, implements fixes, and prevents regression. | bug, hunter | bug, hunter, systematically, finds, fixes, bugs, proven, debugging, techniques, traces, symptoms, root |

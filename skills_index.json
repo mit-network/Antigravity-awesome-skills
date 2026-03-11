@@ -2580,6 +2580,16 @@
     "date_added": null
   },
   {
+    "id": "blueprint",
+    "path": "skills/blueprint",
+    "category": "planning",
+    "name": "blueprint",
+    "description": "Turn a one-line objective into a step-by-step construction plan any coding agent can execute cold. Each step has a self-contained context brief \u2014 a fresh agent in a new session can pick up any step without reading prior steps.",
+    "risk": "safe",
+    "source": "community",
+    "date_added": "2026-03-10"
+  },
+  {
     "id": "box-automation",
     "path": "skills/box-automation",
     "category": "uncategorized",
@@ -8720,6 +8730,16 @@
     "date_added": "2026-02-27"
   },
   {
+    "id": "pipecat-friday-agent",
+    "path": "skills/pipecat-friday-agent",
+    "category": "voice-agents",
+    "name": "pipecat-friday-agent",
+    "description": "Build a low-latency, Iron Man-inspired tactical voice assistant (F.R.I.D.A.Y.) using Pipecat, Gemini, and OpenAI.",
+    "risk": "safe",
+    "source": "community",
+    "date_added": "2026-03-10"
+  },
+  {
     "id": "pipedrive-automation",
     "path": "skills/pipedrive-automation",
     "category": "uncategorized",
@@ -9028,6 +9048,16 @@
     "risk": "unknown",
     "source": "community",
     "date_added": "2026-02-27"
+  },
+  {
+    "id": "progressive-estimation",
+    "path": "skills/progressive-estimation",
+    "category": "project-management",
+    "name": "progressive-estimation",
+    "description": "Estimate AI-assisted and hybrid human+agent development work with research-backed PERT statistics and calibration feedback loops",
+    "risk": "safe",
+    "source": "community",
+    "date_added": "2026-03-10"
   },
   {
     "id": "project-development",
@@ -9670,6 +9700,16 @@
     "date_added": "2026-03-06"
   },
   {
+    "id": "sankhya-dashboard-html-jsp-custom-best-pratices",
+    "path": "skills/sankhya-dashboard-html-jsp-custom-best-pratices",
+    "category": "code",
+    "name": "sankhya-dashboard-html-jsp-custom-best-pratices",
+    "description": "This skill should be used when the user asks for patterns, best practices, creation, or fixing of Sankhya dashboards using HTML, JSP, Java, and SQL.",
+    "risk": "safe",
+    "source": "community",
+    "date_added": "2026-03-10"
+  },
+  {
     "id": "sast-configuration",
     "path": "skills/sast-configuration",
     "category": "uncategorized",
@@ -9878,6 +9918,16 @@
     "risk": "unknown",
     "source": "community",
     "date_added": "2026-02-27"
+  },
+  {
+    "id": "seek-and-analyze-video",
+    "path": "skills/seek-and-analyze-video",
+    "category": "data-ai",
+    "name": "seek-and-analyze-video",
+    "description": "Seek and analyze video content using Memories.ai Large Visual Memory Model for persistent video intelligence",
+    "risk": "safe",
+    "source": "https://github.com/kennyzheng-builds/seek-and-analyze-video",
+    "date_added": "2026-03-09"
   },
   {
     "id": "segment-automation",

@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-02-08T00:00:00.000Z",
-  "total": 1234,
+  "total": 1239,
   "skills": [
     {
       "id": "00-andruia-consultant",
@@ -6452,6 +6452,30 @@
         "voice"
       ],
       "path": "skills/blog-writing-guide/SKILL.md"
+    },
+    {
+      "id": "blueprint",
+      "name": "blueprint",
+      "description": "Turn a one-line objective into a step-by-step construction plan any coding agent can execute cold. Each step has a self-contained context brief — a fresh agent in a new session can pick up any step without reading prior steps.",
+      "category": "general",
+      "tags": [
+        "blueprint"
+      ],
+      "triggers": [
+        "blueprint",
+        "turn",
+        "one",
+        "line",
+        "objective",
+        "step",
+        "construction",
+        "plan",
+        "any",
+        "coding",
+        "agent",
+        "execute"
+      ],
+      "path": "skills/blueprint/SKILL.md"
     },
     {
       "id": "box-automation",
@@ -21575,6 +21599,34 @@
       "path": "skills/php-pro/SKILL.md"
     },
     {
+      "id": "pipecat-friday-agent",
+      "name": "pipecat-friday-agent",
+      "description": "Build a low-latency, Iron Man-inspired tactical voice assistant (F.R.I.D.A.Y.) using Pipecat, Gemini, and OpenAI.",
+      "category": "development",
+      "tags": [
+        "pipecat",
+        "voice",
+        "gemini",
+        "openai",
+        "python"
+      ],
+      "triggers": [
+        "pipecat",
+        "voice",
+        "gemini",
+        "openai",
+        "python",
+        "friday",
+        "agent",
+        "low",
+        "latency",
+        "iron",
+        "man",
+        "inspired"
+      ],
+      "path": "skills/pipecat-friday-agent/SKILL.md"
+    },
+    {
       "id": "pipedrive-automation",
       "name": "pipedrive-automation",
       "description": "Automate Pipedrive CRM operations including deals, contacts, organizations, activities, notes, and pipeline management via Rube MCP (Composio). Always search tools first for current schemas.",
@@ -22341,6 +22393,34 @@
         "data"
       ],
       "path": "skills/programmatic-seo/SKILL.md"
+    },
+    {
+      "id": "progressive-estimation",
+      "name": "progressive-estimation",
+      "description": "Estimate AI-assisted and hybrid human+agent development work with research-backed PERT statistics and calibration feedback loops",
+      "category": "data-ai",
+      "tags": [
+        "estimation",
+        "project-management",
+        "pert",
+        "sprint-planning",
+        "ai-agents"
+      ],
+      "triggers": [
+        "estimation",
+        "project-management",
+        "pert",
+        "sprint-planning",
+        "ai-agents",
+        "progressive",
+        "estimate",
+        "ai",
+        "assisted",
+        "hybrid",
+        "human",
+        "agent"
+      ],
+      "path": "skills/progressive-estimation/SKILL.md"
     },
     {
       "id": "project-development",
@@ -23902,6 +23982,35 @@
       "path": "skills/sam-altman/SKILL.md"
     },
     {
+      "id": "sankhya-dashboard-html-jsp-custom-best-pratices",
+      "name": "sankhya-dashboard-html-jsp-custom-best-pratices",
+      "description": "This skill should be used when the user asks for patterns, best practices, creation, or fixing of Sankhya dashboards using HTML, JSP, Java, and SQL.",
+      "category": "data-ai",
+      "tags": [
+        "sankhya",
+        "dashboard",
+        "jsp",
+        "html",
+        "sql",
+        "best-practices"
+      ],
+      "triggers": [
+        "sankhya",
+        "dashboard",
+        "jsp",
+        "html",
+        "sql",
+        "best-practices",
+        "custom",
+        "pratices",
+        "skill",
+        "should",
+        "used",
+        "user"
+      ],
+      "path": "skills/sankhya-dashboard-html-jsp-custom-best-pratices/SKILL.md"
+    },
+    {
       "id": "sast-configuration",
       "name": "sast-configuration",
       "description": "Configure Static Application Security Testing (SAST) tools for automated vulnerability detection in application code. Use when setting up security scanning, implementing DevSecOps practices, or aut...",
@@ -24524,6 +24633,36 @@
         "cli"
       ],
       "path": "skills/security/aws-security-audit/SKILL.md"
+    },
+    {
+      "id": "seek-and-analyze-video",
+      "name": "seek-and-analyze-video",
+      "description": "Seek and analyze video content using Memories.ai Large Visual Memory Model for persistent video intelligence",
+      "category": "data-ai",
+      "tags": [
+        "video",
+        "ai",
+        "memories",
+        "social-media",
+        "youtube",
+        "tiktok",
+        "analysis"
+      ],
+      "triggers": [
+        "video",
+        "ai",
+        "memories",
+        "social-media",
+        "youtube",
+        "tiktok",
+        "analysis",
+        "seek",
+        "analyze",
+        "content",
+        "large",
+        "visual"
+      ],
+      "path": "skills/seek-and-analyze-video/SKILL.md"
     },
     {
       "id": "segment-automation",
