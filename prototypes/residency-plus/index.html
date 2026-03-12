@@ -1111,7 +1111,12 @@
         <div id="authError" style="color:#ef4444; font-size:12px; margin-top:8px; text-align:center; display:none;"></div>
       </div>
       <div id="authSignedInState" style="display:none; text-align:center;">
-        <div style="margin-bottom:12px; font-size:14px;">Signed in as <strong id="authCurrentUser"></strong></div>
+        <div style="margin-bottom:6px; font-size:14px;">Signed in as <strong id="authCurrentUser"></strong></div>
+        <div id="planBadge" style="font-size:11px; opacity:.75; margin-bottom:10px;">Plan: Free</div>
+        <button id="upgradeBtn" class="btnPrimary" style="width:100%; justify-content:center; display:none; margin-bottom:8px;">
+          Upgrade to RESIDENCY+
+        </button>
+        <div id="billingMsg" style="font-size:11px; opacity:.75; min-height:14px; margin-bottom:8px;"></div>
         <button id="authSignOutBtn" class="btn" style="width:100%; justify-content:center;">Sign Out</button>
       </div>
     </div>
@@ -1149,6 +1154,11 @@
     // `window.supabase` object exported by the CDN script.
     let rplusSupabase = null;
     let currentUser = null;
+    let currentPlan = "free";
+    let currentEntitlements = null;
+    let crateLimitPromptShown = false;
+    let historyLimitPromptShown = false;
+    let exportLimitPromptShown = false;
 
     // Cloud sync hooks (no-op until AUTH_ENABLED=true and Supabase is configured)
     let debouncedCrateSync = null;
@@ -1803,6 +1813,13 @@
       saveJsonLS(STORAGE_KEY_HISTORY, history);
       if (typeof debouncedHistorySync === "function") debouncedHistorySync();
       renderList(historyList, history, "history");
+      if (currentEntitlements && currentPlan === "free" && !historyLimitPromptShown) {
+        if (history.length >= (currentEntitlements.historyLimit || 200)) {
+          historyLimitPromptShown = true;
+          showOk("History is nearing the free plan limit. Upgrade to RESIDENCY+ for deeper history.");
+          setTimeout(() => { okBox.style.display = "none"; }, 3500);
+        }
+      }
     }
 
     // ===== Scoring / selection =====
@@ -2234,6 +2251,13 @@
         firstExportLogged = true;
         sendClientEvent("activation_first_export", { count: crate.length });
       }
+      if (currentEntitlements && currentPlan === "free" && !exportLimitPromptShown) {
+        if (crate.length >= (currentEntitlements.exportLimit || 200)) {
+          exportLimitPromptShown = true;
+          showOk("Free plan export depth reached. Upgrade to RESIDENCY+ for larger exports.");
+          setTimeout(() => { okBox.style.display = "none"; }, 3500);
+        }
+      }
     }
 
     async function copyCrateUrls() {
@@ -2450,6 +2474,13 @@
       saveJsonLS(STORAGE_KEY_CRATE, crate);
       if (typeof debouncedCrateSync === "function") debouncedCrateSync();
       renderList(crateList, crate, "crate");
+      if (currentEntitlements && currentPlan === "free" && !crateLimitPromptShown) {
+        if (crate.length >= (currentEntitlements.crateLimit || 50)) {
+          crateLimitPromptShown = true;
+          showOk("Crate is nearing the free plan limit. Upgrade to RESIDENCY+ for more space.");
+          setTimeout(() => { okBox.style.display = "none"; }, 3500);
+        }
+      }
       if (!firstSaveLogged) {
         firstSaveLogged = true;
         sendClientEvent("activation_first_save_crate", {});
@@ -2737,6 +2768,9 @@
       const authError = document.getElementById("authError");
       const authCurrentUser = document.getElementById("authCurrentUser");
       const authSignOutBtn = document.getElementById("authSignOutBtn");
+      const planBadge = document.getElementById("planBadge");
+      const upgradeBtn = document.getElementById("upgradeBtn");
+      const billingMsg = document.getElementById("billingMsg");
 
       if (!AUTH_ENABLED) {
         if (accountBtn) {
@@ -2767,6 +2801,30 @@
       }
 
       let isSignUpMode = false;
+
+      function applyPlanUI() {
+        if (!planBadge) return;
+        const label = currentPlan === "residency_plus" ? "RESIDENCY+" : "Free";
+        planBadge.textContent = `Plan: ${label}`;
+        if (upgradeBtn) {
+          if (currentPlan === "residency_plus") {
+            upgradeBtn.style.display = "none";
+          } else {
+            upgradeBtn.style.display = "block";
+          }
+        }
+      }
+
+      async function refreshPlanAndEntitlements() {
+        try {
+          const resp = await callAuthedFunction("get-entitlements", "GET");
+          if (!resp) return;
+          currentPlan = resp.plan || "free";
+          currentEntitlements = resp.entitlements || null;
+          applyPlanUI();
+        } catch {
+        }
+      }
 
       function resetAuthUI() {
         if (!authEmail || !authPassword || !authError || !authToggleHint) return;
@@ -2800,6 +2858,9 @@
       if (accountBtn && authModal) {
         accountBtn.onclick = () => {
           resetAuthUI();
+          if (currentUser) {
+            refreshPlanAndEntitlements();
+          }
           authModal.style.display = "block";
         };
       }
@@ -2817,6 +2878,29 @@
           } catch { }
           sendClientEvent("auth_sign_out", {});
           authModal.style.display = "none";
+        };
+      }
+
+      if (upgradeBtn) {
+        upgradeBtn.onclick = async () => {
+          if (billingMsg) billingMsg.textContent = "";
+          try {
+            const resp = await callAuthedFunction("billing-create-checkout", "POST", {
+              success_url: window.location.href,
+              cancel_url: window.location.href
+            });
+            if (!resp || resp.billing_enabled === false) {
+              if (billingMsg) billingMsg.textContent = "Billing is currently unavailable.";
+              return;
+            }
+            if (resp.url) {
+              window.location.href = resp.url;
+            } else if (billingMsg) {
+              billingMsg.textContent = "Unable to start checkout. Try again later.";
+            }
+          } catch {
+            if (billingMsg) billingMsg.textContent = "Upgrade failed. Try again later.";
+          }
         };
       }
 
