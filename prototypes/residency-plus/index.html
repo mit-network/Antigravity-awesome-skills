@@ -1137,8 +1137,29 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
-    // Feature flag: auth/cloud is hard-gated and disabled by default
-    const AUTH_ENABLED = false;
+    // Feature flag: auth/cloud is controlled via configuration.
+    // Default: OFF (safe for anonymous/local use) unless explicitly enabled.
+    const AUTH_FLAG_ENV = "%%AUTH_ENABLED%%";
+    function resolveAuthEnabled() {
+      try {
+        // 1) Explicit runtime config hook (for deployments or tests)
+        if (window.RPLUS_CONFIG && window.RPLUS_CONFIG.authEnabled === true) return true;
+        if (window.RPLUS_AUTH_ENABLED === true) return true;
+
+        // 2) Build-time flag injected at deploy (e.g. replace %%AUTH_ENABLED%% with "true")
+        if (AUTH_FLAG_ENV === "true") return true;
+
+        // 3) Dev/test override via URL query param (?auth=on)
+        const qs = new URLSearchParams(window.location.search || "");
+        const q = (qs.get("auth") || "").toLowerCase();
+        if (q === "on" || q === "true" || q === "1") return true;
+      } catch {
+        // fall through to default-safe off
+      }
+      return false;
+    }
+
+    const AUTH_ENABLED = resolveAuthEnabled();
 
     const MAX_TRACK_MS = 6 * 60 * 1000;
     const MIN_SET_MS = 10 * 60 * 1000;
