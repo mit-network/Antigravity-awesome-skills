@@ -1017,6 +1017,7 @@
           <div class="quickActs">
             <button id="saveBtn" class="btn" disabled>Save</button>
             <button id="openBtn" class="btn" disabled>Open ↗</button>
+            <span class="mini" id="playbackHint" style="margin-left:8px; opacity:.8;"></span>
           </div>
 
           <div class="drawer" id="drawer">
@@ -1269,6 +1270,7 @@
     const vibeInput = document.getElementById("vibeInput");
     const vibeBtn = document.getElementById("vibeBtn");
     const vibePresetSelect = document.getElementById("vibePresetSelect");
+    const playbackHint = document.getElementById("playbackHint");
 
     // ===== misc helpers =====
     const sleep = (ms) => new Promise(r => setTimeout(r, ms));
@@ -1518,19 +1520,68 @@
       return true;
     }
     let scWidget = null;
+    function handlePlaybackError(source) {
+      const now = Date.now();
+      const PLAYBACK_ERROR_WINDOW_MS = 60 * 1000;
+      const PLAYBACK_ERROR_THRESHOLD = 3;
+      const PLAYBACK_CHALLENGE_COOLDOWN_MS = 10 * 60 * 1000;
+
+      if (now - lastPlaybackErrorAt > PLAYBACK_ERROR_WINDOW_MS) {
+        playbackErrorCount = 0;
+      }
+      lastPlaybackErrorAt = now;
+      playbackErrorCount += 1;
+
+      if (!playbackLimited && playbackErrorCount >= PLAYBACK_ERROR_THRESHOLD) {
+        playbackLimited = true;
+        setStatus("PLAYBACK LIMITED");
+        if (playbackHint) {
+          playbackHint.textContent = "Playback limited — open on SoundCloud or retry once in a while.";
+        }
+        try { sendClientEvent("playback_challenge_detected", { source, count: playbackErrorCount }); } catch { }
+        try { sendClientEvent("playback_limited_session_entered", { reason: source }); } catch { }
+      } else if (playbackLimited && now - lastPlaybackErrorAt < PLAYBACK_CHALLENGE_COOLDOWN_MS) {
+        // stay limited; avoid spamming errors
+      }
+    }
+    function clearPlaybackLimited(reason) {
+      if (!playbackLimited) return;
+      playbackLimited = false;
+      playbackErrorCount = 0;
+      if (playbackHint) playbackHint.textContent = "";
+      try { sendClientEvent("playback_limited_session_cleared", { reason }); } catch { }
+    }
     function ensureWidget() {
       if (scWidget) return scWidget;
       try {
         if (typeof SC === "undefined") return null;
         scWidget = SC.Widget(playerFrame);
+        try {
+          scWidget.bind && scWidget.bind(SC.Widget.Events.ERROR, () => {
+            handlePlaybackError("widget_error_event");
+          });
+          scWidget.bind && scWidget.bind(SC.Widget.Events.PLAY, () => {
+            lastPlayEventAt = Date.now();
+            clearPlaybackLimited("widget_play");
+          });
+        } catch { }
         return scWidget;
       } catch (e) { return null; }
     }
     function buildEmbedUrl(url, autoplay = false) {
       return "https://w.soundcloud.com/player/?url=" + encodeURIComponent(url) + "&auto_play=" + !!autoplay + "&color=%238b5cf6&visual=true&show_comments=false";
     }
-    function widgetLoad(url, autoplay = false) {
-      console.log("widgetLoad", url, autoplay);
+    function widgetLoad(url, autoplay = false, force = false) {
+      console.log("widgetLoad", url, autoplay, force);
+      const now = Date.now();
+      const PLAYBACK_CHALLENGE_COOLDOWN_MS = 10 * 60 * 1000;
+      if (playbackLimited && !force) {
+        if (playbackHint) playbackHint.textContent = "Playback limited — open on SoundCloud or retry later.";
+        return;
+      }
+      if (playbackLimited && now - lastPlaybackErrorAt < PLAYBACK_CHALLENGE_COOLDOWN_MS && !force) {
+        return;
+      }
       const w = ensureWidget();
       if (w) {
         try {
@@ -1538,6 +1589,7 @@
         } catch (e) {
           console.error("Widget load failed, falling back to src", e);
           playerFrame.src = buildEmbedUrl(url, autoplay);
+          handlePlaybackError("widget_load_exception");
         }
       } else {
         playerFrame.src = buildEmbedUrl(url, autoplay);
@@ -1636,6 +1688,10 @@
     let lastShuffleAt = 0;
 
     let savedVibes = [];
+    let playbackLimited = false;
+    let lastPlaybackErrorAt = 0;
+    let playbackErrorCount = 0;
+    let lastPlayEventAt = 0;
 
     // ===== Vibe Search state =====
     let lastVibePalette = null;
@@ -2097,7 +2153,7 @@
         const play = document.createElement("button");
         play.className = "icon";
         play.textContent = "Play";
-        play.onclick = () => loadItem(item, true);
+        play.onclick = () => loadItem(item, !playbackLimited);
 
         const open = document.createElement("button");
         open.className = "icon";
