@@ -1145,7 +1145,9 @@
     const SUPA_URL = "%%SUPABASE_URL%%";
     const SUPA_KEY = "%%SUPABASE_ANON_KEY%%";
 
-    let supabase = null;
+    // Use a distinct client handle to avoid colliding with the global
+    // `window.supabase` object exported by the CDN script.
+    let rplusSupabase = null;
     let currentUser = null;
 
     // Cloud sync hooks (no-op until AUTH_ENABLED=true and Supabase is configured)
@@ -1337,9 +1339,9 @@
     window.SC_OK = true;
 
     async function getNetlifyToken() {
-      if (!AUTH_ENABLED || !supabase) return null;
+      if (!AUTH_ENABLED || !rplusSupabase) return null;
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const { data: { session } } = await rplusSupabase.auth.getSession();
         return session?.access_token || null;
       } catch {
         return null;
@@ -1347,7 +1349,7 @@
     }
 
     async function callAuthedFunction(name, method, body) {
-      if (!AUTH_ENABLED || !supabase) return null;
+      if (!AUTH_ENABLED || !rplusSupabase) return null;
       const token = await getNetlifyToken();
       if (!token) return null;
       const url = `/.netlify/functions/${name}`;
@@ -2746,13 +2748,13 @@
       // Initialize Supabase client (if configured)
       try {
         if (window.supabase && SUPA_URL && !SUPA_URL.includes("%%") && SUPA_KEY && !SUPA_KEY.includes("%%")) {
-          supabase = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+          rplusSupabase = window.supabase.createClient(SUPA_URL, SUPA_KEY);
         }
       } catch (e) {
         console.warn("Supabase init failed", e);
       }
 
-      if (!supabase) {
+      if (!rplusSupabase) {
         if (accountBtn) {
           accountBtn.style.display = "none";
         }
@@ -2811,7 +2813,7 @@
       if (authSignOutBtn && authModal) {
         authSignOutBtn.onclick = async () => {
           try {
-            await supabase.auth.signOut();
+            await rplusSupabase.auth.signOut();
           } catch { }
           sendClientEvent("auth_sign_out", {});
           authModal.style.display = "none";
@@ -2832,7 +2834,7 @@
           authError.style.display = "none";
           try {
             if (isSignUpMode) {
-              const { error } = await supabase.auth.signUp({ email, password });
+              const { error } = await rplusSupabase.auth.signUp({ email, password });
               if (error) throw error;
               sendClientEvent("auth_sign_up", {});
               authError.style.color = "#22c55e";
@@ -2840,7 +2842,7 @@
               authError.style.display = "block";
               isSignUpMode = false;
             } else {
-              const { error } = await supabase.auth.signInWithPassword({ email, password });
+              const { error } = await rplusSupabase.auth.signInWithPassword({ email, password });
               if (error) throw error;
               sendClientEvent("auth_sign_in", {});
               if (authModal) authModal.style.display = "none";
@@ -2857,7 +2859,7 @@
       }
 
       async function syncCrateToCloud() {
-        if (!AUTH_ENABLED || !supabase || !crate || crate.length === 0) return;
+        if (!AUTH_ENABLED || !rplusSupabase || !crate || crate.length === 0) return;
         await callAuthedFunction("sync-crate", "POST", {
           tracks: crate.map(it => ({
             url: it.url,
@@ -2872,7 +2874,7 @@
       }
 
       async function syncHistoryToCloud() {
-        if (!AUTH_ENABLED || !supabase || !history || history.length === 0) return;
+        if (!AUTH_ENABLED || !rplusSupabase || !history || history.length === 0) return;
         await callAuthedFunction("sync-history", "POST", {
           tracks: history.slice(0, 200).map(it => ({
             url: it.url,
@@ -2885,7 +2887,7 @@
       }
 
       async function syncSessionStateToCloud() {
-        if (!AUTH_ENABLED || !supabase) return;
+        if (!AUTH_ENABLED || !rplusSupabase) return;
         await callAuthedFunction("sync-session-state", "POST", {
           genre: genreSelect.value,
           source: sourceSelect.value,
@@ -2895,7 +2897,7 @@
       }
 
       async function syncPlaylistsToCloud() {
-        if (!AUTH_ENABLED || !supabase || !playlists || playlists.length === 0) return;
+        if (!AUTH_ENABLED || !rplusSupabase || !playlists || playlists.length === 0) return;
         await callAuthedFunction("sync-playlists", "POST", { playlists });
       }
 
@@ -2993,7 +2995,7 @@
       }
 
       async function migrateToCloud(token) {
-        if (!AUTH_ENABLED || !supabase) return;
+        if (!AUTH_ENABLED || !rplusSupabase) return;
         try {
           await callAuthedFunction("migrate-local-data", "POST", {
             crate: crate || [],
@@ -3008,7 +3010,7 @@
         } catch { }
       }
 
-      supabase.auth.onAuthStateChange(async (event, session) => {
+      rplusSupabase.auth.onAuthStateChange(async (event, session) => {
         const user = session?.user || null;
         currentUser = user;
 
