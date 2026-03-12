@@ -1,0 +1,10 @@
+[20:59:03] Starting Local Dev Verification...
+[20:59:03] Checking target: sc-health -> http://localhost:8888/.netlify/functions/sc-health
+[20:59:03] HTTP 200
+[20:59:03] Response: {"ok":false,"message":"Missing SOUNDCLOUD_CLIENT_ID. Set it in your shell or Netlify env vars (see .env.example)."}
+[20:59:03] Checking target: sc-official-search -> http://localhost:8888/.netlify/functions/sc-official-search?q=ambient
+[20:59:04] Request Failed: The remote server returned an error: (400) Bad Request.
+[20:59:04] Checking target: sc-official-resolve -> http://localhost:8888/.netlify/functions/sc-official-resolve?url=https://soundcloud.com/fixture/ambient-1
+[20:59:04] Request Failed: The remote server returned an error: (400) Bad Request.
+[20:59:04] 
+[20:59:04] RESULT: FAIL
