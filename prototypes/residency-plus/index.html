@@ -3432,8 +3432,9 @@
 
         try { saveJsonLS(STORAGE_KEY_SESSIONS, savedSessions); } catch { }
         renderSavedSessions();
+        if (typeof debouncedSessionSync === "function") debouncedSessionSync();
         try {
-          sendClientEvent("vibe_session_saved", {
+          sendClientEvent("dig_session_saved", {
             id: existing.id,
             prompt: existing.prompt,
             bucket: existing.bucket,
@@ -3479,7 +3480,7 @@
         }
 
         try {
-          sendClientEvent("vibe_session_reopened", {
+          sendClientEvent("dig_session_reopened", {
             id: sess.id,
             prompt: sess.prompt,
             bucket: sess.bucket,
@@ -3495,7 +3496,7 @@
           pickAndPlay(library);
           setStatus("PLAYING");
           try {
-            sendClientEvent("vibe_session_resumed", {
+            sendClientEvent("dig_session_resumed", {
               id: sess.id,
               prompt: sess.prompt,
               bucket: sess.bucket,
@@ -4093,10 +4094,33 @@
         } catch { }
       }
 
+      async function syncSessionsToCloud() {
+        if (!AUTH_ENABLED || !rplusSupabase || !savedSessions || savedSessions.length === 0) return;
+        const nowIso = new Date().toISOString();
+        const sessionsPayload = savedSessions.slice(0, 20).map(s => ({
+          id: s.id,
+          label: s.label || "",
+          prompt: s.prompt || "",
+          bucket: s.bucket || "all",
+          source: s.source || "both",
+          palette: s.palette || null,
+          top: Array.isArray(s.top) ? s.top : [],
+          updatedAt: s.updatedAt ? new Date(s.updatedAt).toISOString() : nowIso
+        }));
+        if (!sessionsPayload.length) return;
+        const resp = await callAuthedFunction("sync-sessions", "POST", { sessions: sessionsPayload });
+        try {
+          if (resp && resp.synced != null) {
+            sendClientEvent("dig_session_synced", { synced: resp.synced });
+          }
+        } catch { }
+      }
+
       debouncedCrateSync = debounce(syncCrateToCloud, 800);
       debouncedHistorySync = debounce(syncHistoryToCloud, 1200);
       debouncedStateSync = debounce(syncSessionStateToCloud, 800);
       debouncedVibeSync = debounce(syncVibesToCloud, 1200);
+      const debouncedSessionSync = debounce(syncSessionsToCloud, 1500);
 
       async function fetchCloudData(token) {
         // Crate
@@ -4254,6 +4278,81 @@
         } catch (e) {
           try {
             sendClientEvent("vibe_hydration_failure", { error: String(e?.message || e) });
+          } catch { }
+        }
+
+        // Saved dig sessions: hydrate into savedSessions
+        try {
+          const cloudSessions = await callAuthedFunction("sync-sessions", "GET");
+          if (cloudSessions && Array.isArray(cloudSessions.items)) {
+            const mergedById = new Map();
+
+            const addSession = (sess) => {
+              if (!sess || !sess.id) return;
+              const existing = mergedById.get(sess.id);
+              if (!existing || (sess.updatedAt || 0) > (existing.updatedAt || 0)) {
+                mergedById.set(sess.id, sess);
+              }
+            };
+
+            for (const s of savedSessions || []) {
+              addSession({
+                id: s.id,
+                label: s.label || "",
+                prompt: s.prompt || "",
+                bucket: s.bucket || "all",
+                source: s.source || "both",
+                palette: s.palette || null,
+                top: Array.isArray(s.top) ? s.top : [],
+                createdAt: s.createdAt || s.updatedAt || 0,
+                updatedAt: s.updatedAt || s.createdAt || 0
+              });
+            }
+
+            if (cloudSessions.hasData) {
+              for (const s of cloudSessions.items) {
+                const updatedTs = s.updatedAt ? Date.parse(s.updatedAt) : 0;
+                const createdTs = s.createdAt ? Date.parse(s.createdAt) : updatedTs;
+                addSession({
+                  id: s.id,
+                  label: s.label || "",
+                  prompt: s.prompt || "",
+                  bucket: s.bucket || "all",
+                  source: s.source || "both",
+                  palette: s.palette || null,
+                  top: Array.isArray(s.top) ? s.top : [],
+                  createdAt: createdTs || updatedTs || 0,
+                  updatedAt: updatedTs || createdTs || 0
+                });
+              }
+            }
+
+            const mergedList = Array.from(mergedById.values())
+              .sort((a, b) => (b.updatedAt || b.createdAt || 0) - (a.updatedAt || a.createdAt || 0))
+              .slice(0, 20);
+
+            savedSessions = mergedList.map(s => ({
+              id: s.id,
+              label: s.label || sessionLabelFor(s.palette || null, s.prompt || "", s.createdAt || s.updatedAt || 0),
+              prompt: s.prompt || "",
+              bucket: s.bucket || "all",
+              source: s.source || "both",
+              palette: s.palette || null,
+              top: Array.isArray(s.top) ? s.top : [],
+              createdAt: s.createdAt || s.updatedAt || 0,
+              updatedAt: s.updatedAt || s.createdAt || 0
+            }));
+
+            saveJsonLS(STORAGE_KEY_SESSIONS, savedSessions);
+            renderSavedSessions();
+
+            try {
+              sendClientEvent("dig_session_hydration_success", { count: savedSessions.length });
+            } catch { }
+          }
+        } catch (e) {
+          try {
+            sendClientEvent("dig_session_hydration_failure", { error: String(e?.message || e) });
           } catch { }
         }
       }
