@@ -9060,6 +9060,16 @@
     "date_added": "2026-02-27"
   },
   {
+    "id": "privacy-by-design",
+    "path": "skills/privacy-by-design",
+    "category": "uncategorized",
+    "name": "privacy-by-design",
+    "description": "Use when building apps that collect user data. Ensures privacy protections are built in from the start\u2014data minimization, consent, encryption.",
+    "risk": "safe",
+    "source": "community",
+    "date_added": "2026-02-23"
+  },
+  {
     "id": "privilege-escalation-methods",
     "path": "skills/privilege-escalation-methods",
     "category": "uncategorized",
