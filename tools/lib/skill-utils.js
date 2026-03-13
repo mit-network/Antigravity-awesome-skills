@@ -172,7 +172,7 @@ function listSkillIdsRecursive(skillsDir, baseDir = skillsDir, acc = []) {
     const skillPath = path.join(dirPath, 'SKILL.md');
     const relPath = path.relative(skillsDir, dirPath);
     if (fs.existsSync(skillPath)) {
-      acc.push(relPath);
+      acc.push(relPath.split(path.sep).join('/'));
     }
     listSkillIdsRecursive(skillsDir, dirPath, acc);
   }

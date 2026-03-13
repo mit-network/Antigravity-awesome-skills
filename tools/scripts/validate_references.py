@@ -20,7 +20,7 @@ def collect_skill_ids(skills_dir):
         dirs[:] = [d for d in dirs if not d.startswith(".")]
         if "SKILL.md" in files:
             rel = os.path.relpath(root, skills_dir)
-            ids.add(rel)
+            ids.add(rel.replace(os.sep, "/"))
     return ids
 
 
