@@ -24,7 +24,12 @@ export function getEntitlementsForPlan(plan) {
       historyLimit: 2000,
       playlistsLimit: 25,
       playlistItemsLimit: 200,
-      exportLimit: 1000
+      exportLimit: 1000,
+      // Advanced vibe / playlist-intelligence workflows are effectively
+      // unconstrained for Residency+ subscribers. Frontend may still apply
+      // soft UX hints, but backend does not enforce strict ceilings here.
+      vibePresetLimit: 50,
+      playlistVibeLimit: 9999
     };
   }
 
@@ -35,7 +40,11 @@ export function getEntitlementsForPlan(plan) {
     historyLimit: 200,
     playlistsLimit: 3,
     playlistItemsLimit: 50,
-    exportLimit: 200
+    exportLimit: 200,
+    // Free tier: keep core discovery and basic vibe usage useful, while
+    // softly limiting heavier playlist-intel workflows.
+    vibePresetLimit: 5,
+    playlistVibeLimit: 3
   };
 }
 

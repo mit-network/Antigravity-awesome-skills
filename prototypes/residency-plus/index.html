@@ -1190,9 +1190,12 @@
     let currentUser = null;
     let currentPlan = "free";
     let currentEntitlements = null;
+    let playlistVibeCount = 0;
     let crateLimitPromptShown = false;
     let historyLimitPromptShown = false;
     let exportLimitPromptShown = false;
+    let playlistVibePromptShown = false;
+    let vibePresetLimitPromptShown = false;
 
     // Cloud sync hooks (no-op until AUTH_ENABLED=true and Supabase is configured)
     let debouncedCrateSync = null;
@@ -1842,6 +1845,17 @@
 
     function saveVibePreset(palette) {
       if (!palette || !palette.raw) return;
+      if (currentEntitlements && currentPlan === "free") {
+        const limit = currentEntitlements.vibePresetLimit || 5;
+        if (savedVibes.length >= limit) {
+          if (!vibePresetLimitPromptShown) {
+            vibePresetLimitPromptShown = true;
+            showOk("You've reached the free vibe preset limit. Upgrade to RESIDENCY+ to save more favorite vibes.");
+            setTimeout(() => { okBox.style.display = "none"; }, 4000);
+          }
+          return;
+        }
+      }
       const label = vibeLabelForPalette(palette);
       const raw = palette.raw;
       const existingIdx = savedVibes.findIndex(v => v.raw === raw);
@@ -3064,6 +3078,18 @@
           return;
         }
         if (window.SC_OK === false) return;
+        if (currentEntitlements && currentPlan === "free") {
+          const limit = currentEntitlements.playlistVibeLimit || 3;
+          if (playlistVibeCount >= limit) {
+            if (!playlistVibePromptShown) {
+              playlistVibePromptShown = true;
+              showOk("Free plan playlist vibe limit reached. Upgrade to RESIDENCY+ for deeper playlist intelligence and more \"more like this playlist\" runs.");
+              setTimeout(() => { okBox.style.display = "none"; }, 4500);
+            }
+            return;
+          }
+          playlistVibeCount += 1;
+        }
         runPlaylistVibeSearchFromCrate();
       };
     }
