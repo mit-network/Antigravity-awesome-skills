@@ -4034,7 +4034,13 @@
           authError.style.display = "none";
           try {
             if (isSignUpMode) {
-              const { error } = await rplusSupabase.auth.signUp({ email, password });
+              const { error } = await rplusSupabase.auth.signUp({
+                email,
+                password,
+                options: {
+                  emailRedirectTo: "https://www.residencysolutions.net"
+                }
+              });
               if (error) throw error;
               sendClientEvent("auth_sign_up", {});
               authError.style.color = "#22c55e";
