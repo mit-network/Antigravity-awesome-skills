@@ -1,6 +1,6 @@
 ---
 name: analyze-project
-description: Forensic session analyzer: classifies scope changes, rework shapes, root causes, friction hotspots, and auto-improves future prompts/project health via brain/ artifacts.
+description: Forensic root cause analyzer for Antigravity sessions. Classifies scope deltas, rework patterns, root causes, hotspots, and auto-improves prompts/health.
 version: "1.0"
 tags: [analysis, diagnostics, meta, root-cause, project-health, session-review]
 ---
@@ -50,7 +50,7 @@ For each session, determine:
 
 1. Read the conversation summaries available in the system context.
 2. List all subdirectories in:
-   `C:\Users\frank\.gemini\antigravity\brain\`
+   `~/.gemini/antigravity/brain/
 3. Build a **Conversation Index** by cross-referencing summaries with UUID folders.
 4. Record for each conversation:
    - `conversation_id`
@@ -455,7 +455,7 @@ Add short notes only where meaningful.
 
 ### 11a. Update Project Health State
 Read:
-`c:\AntiGravity_Test\.agent\skills\project-health-state\SKILL.md`
+`../project-health-state/SKILL.md
 
 Update:
 - session analysis metrics
