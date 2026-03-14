@@ -626,6 +626,46 @@
       display: block;
     }
 
+    .authModalCard {
+      background: #0b1220;
+      border-radius: 16px;
+      border: 1px solid rgba(170, 230, 255, 0.2);
+      overflow: hidden;
+    }
+    body[data-theme="dark"] .authModalCard {
+      background: #080c14;
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .authModalCard .drawerHead {
+      padding: 14px 16px;
+    }
+    .authModalCard .drawerTitle {
+      color: rgba(248, 252, 255, 0.98);
+      font-size: 0.8rem;
+    }
+    .authModalCard .drawerBody {
+      padding: 18px 16px;
+      border-top-color: rgba(170, 230, 255, 0.15);
+      gap: 14px;
+    }
+    .authModalCard input,
+    .authModalCard .btn,
+    .authModalCard .btnPrimary {
+      font-size: 14px;
+    }
+    .authModalCard #authCurrentUser,
+    .authModalCard #planBadge,
+    .authModalCard #billingStatusHint {
+      color: rgba(248, 252, 255, 0.92);
+      opacity: 1;
+    }
+    .authModalCard #billingMsg {
+      min-height: 18px;
+      color: #f87171;
+      opacity: 1;
+      font-size: 13px;
+    }
+
     .row {
       display: flex;
       gap: 10px;
@@ -1111,9 +1151,10 @@
     </div>
   </div>
 
-  <!-- Auth Modal (hidden by default; only activated when AUTH_ENABLED=true) -->
-  <div class="drawer" id="authModal"
-    style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index:9000; width:90%; max-width:320px; box-shadow:0 8px 30px rgba(0,0,0,0.8);">
+  <!-- Auth Modal: full-screen backdrop + opaque card, blocks underlying app -->
+  <div id="authModalBackdrop" style="display:none; position:fixed; inset:0; z-index:9998; background:rgba(0,5,18,0.82); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); align-items:center; justify-content:center;">
+    <div class="drawer authModalCard" id="authModal"
+      style="display:none; position:relative; z-index:9999; width:90%; max-width:340px; box-shadow:0 20px 50px rgba(0,0,0,0.6); margin:20px;">
     <div class="drawerHead">
       <div class="drawerTitle" id="authTitle">Sign In</div>
       <button class="miniBtn" id="closeAuthBtn">✕</button>
@@ -1163,6 +1204,7 @@
         <button id="authSignOutBtn" class="btn" style="width:100%; justify-content:center;">Sign Out</button>
         <a href="#" id="authShowTutorialLink" style="font-size:11px; opacity:.75;">Show tutorial</a>
       </div>
+    </div>
     </div>
   </div>
 
@@ -3918,6 +3960,7 @@
       }
 
       const accountBtn = document.getElementById("accountBtn");
+      const authModalBackdrop = document.getElementById("authModalBackdrop");
       const authModal = document.getElementById("authModal");
       const closeAuthBtn = document.getElementById("closeAuthBtn");
       const authSignedOutState = document.getElementById("authSignedOutState");
@@ -4099,6 +4142,7 @@
           } else {
             if (authTitle) authTitle.textContent = "Sign In";
           }
+          if (authModalBackdrop) authModalBackdrop.style.display = "flex";
           authModal.style.display = "block";
           try {
             sendClientEvent("auth_entry_clicked", {});
@@ -4107,16 +4151,25 @@
         };
       }
 
-      if (closeAuthBtn && authModal) {
-        closeAuthBtn.onclick = () => {
-          authModal.style.display = "none";
+      function closeAuthModal() {
+        if (authModalBackdrop) authModalBackdrop.style.display = "none";
+        if (authModal) authModal.style.display = "none";
+      }
+
+      if (authModalBackdrop) {
+        authModalBackdrop.onclick = (e) => {
+          if (e.target === authModalBackdrop) closeAuthModal();
         };
+      }
+
+      if (closeAuthBtn && authModal) {
+        closeAuthBtn.onclick = () => closeAuthModal();
       }
 
       const authShowTutorialLink = document.getElementById("authShowTutorialLink");
       if (authShowTutorialLink) authShowTutorialLink.onclick = (e) => {
         e.preventDefault();
-        if (authModal) authModal.style.display = "none";
+        closeAuthModal();
         if (typeof window.startTutorial === "function") window.startTutorial();
       };
 
@@ -4127,7 +4180,7 @@
           } catch { }
           applyAuthUIState(null);
           sendClientEvent("auth_sign_out", {});
-          authModal.style.display = "none";
+          closeAuthModal();
         };
       }
 
@@ -4238,7 +4291,13 @@
 
       if (upgradeBtn) {
         upgradeBtn.onclick = async () => {
-          if (billingMsg) billingMsg.textContent = "";
+          if (billingMsg) {
+            billingMsg.textContent = "";
+            billingMsg.style.display = "none";
+          }
+          upgradeBtn.disabled = true;
+          const originalText = upgradeBtn.textContent;
+          upgradeBtn.textContent = "Loading…";
           try {
             try { sendClientEvent("upgrade_click", {}); } catch { }
             const baseUrl = window.location.origin + window.location.pathname;
@@ -4247,17 +4306,34 @@
               cancel_url: baseUrl + "?checkout=cancel"
             });
             if (!resp || resp.billing_enabled === false) {
-              if (billingMsg) billingMsg.textContent = "Billing is currently unavailable.";
+              const errMsg = resp && resp.error ? resp.error : "Billing is currently unavailable.";
+              if (billingMsg) {
+                billingMsg.textContent = errMsg;
+                billingMsg.style.display = "block";
+              }
+              console.error("[Residency+] Upgrade: billing unavailable or no response", resp);
               return;
             }
             if (resp.url) {
               try { sendClientEvent("checkout_start", {}); } catch { }
               window.location.href = resp.url;
-            } else if (billingMsg) {
-              billingMsg.textContent = "Unable to start checkout. Try again later.";
+              return;
             }
-          } catch {
-            if (billingMsg) billingMsg.textContent = "Upgrade failed. Try again later.";
+            if (billingMsg) {
+              billingMsg.textContent = "Unable to start checkout. Try again later.";
+              billingMsg.style.display = "block";
+            }
+            console.error("[Residency+] Upgrade: no checkout URL in response", resp);
+          } catch (e) {
+            const errMsg = e && e.message ? e.message : "Upgrade failed. Try again later.";
+            if (billingMsg) {
+              billingMsg.textContent = errMsg;
+              billingMsg.style.display = "block";
+            }
+            console.error("[Residency+] Upgrade error", e);
+          } finally {
+            upgradeBtn.disabled = false;
+            upgradeBtn.textContent = originalText;
           }
         };
       }
@@ -4328,7 +4404,7 @@
               if (error) throw error;
               try { sendClientEvent("auth_sign_in_success", {}); } catch { }
               sendClientEvent("auth_sign_in", {});
-              if (authModal) authModal.style.display = "none";
+              closeAuthModal();
             }
           } catch (err) {
             authError.style.color = "#ef4444";
