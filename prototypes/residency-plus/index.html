@@ -3808,12 +3808,36 @@
       const billingMsg = document.getElementById("billingMsg");
       const manageSubBtn = document.getElementById("manageSubBtn");
 
+      console.log("[auth] AUTH_ENABLED resolved:", AUTH_ENABLED);
+
       if (!AUTH_ENABLED) {
         if (accountBtn) {
           accountBtn.style.display = "none";
         }
         return;
       }
+
+      // Fail-safe: when AUTH_ENABLED is true, always show a visible auth button before the three-dot button
+      function ensureAuthButtonVisible() {
+        const btn = document.getElementById("accountBtn");
+        if (!btn) {
+          console.warn("[auth] accountBtn not found in DOM");
+          return null;
+        }
+        btn.style.setProperty("display", "inline-block", "important");
+        btn.style.setProperty("visibility", "visible", "important");
+        btn.style.setProperty("opacity", "1", "important");
+        btn.style.setProperty("flex-shrink", "0", "important");
+        btn.style.setProperty("min-width", "min-content", "important");
+        btn.removeAttribute("hidden");
+        btn.disabled = false;
+        btn.textContent = currentUser ? "Account" : "Sign In";
+        const rect = btn.getBoundingClientRect();
+        const cs = window.getComputedStyle(btn);
+        console.log("[auth] accountBtn found; display:", cs.display, "visibility:", cs.visibility, "opacity:", cs.opacity, "rect:", rect.width, "x", rect.height);
+        return btn;
+      }
+      ensureAuthButtonVisible();
 
       // Initialize Supabase client (if configured)
       try {
@@ -3825,17 +3849,14 @@
       }
 
       if (!rplusSupabase) {
-        if (accountBtn) {
-          accountBtn.style.display = "none";
-        }
+        console.log("[auth] session: not available (Supabase client not created)");
+        try {
+          sendClientEvent("auth_entry_visible", {});
+        } catch { }
         return;
       }
 
       if (accountBtn) {
-        accountBtn.style.display = "";
-        accountBtn.disabled = false;
-        accountBtn.style.opacity = "1";
-        accountBtn.textContent = "Sign In";
         try {
           sendClientEvent("auth_entry_visible", {});
         } catch { }
@@ -4394,11 +4415,15 @@
           if (authSignedOutState) authSignedOutState.style.display = "block";
           if (authSignedInState) authSignedInState.style.display = "none";
         }
+        ensureAuthButtonVisible();
       }
 
       rplusSupabase.auth.getSession().then(({ data: { session } }) => {
-        applyAuthUIState(session?.user || null);
+        const user = session?.user || null;
+        console.log("[auth] session:", user ? "present" : "not present");
+        applyAuthUIState(user);
       }).catch(() => {
+        console.log("[auth] session: getSession failed");
         applyAuthUIState(null);
       });
 
