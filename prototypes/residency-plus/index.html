@@ -4047,15 +4047,19 @@
       renderVibePresets();
 
       function applyPlanUI() {
-        if (!planBadge) return;
-        const label = currentPlan === "residency_plus" ? "RESIDENCY+" : "Free";
-        planBadge.textContent = `Plan: ${label}`;
+        console.log("[Residency+] applyPlanUI entry", { currentPlan, hasEntitlements: !!currentEntitlements });
+        if (planBadge) {
+          const label = currentPlan === "residency_plus" ? "RESIDENCY+" : "Free";
+          planBadge.textContent = `Plan: ${label}`;
+        }
         if (upgradeBtn) {
-          if (currentPlan === "residency_plus") {
-            upgradeBtn.style.display = "none";
-          } else {
-            upgradeBtn.style.display = "block";
-          }
+          const showUpgrade = currentPlan !== "residency_plus";
+          upgradeBtn.style.display = showUpgrade ? "block" : "none";
+          upgradeBtn.style.visibility = "visible";
+          upgradeBtn.style.opacity = "1";
+          console.log("[Residency+] upgradeBtn", { currentPlan, showUpgrade, display: upgradeBtn.style.display, computedDisplay: window.getComputedStyle(upgradeBtn).display });
+        } else {
+          console.warn("[Residency+] upgradeBtn missing from DOM");
         }
         if (billingStatusHint) {
           if (currentPlan === "residency_plus") {
@@ -4073,6 +4077,7 @@
         try {
           sendClientEvent("billing_status_viewed", { plan: currentPlan });
         } catch { }
+        console.log("[Residency+] applyPlanUI exit");
       }
 
       async function refreshPlanAndEntitlements() {
@@ -4137,7 +4142,9 @@
           resetAuthUI();
           checkRecoveryHash();
           if (currentUser) {
+            console.log("[Residency+] Account opened signed-in", { currentPlan, currentEntitlements: !!currentEntitlements });
             refreshPlanAndEntitlements();
+            applyPlanUI();
             if (authTitle) authTitle.textContent = "Account";
           } else {
             if (authTitle) authTitle.textContent = "Sign In";
