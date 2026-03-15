@@ -1,0 +1,14 @@
+[06:09:39] Starting Local Dev Verification...
+[06:09:39] DEV_FIXTURE_MODE=false (or unset) — using live SoundCloud verification flow.
+[06:09:39] Checking target: sc-health -> http://localhost:8888/.netlify/functions/sc-health
+[06:09:39] HTTP 200
+[06:09:39] Response: {"ok":true,"message":"SoundCloud client id detected."}
+[06:09:39] Checking target: sc-official-search -> http://localhost:8888/.netlify/functions/sc-official-search?q=ambient
+[06:09:40] HTTP 200
+[06:09:40] Response: {"collection":[{"id":2198882091,"title":"هو الصح فين ( كنتي ياما صح ) / مجدي الزهار","permalink_url":"https://soundcloud.com/os-os-745610957/jct88a0yq...
+[06:09:40] Derived permalink_url from search: https://soundcloud.com/os-os-745610957/jct88a0yqtnb?utm_medium=api&utm_campaign=social_sharing&utm_source=id_328774
+[06:09:40] Checking target: sc-official-resolve -> http://localhost:8888/.netlify/functions/sc-official-resolve?url=https://soundcloud.com/os-os-745610957/jct88a0yqtnb?utm_medium=api&utm_campaign=social_sharing&utm_source=id_328774
+[06:09:41] HTTP 200
+[06:09:41] Response: {"kind":"track","id":2198882091,"title":"هو الصح فين ( كنتي ياما صح ) / مجدي الزهار","permalink_url":"https://soundcloud.com/os-os-745610957/jct88a0yq...
+[06:09:41] 
+[06:09:41] RESULT: PASS

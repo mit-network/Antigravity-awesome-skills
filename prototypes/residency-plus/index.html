@@ -213,6 +213,19 @@
     }
     .right {
       min-width: 0;
+      flex: 1 1 0;
+    }
+    #topbar-auth-slot {
+      flex-shrink: 0;
+      max-width: 180px;
+      min-width: 0;
+    }
+    #topbar-auth-slot .btn,
+    #accountBtn {
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .field select,
@@ -1021,7 +1034,7 @@
           <button id="openDrawerBtn" class="btn dots" title="More">⋯</button>
         </div>
         <!-- Auth: permanent static markup. Do not remove/replace #accountBtn or slot children in JS. -->
-        <span id="topbar-auth-slot" style="display:inline-flex; flex-shrink:0; align-items:center; gap:10px;">
+        <span id="topbar-auth-slot" style="display:inline-flex; flex-shrink:0; align-items:center; gap:10px; max-width:180px; min-width:0;">
           <button id="accountBtn" class="btn" type="button">Sign In</button>
         </span>
       </div>
@@ -4235,12 +4248,18 @@
 
       if (authSignOutBtn && authModal) {
         authSignOutBtn.onclick = async () => {
+          authSignOutBtn.disabled = true;
           try {
-            await rplusSupabase.auth.signOut();
+            const signOutPromise = rplusSupabase && rplusSupabase.auth ? rplusSupabase.auth.signOut() : Promise.resolve();
+            const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error("Sign out timed out")), 5000));
+            await Promise.race([signOutPromise, timeoutPromise]);
           } catch { }
-          applyAuthUIState(null);
-          sendClientEvent("auth_sign_out", {});
+          try {
+            applyAuthUIState(null);
+            sendClientEvent("auth_sign_out", {});
+          } catch { }
           closeAuthModal();
+          authSignOutBtn.disabled = false;
         };
       }
 
@@ -4358,10 +4377,31 @@
           }
           upgradeBtn.disabled = true;
           upgradeBtn.textContent = "Loading...";
-          try {
+          const OVERALL_MS = 20000;
+          const SAFETY_MS = 22000;
+          const safetyTimerId = setTimeout(() => {
+            console.log("[Upgrade] safety restore (button was stuck)");
+            upgradeBtn.disabled = false;
+            upgradeBtn.textContent = "Upgrade to RESIDENCY+";
+          }, SAFETY_MS);
+          const overallTimeout = new Promise((_, reject) => setTimeout(() => reject(new Error("Upgrade timed out")), OVERALL_MS));
+          const SESSION_MS = 5000;
+          const run = async () => {
             let session;
+            console.log("[Upgrade] about to get session");
             if (rplusSupabase && rplusSupabase.auth) {
-              session = await rplusSupabase.auth.getSession();
+              const sessionPromise = rplusSupabase.auth.getSession();
+              const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error("Session timed out")), SESSION_MS));
+              try {
+                session = await Promise.race([sessionPromise, timeoutPromise]);
+              } catch (sessionErr) {
+                console.log("[Upgrade] getSession failed or timed out", sessionErr?.message || sessionErr);
+                if (billingMsg) {
+                  billingMsg.textContent = sessionErr?.message?.includes("timed out") ? "Session timed out. Please try again or sign in again." : "Please sign in again.";
+                  billingMsg.style.display = "block";
+                }
+                return;
+              }
             }
             const token = session?.data?.session?.access_token;
             if (!token) {
@@ -4413,6 +4453,9 @@
               billingMsg.textContent = errMsg;
               billingMsg.style.display = "block";
             }
+          };
+          try {
+            await Promise.race([run(), overallTimeout]);
           } catch (e) {
             console.log("[Upgrade] error", e);
             const errMsg = e && e.name === "AbortError" ? "Checkout timed out. Please try again." : (e && e.message ? e.message : "Upgrade failed. Try again later.");
@@ -4421,6 +4464,7 @@
               billingMsg.style.display = "block";
             }
           } finally {
+            clearTimeout(safetyTimerId);
             console.log("[Upgrade] restore button");
             upgradeBtn.disabled = false;
             upgradeBtn.textContent = "Upgrade to RESIDENCY+";

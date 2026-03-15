@@ -1,0 +1,18 @@
+[12:13:25] Starting Production Verification...
+[12:13:25] Checking target: sc-health -> https://residencysolutions.netlify.app/.netlify/functions/sc-health
+[12:13:26] HTTP 200
+[12:13:26] Response: {"ok":true,"message":"SoundCloud client id detected."}
+[12:13:26] Checking target: sc-official-search -> https://residencysolutions.netlify.app/.netlify/functions/sc-official-search?q=ambient
+[12:13:27] Request Failed: Response status code does not indicate success: 400 (Bad Request).
+[12:13:27] Details: 
+{
+  "error": "[sc-auth-lib] Token request failed \u2014 HTTP 429 (rate limited, no cached token available)"
+}
+[12:13:27] Checking target: sc-official-resolve -> https://residencysolutions.netlify.app/.netlify/functions/sc-official-resolve?url=https://soundcloud.com/tycho/awake
+[12:13:28] Request Failed: Response status code does not indicate success: 400 (Bad Request).
+[12:13:28] Details: 
+{
+  "error": "[sc-auth-lib] Token request failed \u2014 HTTP 429 (rate limited, no cached token available)"
+}
+[12:13:28] 
+[12:13:28] RESULT: FAIL

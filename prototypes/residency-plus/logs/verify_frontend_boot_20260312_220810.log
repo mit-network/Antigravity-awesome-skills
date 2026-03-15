@@ -1,0 +1,6 @@
+[2026-03-12T22:08:10.663Z] Starting frontend boot verification...
+[2026-03-12T22:08:11.326Z] Navigating to http://localhost:8888/ ...
+[2026-03-12T22:08:41.334Z] Frontend verification failed: page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "http://localhost:8888/", waiting until "load"
+

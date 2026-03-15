@@ -1,0 +1,9 @@
+[06:30:24] Starting Local Dev Verification...
+[06:30:24] Checking target: sc-health -> http://localhost:8888/.netlify/functions/sc-health
+[06:30:24] Request Failed: The remote server returned an error: (404) Not Found.
+[06:30:24] Details: Function not found...
+[06:30:24] Checking target: sc-official-search -> http://localhost:8888/.netlify/functions/sc-official-search?q=ambient
+[06:30:24] Request Failed: The remote server returned an error: (404) Not Found.
+[06:30:24] Details: Function not found...
+[06:30:24] 
+[06:30:24] RESULT: FAIL

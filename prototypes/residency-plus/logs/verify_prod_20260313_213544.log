@@ -1,0 +1,13 @@
+[21:35:44] Starting Production Verification...
+[21:35:44] Using default production base URL: https://residencysolutions.net
+[21:35:44] Checking target: sc-health -> https://residencysolutions.net/.netlify/functions/sc-health
+[21:35:45] HTTP 200
+[21:35:45] Response: {"ok":true,"message":"SoundCloud client id detected."}
+[21:35:45] Checking target: sc-official-search -> https://residencysolutions.net/.netlify/functions/sc-official-search?q=ambient
+[21:35:47] HTTP 200
+[21:35:47] Response: {"collection":[{"id":1908505082,"title":"Bình Yên - Vu�?. ft. Binz x minhnhat.","permalink_url":"https://soundcloud.com/minhnhat-prod/binh-yen-vu-ft...
+[21:35:47] Checking target: sc-official-resolve -> https://residencysolutions.net/.netlify/functions/sc-official-resolve?url=https://soundcloud.com/tycho/awake
+[21:35:49] HTTP 200
+[21:35:49] Response: {"kind":"track","id":298851207,"title":"Awake","permalink_url":"https://soundcloud.com/tycho/awake?utm_medium=api&utm_campaign=social_sharing&utm_sour...
+[21:35:49] 
+[21:35:49] RESULT: PASS

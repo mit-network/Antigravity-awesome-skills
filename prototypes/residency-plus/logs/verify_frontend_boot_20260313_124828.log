@@ -1,0 +1,6 @@
+[2026-03-13T12:48:28.850Z] Starting frontend boot verification...
+[2026-03-13T12:48:29.438Z] Navigating to http://localhost:8888/ ...
+[2026-03-13T12:48:32.362Z] Console error: Failed to load resource: the server responded with a status of 400 (Bad Request)
+[2026-03-13T12:48:32.374Z] Track title after boot: "Finding…"
+[2026-03-13T12:48:32.987Z] Theme changed from 'aqua' to 'dark'.
+[2026-03-13T12:48:32.988Z] Frontend boot verification PASS.

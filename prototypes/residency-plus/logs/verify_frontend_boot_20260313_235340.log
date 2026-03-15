@@ -1,0 +1,6 @@
+[2026-03-13T23:53:40.819Z] Starting frontend boot verification...
+[2026-03-13T23:53:42.229Z] Navigating to http://localhost:8888/ ...
+[2026-03-13T23:53:44.611Z] Frontend verification failed: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:8888/
+Call log:
+  - navigating to "http://localhost:8888/", waiting until "load"
+

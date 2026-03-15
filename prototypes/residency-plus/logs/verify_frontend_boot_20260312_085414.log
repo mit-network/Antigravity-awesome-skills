@@ -1,0 +1,23 @@
+[08:54:14] Starting frontend boot smoke verification...
+[08:54:14] Running Node frontend verifier...
+[08:54:15] [2026-03-12T12:54:14.517Z] Starting frontend boot verification...
+[08:54:15] node:internal/modules/run_main:107
+[08:54:15]     triggerUncaughtException(
+[08:54:15]     ^
+[08:54:15] System.Management.Automation.RemoteException
+[08:54:15] browserType.launch: Executable doesn't exist at C:\Users\sean\AppData\Local\ms-playwright\chromium_headless_shell-1208\chrome-headless-shell-win64\chrome-headless-shell.exe
+[08:54:15] ΓòöΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòù
+[08:54:15] Γòæ Looks like Playwright Test or Playwright was just installed or updated. Γòæ
+[08:54:15] Γòæ Please run the following command to download new browsers:              Γòæ
+[08:54:15] Γòæ                                                                         Γòæ
+[08:54:15] Γòæ     npx playwright install                                              Γòæ
+[08:54:15] Γòæ                                                                         Γòæ
+[08:54:15] Γòæ <3 Playwright Team                                                      Γòæ
+[08:54:15] ΓòÜΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓò¥
+[08:54:15]     at main (C:\Users\sean\antigravity-awesome-skills\prototypes\residency-plus\scripts\verify_frontend_boot.mjs:31:34)
+[08:54:15]     at async file:///C:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/scripts/verify_frontend_boot.mjs:98:1 {
+[08:54:15]   name: 'Error'
+[08:54:15] }
+[08:54:15] System.Management.Automation.RemoteException
+[08:54:15] Node.js v24.13.0
+[08:54:15] Frontend boot verification FAILED.

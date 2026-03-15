@@ -1,0 +1,10 @@
+[12:15:03] Starting Local Dev Verification...
+[12:15:03] DEV_FIXTURE_MODE=false (or unset) — using live SoundCloud verification flow.
+[12:15:03] Checking target: sc-health -> http://localhost:8888/.netlify/functions/sc-health
+[12:15:07] Request Failed: No connection could be made because the target machine actively refused it. (localhost:8888)
+[12:15:07] Details: No connection could be made because the target machine actively refused it.
+[12:15:07] Checking target: sc-official-search -> http://localhost:8888/.netlify/functions/sc-official-search?q=ambient
+[12:15:11] Request Failed: No connection could be made because the target machine actively refused it. (localhost:8888)
+[12:15:11] Details: No connection could be made because the target machine actively refused it.
+[12:15:11] 
+[12:15:11] RESULT: FAIL

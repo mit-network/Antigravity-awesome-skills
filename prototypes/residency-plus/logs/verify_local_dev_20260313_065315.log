@@ -1,0 +1,8 @@
+[06:53:15] Starting Local Dev Verification...
+[06:53:15] Checking target: sc-health -> http://localhost:8888/.netlify/functions/sc-health
+[06:53:15] HTTP 200
+[06:53:15] Response: {"ok":false,"message":"Missing SOUNDCLOUD_CLIENT_ID. Set it in your shell or Netlify env vars (see .env.example)."}
+[06:53:15] Checking target: sc-official-search -> http://localhost:8888/.netlify/functions/sc-official-search?q=ambient
+[06:53:15] Request Failed: The remote server returned an error: (400) Bad Request.
+[06:53:15] 
+[06:53:15] RESULT: FAIL

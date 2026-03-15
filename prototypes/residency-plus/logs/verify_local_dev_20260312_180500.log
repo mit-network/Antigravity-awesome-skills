@@ -1,0 +1,7 @@
+[18:05:00] Starting Local Dev Verification...
+[18:05:00] Checking target: sc-health -> http://localhost:8888/.netlify/functions/sc-health
+[19:01:11] Request Failed: Unable to connect to the remote server
+[19:01:11] Checking target: sc-official-search -> http://localhost:8888/.netlify/functions/sc-official-search?q=ambient
+[19:01:16] Request Failed: Unable to connect to the remote server
+[19:01:16] 
+[19:01:16] RESULT: FAIL

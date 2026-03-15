@@ -1,0 +1,142 @@
+diff --git a/prototypes/residency-plus/index.html b/prototypes/residency-plus/index.html
+index b076171..76adaac 100644
+--- a/prototypes/residency-plus/index.html
++++ b/prototypes/residency-plus/index.html
+@@ -1212,6 +1212,54 @@
+         timer = setTimeout(() => fn.apply(this, args), ms);
+       };
+     }
++
++    // ===== Formatting helpers =====
++    function fmtMs(ms) {
++      if (!ms || isNaN(ms)) return "—";
++      const s = Math.round(ms / 1000);
++      const m = Math.floor(s / 60);
++      const h = Math.floor(m / 60);
++      if (h > 0) return `${h}h ${m % 60}m`;
++      return `${m}:${String(s % 60).padStart(2, "0")}`;
++    }
++    function fmtDate(iso) {
++      if (!iso) return "—";
++      try {
++        const d = new Date(iso);
++        return d.toLocaleDateString(undefined, { year: "numeric", month: "short" });
++      } catch { return "—"; }
++    }
++    function fmtNum(n) {
++      if (n == null || isNaN(n)) return null;
++      const num = Number(n);
++      if (num >= 1_000_000) return `${(num / 1_000_000).toFixed(1)}M`;
++      if (num >= 1_000) return `${(num / 1_000).toFixed(1)}k`;
++      return String(num);
++    }
++    function setPill(el, text) {
++      if (!el) return;
++      if (text) {
++        el.textContent = text;
++        el.classList.remove("hidden");
++      } else {
++        el.textContent = "";
++        el.classList.add("hidden");
++      }
++    }
++    function applyStatsPills(item, showStats) {
++      const plays = item?.playback_count ?? item?.plays ?? null;
++      const likes = item?.favoritings_count ?? item?.likes_count ?? item?.likes ?? null;
++      const comms = item?.comment_count ?? item?.comments ?? null;
++      if (showStats) {
++        setPill(pillPlays, plays != null ? `🛿 ${fmtNum(plays)}` : null);
++        setPill(pillLikes, likes != null ? `♥ ${fmtNum(likes)}` : null);
++        setPill(pillComms, comms != null ? `💬 ${fmtNum(comms)}` : null);
++      } else {
++        setPill(pillPlays, null);
++        setPill(pillLikes, null);
++        setPill(pillComms, null);
++      }
++    }
+     function setStatus(s) { statusMini.textContent = s; }
+     function showError(msg) {
+       okBox.style.display = "none";
+@@ -1681,6 +1729,7 @@
+             }
+             crate.push(item);
+             saveJsonLS(STORAGE_KEY_CRATE, crate);
++            if (typeof debouncedCrateSync === "function") debouncedCrateSync();
+             renderList(crateList, crate, "crate");
+             saveHist.textContent = "✓";
+             saveHist.title = "Saved";
+@@ -1700,6 +1749,7 @@
+       history.unshift(item);
+       if (history.length > 250) history = history.slice(0, 250);
+       saveJsonLS(STORAGE_KEY_HISTORY, history);
++      if (typeof debouncedHistorySync === "function") debouncedHistorySync();
+       renderList(historyList, history, "history");
+     }
+ 
+@@ -2008,11 +2058,11 @@
+       openBtn.dataset.url = item.url;
+       try { localStorage.setItem(STORAGE_KEY_LAST, JSON.stringify(item)); } catch { }
+ 
+-      setPill(pillKey, item.keyGuess ? `Key: ${item.keyGuess}` : "");
+-      setPill(pillBpm, item.bpmGuess ? `BPM: ${item.bpmGuess}` : "");
+-      pillLen.textContent = `Len: ${fmtMs(item.durationMs)}`;
+-      pillRel.textContent = `Uploaded: ${fmtDate(item.uploadedAt)}`;
+-      applyStatsPills(item);
++      setPill(pillKey, item.keyGuess ? `Key: ${item.keyGuess}` : null);
++      setPill(pillBpm, item.bpmGuess ? `BPM: ${item.bpmGuess}` : null);
++      setPill(pillLen, `Len: ${fmtMs(item.durationMs)}`);
++      setPill(pillRel, `Uploaded: ${fmtDate(item.uploadedAt)}`);
++      applyStatsPills(item, statsToggle.checked);
+ 
+       addToHistory(item);
+       savePlayedUrl(item.url);
+@@ -2071,10 +2121,10 @@
+           return;
+         }
+ 
+-        pillLen.textContent = `Len: ${fmtMs(durationMs)}`;
+-        pillRel.textContent = `Uploaded: ${fmtDate(currentItem.uploadedAt)}`;
+-        setPill(pillBpm, currentItem.bpmGuess ? `BPM: ${currentItem.bpmGuess}` : "");
+-        applyStatsPills(currentItem);
++        setPill(pillLen, `Len: ${fmtMs(durationMs)}`);
++        setPill(pillRel, `Uploaded: ${fmtDate(currentItem.uploadedAt)}`);
++        setPill(pillBpm, currentItem.bpmGuess ? `BPM: ${currentItem.bpmGuess}` : null);
++        applyStatsPills(currentItem, statsToggle.checked);
+       } catch (e) {
+         // don’t spam UI; only show if user explicitly asked for stats and nothing is working
+         // (silent fail keeps creative flow)
+@@ -2313,6 +2363,7 @@
+       }
+       crate.push(currentItem);
+       saveJsonLS(STORAGE_KEY_CRATE, crate);
++      if (typeof debouncedCrateSync === "function") debouncedCrateSync();
+       renderList(crateList, crate, "crate");
+       showOk("Saved to crate.");
+       setTimeout(() => { okBox.style.display = "none"; }, 1800);
+@@ -2328,15 +2379,18 @@
+ 
+     genreSelect.onchange = () => {
+       try { localStorage.setItem(STORAGE_KEY_GENRE, genreSelect.value); } catch { }
++      if (typeof debouncedStateSync === "function") debouncedStateSync();
+       resetContext(); doShuffle(false);
+     };
+     sourceSelect.onchange = () => {
+       try { localStorage.setItem(STORAGE_KEY_SOURCE, sourceSelect.value); } catch { }
++      if (typeof debouncedStateSync === "function") debouncedStateSync();
+       resetContext(); doShuffle(false);
+     };
+     stationSelect.onchange = () => {
+       stationId = stationSelect.value || "__all__";
+       try { localStorage.setItem(STORAGE_KEY_STATION, stationId); } catch { }
++      if (typeof debouncedStateSync === "function") debouncedStateSync();
+       resetContext(); doShuffle(false);
+     };
+     makeStationBtn.onclick = createStation;
+@@ -2351,6 +2405,7 @@
+ 
+     obscureRange.oninput = () => {
+       try { localStorage.setItem(STORAGE_KEY_RANGE, obscureRange.value); } catch { }
++      if (typeof debouncedStateSync === "function") debouncedStateSync();
+       updateModeLabel();
+     };
+     searchLocalEl.addEventListener("input", () => {

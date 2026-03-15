@@ -1,0 +1,10 @@
+[11:55:51] Starting Local Dev Verification...
+[11:55:51] Checking target: sc-health -> http://localhost:8888/.netlify/functions/sc-health
+[11:55:51] HTTP 200
+[11:55:51] Response: {"ok":true,"message":"SoundCloud client id detected."}
+[11:55:51] Checking target: sc-official-search -> http://localhost:8888/.netlify/functions/sc-official-search?q=ambient
+[11:55:52] HTTP 200
+[11:55:52] Response: {"collection":[],"degraded":true,"reason":"upstream_unauthorized"}
+[11:55:52] No items with permalink_url returned from local search; skipping resolve check.
+[11:55:52] 
+[11:55:52] RESULT: FAIL

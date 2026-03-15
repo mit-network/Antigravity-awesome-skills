@@ -1,0 +1,13 @@
+[11:02:26] Starting Local Dev Verification...
+[11:02:26] Checking target: sc-health -> http://localhost:8888/.netlify/functions/sc-health
+[11:02:26] HTTP 200
+[11:02:26] Response: {"ok":true,"message":"SoundCloud client id detected."}
+[11:02:26] Checking target: sc-official-search -> http://localhost:8888/.netlify/functions/sc-official-search?q=ambient
+[11:02:27] HTTP 200
+[11:02:27] Response: {"collection":[{"id":1908505082,"title":"Bình Yên - Vu�?. ft. Binz x minhnhat.","permalink_url":"https://soundcloud.com/minhnhat-prod/binh-yen-vu-ft...
+[11:02:27] Derived permalink_url from search: https://soundcloud.com/minhnhat-prod/binh-yen-vu-ft-binz-x-minhnhat?utm_medium=api&utm_campaign=social_sharing&utm_source=id_328774
+[11:02:27] Checking target: sc-official-resolve -> http://localhost:8888/.netlify/functions/sc-official-resolve?url=https://soundcloud.com/minhnhat-prod/binh-yen-vu-ft-binz-x-minhnhat?utm_medium=api&utm_campaign=social_sharing&utm_source=id_328774
+[11:02:27] HTTP 200
+[11:02:27] Response: {"kind":"track","id":1908505082,"title":"Bình Yên - Vu�?. ft. Binz x minhnhat.","permalink_url":"https://soundcloud.com/minhnhat-prod/binh-yen-vu-ft...
+[11:02:27] 
+[11:02:28] RESULT: PASS

@@ -1,0 +1,12 @@
+[13:02:35] Starting Production Verification...
+[13:02:35] Checking target: sc-health -> https://residencysolutions.netlify.app/.netlify/functions/sc-health
+[13:02:36] HTTP 200
+[13:02:36] Response: {"ok":true,"message":"SoundCloud client id detected."}
+[13:02:36] Checking target: sc-official-search -> https://residencysolutions.netlify.app/.netlify/functions/sc-official-search?q=ambient
+[13:02:37] HTTP 200
+[13:02:37] Response: {"collection":[],"degraded":true,"reason":"token_rate_limited"}
+[13:02:37] Checking target: sc-official-resolve -> https://residencysolutions.netlify.app/.netlify/functions/sc-official-resolve?url=https://soundcloud.com/tycho/awake
+[13:02:38] HTTP 200
+[13:02:38] Response: {"degraded":true,"reason":"token_rate_limited","resource":null}
+[13:02:38] 
+[13:02:38] RESULT: PASS

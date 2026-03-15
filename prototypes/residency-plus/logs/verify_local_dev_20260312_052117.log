@@ -1,0 +1,18 @@
+[05:21:17] Starting Local Dev Verification...
+[05:21:17] Checking target: sc-health -> http://localhost:8888/.netlify/functions/sc-health
+[05:21:17] HTTP 200
+[05:21:17] Response: {"ok":false,"message":"Missing SOUNDCLOUD_CLIENT_ID. Set it in your shell or Netlify env vars (see .env.example)."}
+[05:21:17] Checking target: sc-official-search -> http://localhost:8888/.netlify/functions/sc-official-search?q=ambient
+[05:21:17] Request Failed: Response status code does not indicate success: 400 (Bad Request).
+[05:21:17] Details: 
+{
+  "error": "[sc-auth-lib] Missing required env var(s): SOUNDCLOUD_CLIENT_ID, SOUNDCLOUD_CLIENT_SECRET. Set them in your .env or Netlify environment variables."
+}
+[05:21:17] Checking target: sc-official-resolve -> http://localhost:8888/.netlify/functions/sc-official-resolve?url=https://soundcloud.com/fixture/ambient-1
+[05:21:17] Request Failed: Response status code does not indicate success: 400 (Bad Request).
+[05:21:17] Details: 
+{
+  "error": "[sc-auth-lib] Missing required env var(s): SOUNDCLOUD_CLIENT_ID, SOUNDCLOUD_CLIENT_SECRET. Set them in your .env or Netlify environment variables."
+}
+[05:21:17] 
+[05:21:17] RESULT: FAIL

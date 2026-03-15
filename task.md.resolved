@@ -1,0 +1,30 @@
+# ResidencySolutions G2 — Production Reliability Hotfix
+
+## Triage & Isolation
+- [x] Run [scripts/verify_prod.ps1](file:///C:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/scripts/verify_prod.ps1) and capture log (Confirmed 502 on ESM endpoints).
+- [x] Identify failing endpoints (health passes, search/resolve fail).
+- [x] Trace 502 source: confirmed ESM vs CJS incompatibility in Netlify production.
+
+## Debugging & Fix
+- [x] Refactor [sc-auth-lib.js](file:///c:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/netlify/functions/sc-auth-lib.js), [sc-official-search.js](file:///C:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/netlify/functions/sc-official-search.js), and [sc-official-resolve.js](file:///C:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/netlify/functions/sc-official-resolve.js) to CommonJS.
+- [x] Relocated [sc-auth-lib.js](file:///c:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/netlify/functions/sc-auth-lib.js) to `lib/` to fix Netlify esbuild `ImportModuleError` causing 502s.
+- [x] Resolved legacy merge conflicts across all sync and migration functions to ensure clean bundling.
+- [x] Direct deployed to production (`residencysolutions.netlify.app`).
+- [x] Commit and push to `main` (`f761d8d`).
+
+## Verification
+- [x] Run [scripts/verify_prod.ps1](file:///C:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/scripts/verify_prod.ps1) and manual cURL (Functions return 200).
+- [/] Run [scripts/verify_local_dev.ps1](file:///c:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/scripts/verify_local_dev.ps1) (Blocked by CLI/Windows DNS bug, but CJS verified manually).
+- [x] Merge `main` back into `feat/discovery-engine-v1`.
+- [x] Generate handoff: [docs/handoffs/HANDOFF_20260311T1745_RESIDENCYSOLUTIONS_G2_PROD_502_HOTFIX.md](file:///c:/Users/sean/antigravity-awesome-skills/docs/handoffs/HANDOFF_20260311T1745_RESIDENCYSOLUTIONS_G2_PROD_502_HOTFIX.md).
+
+## Frontend Operational Debugging
+- [x] Identify root cause of Production 502 (ESM/CJS v2 incompatibility)
+- [x] Refactor Netlify Functions to CommonJS
+- [x] Fix CORS whitelisting for `.netlify.app`
+- [x] Resolve frontend `ReferenceError: sleep is not defined`
+- [x] Fix frontend logic duplication causing `SyntaxError`
+- [x] Optimize [scSearch](file:///c:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/index.html#1866-1884) for pooled concurrent requests
+- [x] Restore missing utilities ([normalizeUrl](file:///c:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/index.html#1552-1560), [setProgress](file:///c:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/index.html#1402-1403), [blobFor](file:///c:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/index.html#1404-1412)) after aggressive excision
+- [x] Conduct definitive production smoke test (PASS)
+- [x] Finalize Slice 0 Handoff

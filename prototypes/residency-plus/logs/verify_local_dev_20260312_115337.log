@@ -1,0 +1,8 @@
+[11:53:37] Starting Local Dev Verification...
+[11:53:37] Checking target: sc-health -> http://localhost:8888/.netlify/functions/sc-health
+[11:53:37] HTTP 200
+[11:53:37] Response: {"ok":true,"message":"SoundCloud client id detected."}
+[11:53:37] Checking target: sc-official-search -> http://localhost:8888/.netlify/functions/sc-official-search?q=ambient
+[11:53:38] Request Failed: The remote server returned an error: (502) Bad Gateway.
+[11:53:38] 
+[11:53:38] RESULT: FAIL

@@ -1,0 +1,43 @@
+# Walkthrough: Residency+ Production Restoration
+
+Successfully restored the Residency+ production environment after resolving critical 502 errors and frontend initialization failures.
+
+## Resolved Issues
+
+### 1. Production 502 (Backend)
+- **Root Cause**: Netlify Functions V2 ESM/CJS incompatibility and shared library bundling errors.
+- **Resolution**: Refactored all backend functions to CommonJS and relocated [sc-auth-lib.js](file:///c:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/netlify/functions/sc-auth-lib.js) to `netlify/functions/lib/`.
+- **Validation**: [verify_prod.ps1](file:///c:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/scripts/verify_prod.ps1) passed with 100% success rate on all endpoints.
+
+### 2. Fatal Frontend Initialization
+- **Root Cause**: Significant code duplication in [index.html](file:///c:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/index.html) causing a fatal `SyntaxError`.
+- **Resolution**: Surgically excised redundant logic and restored over-aggressive cleanup items ([normalizeUrl](file:///c:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/index.html#1321-1329), [sleep](file:///c:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/index.html#1206-1208), [setProgress](file:///c:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/index.html#1402-1403)).
+- **Optimization**: Refactored [scSearch](file:///c:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/index.html#1431-1454) for pooled requests to prevent initialization hangs.
+
+### 3. Playback Synchronization
+- **Root Cause**: Missing global declaration for `scWidget` and lack of a surgical fallback for the SoundCloud API.
+- **Resolution**: Surgery-declared `scWidget`, implemented a robust `w.load` with a structural `src` reload fallback, and updated [buildEmbedUrl](file:///c:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/index.html#1397-1400) to support dynamic autoplay.
+
+## Validation Results
+
+### Final Production Smoke Test (Success)
+![Final Production Success State](/C:/Users/sean/.gemini/antigravity/brain/28252cee-2b18-4ec7-a6b4-c315d4a479d7/final_verification_playing_1773272991736.png)
+*Figure 1: Production site successfully playing 'Omar Varela - The Odyssey' with all UI states correctly initialized.*
+
+````carousel
+```markdown
+# Status: OPERATIONAL
+Target: https://residencysolutions.netlify.app/
+Test: Playback Synchronization (PASS)
+State: READY -> Finding... -> PLAYING (PASS)
+```
+<!-- slide -->
+![Playback Sync Verification](/C:/Users/sean/.gemini/antigravity/brain/28252cee-2b18-4ec7-a6b4-c315d4a479d7/prod_playback_sync_verification_2_1773273455259.webp)
+````
+
+### Backend Hygiene
+- [verify_prod.ps1](file:///c:/Users/sean/antigravity-awesome-skills/prototypes/residency-plus/scripts/verify_prod.ps1): **PASS**
+- `ALLOW_ORIGINS`: Correctly configured for Netlify production subdomain.
+
+## Post-Mortem Handoff
+Detailed logs and forensics are available in [HANDOFF_20260311T1745_RESIDENCYSOLUTIONS_G2_PROD_502_HOTFIX.md](file:///c:/Users/sean/antigravity-awesome-skills/docs/handoffs/HANDOFF_20260311T1745_RESIDENCYSOLUTIONS_G2_PROD_502_HOTFIX.md).

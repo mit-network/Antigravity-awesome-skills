@@ -1,0 +1,13 @@
+[14:38:54] Starting Local Dev Verification...
+[14:38:54] DEV_FIXTURE_MODE=true detected — using fixture-friendly verification flow.
+[14:38:54] Checking target: sc-health -> http://localhost:8888/.netlify/functions/sc-health
+[14:38:54] HTTP 200
+[14:38:54] Response: {"ok":false,"message":"Missing SOUNDCLOUD_CLIENT_ID. Set it in your shell or Netlify env vars (see .env.example)."}
+[14:38:54] Checking target: sc-official-search -> http://localhost:8888/.netlify/functions/sc-official-search?q=ambient
+[14:38:54] HTTP 200
+[14:38:54] Response: {"collection":[{"id":11223344,"title":"[DEV FIXTURE] Ambient Leftfield Dojo","permalink_url":"https://soundcloud.com/haszari/ambient-leftfield-dojo-tw...
+[14:38:54] Checking target: sc-official-resolve -> http://localhost:8888/.netlify/functions/sc-official-resolve?url=https://soundcloud.com/fixture/ambient-1
+[14:38:54] HTTP 200
+[14:38:54] Response: {"kind":"track","id":11223344,"title":"[DEV FIXTURE] Ambient Leftfield Dojo","permalink_url":"https://soundcloud.com/haszari/ambient-leftfield-dojo-tw...
+[14:38:54] 
+[14:38:54] RESULT: PASS

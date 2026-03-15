@@ -1,0 +1,10 @@
+[11:51:50] Starting Production Verification...
+[11:51:50] Checking target: sc-health -> https://residencysolutions.netlify.app/.netlify/functions/sc-health
+[11:51:51] HTTP 200
+[11:51:51] Response: {"ok":true,"message":"SoundCloud client id detected."}
+[11:51:51] Checking target: sc-official-search -> https://residencysolutions.netlify.app/.netlify/functions/sc-official-search?q=ambient
+[11:51:52] Request Failed: The remote server returned an error: (400) Bad Request.
+[11:51:52] Checking target: sc-official-resolve -> https://residencysolutions.netlify.app/.netlify/functions/sc-official-resolve?url=https://soundcloud.com/tycho/awake
+[11:51:53] Request Failed: The remote server returned an error: (400) Bad Request.
+[11:51:53] 
+[11:51:53] RESULT: FAIL

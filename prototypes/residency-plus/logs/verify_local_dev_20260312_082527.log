@@ -1,0 +1,14 @@
+[08:25:27] Starting Local Dev Verification...
+[08:25:27] DEV_FIXTURE_MODE=false (or unset) — using live SoundCloud verification flow.
+[08:25:27] Checking target: sc-health -> http://localhost:8888/.netlify/functions/sc-health
+[08:25:28] HTTP 200
+[08:25:28] Response: {"ok":true,"message":"SoundCloud client id detected."}
+[08:25:28] Checking target: sc-official-search -> http://localhost:8888/.netlify/functions/sc-official-search?q=ambient
+[08:25:29] HTTP 200
+[08:25:29] Response: {"collection":[{"id":1908505082,"title":"Bình Yên - Vũ. ft. Binz x minhnhat.","permalink_url":"https://soundcloud.com/minhnhat-prod/binh-yen-vu-ft-bi...
+[08:25:29] Derived permalink_url from search: https://soundcloud.com/minhnhat-prod/binh-yen-vu-ft-binz-x-minhnhat?utm_medium=api&utm_campaign=social_sharing&utm_source=id_328774
+[08:25:29] Checking target: sc-official-resolve -> http://localhost:8888/.netlify/functions/sc-official-resolve?url=https://soundcloud.com/minhnhat-prod/binh-yen-vu-ft-binz-x-minhnhat?utm_medium=api&utm_campaign=social_sharing&utm_source=id_328774
+[08:25:30] HTTP 200
+[08:25:30] Response: {"kind":"track","id":1908505082,"title":"Bình Yên - Vũ. ft. Binz x minhnhat.","permalink_url":"https://soundcloud.com/minhnhat-prod/binh-yen-vu-ft-bi...
+[08:25:30] 
+[08:25:30] RESULT: PASS
