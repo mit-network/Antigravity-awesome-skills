@@ -68,7 +68,7 @@ If you installed skills into a different location, also back up that custom dire
 See:
 
 - [`docs/integrations/jetski-cortex.md`](../integrations/jetski-cortex.md)
-- [`examples/jetski-gemini-loader/README.md`](../../examples/jetski-gemini-loader/README.md)
+- [`docs/integrations/jetski-gemini-loader/README.md`](../../docs/integrations/jetski-gemini-loader/README.md)
 
 ## Optional Windows batch helper
 

@@ -11,7 +11,7 @@
 Skills are specialized instruction files that teach AI assistants how to handle specific tasks. Think of them as expert knowledge modules that your AI can load on-demand.
 **Simple analogy:** Just like you might consult different experts (a lawyer, a doctor, a mechanic), these skills let your AI become an expert in different areas when you need them.
 
-### Do I need to install all 1,250+ skills?
+### Do I need to install every skill?
 
 **No!** When you clone the repository, all skills are available, but your AI only loads them when you explicitly invoke them with `@skill-name`.
 It's like having a library - all books are there, but you only read the ones you need.
@@ -50,7 +50,7 @@ Start from:
 ### How do these skills avoid overflowing the model context?
 
 Some host tools (for example custom agents built on Jetski/Cortex + Gemini) might be tempted to **concatenate every `SKILL.md` file into a single system prompt**.  
-This is **not** how this repository is designed to be used, and it will almost certainly overflow the model’s context window with 1,200+ skills.
+This is **not** how this repository is designed to be used, and it will almost certainly overflow the model’s context window if you concatenate the whole repository into one prompt.
 
 Instead, hosts should:
 
@@ -105,16 +105,24 @@ git clone https://github.com/sickn33/antigravity-awesome-skills.git .agent/skill
 - Codex CLI: `.codex/skills/`
 - Cursor: `.cursor/skills/` or project root
 
-### Does this work with Windows?
+**Claude Code plugin marketplace alternative:**
 
-**Yes**, but some "Official" skills use **symlinks** which Windows handles poorly by default.
-Run git with:
-
-```bash
-git clone -c core.symlinks=true https://github.com/sickn33/antigravity-awesome-skills.git .agent/skills
+```text
+/plugin marketplace add sickn33/antigravity-awesome-skills
+/plugin install antigravity-awesome-skills
 ```
 
-Or enable "Developer Mode" in Windows Settings.
+This repository now includes `.claude-plugin/marketplace.json` and `.claude-plugin/plugin.json` so Claude Code can install the same skill tree through the plugin marketplace.
+
+### Does this work with Windows?
+
+**Yes.** Use the standard install flow:
+
+```bash
+git clone https://github.com/sickn33/antigravity-awesome-skills.git .agent/skills
+```
+
+If you have an older clone created around the removed symlink workaround, reinstall into a fresh directory or rerun `npx antigravity-awesome-skills`.
 
 ### I hit a truncation or context crash loop on Windows. How do I recover?
 
@@ -210,6 +218,24 @@ The repository enforces automated quality control. Your skill might be missing:
 1. A valid `description`.
 2. Usage examples.
    Run `npm run validate` locally to check before you push.
+
+### My PR failed "security docs" check. What should I do?
+
+Run the security docs gate locally and address the findings:
+
+```bash
+npm run security:docs
+```
+
+Common fixes:
+
+- Replace risky examples like `curl ... | bash`, `wget ... | sh`, `irm ... | iex` with safer alternatives.
+- Remove or redact token-like command-line examples.
+- For intentional high-risk guidance, add explicit justification via:
+
+```markdown
+<!-- security-allowlist: reason and scope -->
+```
 
 ### Can I update an "Official" skill?
 

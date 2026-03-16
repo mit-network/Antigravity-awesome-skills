@@ -7,7 +7,8 @@ async function main() {
   const repoRoot = path.resolve(__dirname, "..", "..", "..");
   const loaderPath = path.join(
     repoRoot,
-    "examples",
+    "docs",
+    "integrations",
     "jetski-gemini-loader",
     "loader.ts",
   );
