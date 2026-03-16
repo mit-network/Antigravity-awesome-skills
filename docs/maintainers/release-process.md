@@ -17,7 +17,15 @@ This is the maintainer playbook for cutting a repository release. Historical rel
 npm run release:preflight
 ```
 
-2. Optional hardening pass:
+2. Mandatory documentation hardening (repo-wide SKILL.md security scan):
+
+```bash
+npm run security:docs
+```
+
+This is required so every release validates repo-wide risky command patterns and inline token-like examples before publishing.
+
+3. Optional hardening pass:
 
 ```bash
 npm run validate:strict
@@ -25,13 +33,13 @@ npm run validate:strict
 
 Use this as a diagnostic signal. It is useful for spotting legacy quality debt, but it is not yet the release blocker for the whole repository.
 
-3. Update release-facing docs:
+4. Update release-facing docs:
 
 - Add the release entry to [`CHANGELOG.md`](../../CHANGELOG.md).
 - Confirm `README.md` reflects the current version and generated counts.
 - Confirm Credits & Sources, contributors, and support links are still correct.
 
-4. Prepare the release commit and tag locally:
+5. Prepare the release commit and tag locally:
 
 ```bash
 npm run release:prepare -- X.Y.Z
@@ -47,7 +55,7 @@ This command:
 - creates `chore: release vX.Y.Z`
 - creates the local tag `vX.Y.Z`
 
-5. Publish the GitHub release:
+6. Publish the GitHub release:
 
 ```bash
 npm run release:publish -- X.Y.Z
@@ -55,7 +63,7 @@ npm run release:publish -- X.Y.Z
 
 This command pushes `main`, pushes `vX.Y.Z`, and creates the GitHub release object from the matching `CHANGELOG.md` section.
 
-6. Publish to npm if needed:
+7. Publish to npm if needed:
 
 ```bash
 npm publish

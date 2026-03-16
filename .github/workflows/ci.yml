@@ -110,6 +110,9 @@ jobs:
           ENABLE_NETWORK_TESTS: "1"
         run: npm run test
 
+      - name: Run docs security checks
+        run: npm run security:docs
+
   artifact-preview:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
@@ -219,6 +222,9 @@ jobs:
         env:
           ENABLE_NETWORK_TESTS: "1"
         run: npm run test
+
+      - name: Run docs security checks
+        run: npm run security:docs
 
       - name: Build catalog
         run: npm run catalog

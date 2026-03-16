@@ -78,7 +78,7 @@ Per ottenere il percorso alla definizione della skill:
 
 ## 4. Pseudo‑codice di integrazione (TypeScript)
 
-> Esempio completo in: [`examples/jetski-gemini-loader/`](../../examples/jetski-gemini-loader/).
+> Esempio completo in: [`docs/integrations/jetski-gemini-loader/`](../../docs/integrations/jetski-gemini-loader/).
 
 ### 4.1. Tipi di base
 

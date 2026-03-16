@@ -1,4 +1,4 @@
-# Getting Started with Antigravity Awesome Skills (V7.8.0)
+# Getting Started with Antigravity Awesome Skills (V7.9.1)
 
 **New here? This guide will help you supercharge your AI Agent in 5 minutes.**
 
@@ -117,6 +117,8 @@ We classify skills so you know what you're running:
 - 🟣 **Official**: Maintained by Anthropic/Google/Vendors (High Trust).
 - 🔵 **Safe**: Community skills that are non-destructive (Read-only/Planning).
 - 🔴 **Risk**: Skills that modify systems or perform security tests (Authorized Use Only).
+
+When adding new skills, high-risk guidance is extra-reviewed with repository-wide `security:docs` scanning before release.
 
 _Check the [Skill Catalog](../../CATALOG.md) for the full list._
 

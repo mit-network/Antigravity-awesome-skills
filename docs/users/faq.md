@@ -219,6 +219,24 @@ The repository enforces automated quality control. Your skill might be missing:
 2. Usage examples.
    Run `npm run validate` locally to check before you push.
 
+### My PR failed "security docs" check. What should I do?
+
+Run the security docs gate locally and address the findings:
+
+```bash
+npm run security:docs
+```
+
+Common fixes:
+
+- Replace risky examples like `curl ... | bash`, `wget ... | sh`, `irm ... | iex` with safer alternatives.
+- Remove or redact token-like command-line examples.
+- For intentional high-risk guidance, add explicit justification via:
+
+```markdown
+<!-- security-allowlist: reason and scope -->
+```
+
 ### Can I update an "Official" skill?
 
 **No.** Official skills (in `skills/official/`) are mirrored from vendors. Open an issue instead.

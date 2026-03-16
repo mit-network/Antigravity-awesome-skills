@@ -23,6 +23,7 @@ Use this only when the PR should auto-close an issue:
 - [ ] **Risk Label**: I have assigned the correct `risk:` tag (`none`, `safe`, `critical`, `offensive`, or `unknown` for legacy/unclassified content).
 - [ ] **Triggers**: The "When to use" section is clear and specific.
 - [ ] **Security**: If this is an _offensive_ skill, I included the "Authorized Use Only" disclaimer.
+- [ ] **Safety scan**: If this PR adds or modifies `SKILL.md` command guidance, remote/network examples, or token-like strings, I ran `npm run security:docs` (or equivalent hardening check) and addressed any findings.
 - [ ] **Local Test**: I have verified the skill works locally.
 - [ ] **Repo Checks**: I ran `npm run validate:references` if my change affected docs, workflows, or infrastructure.
 - [ ] **Source-Only PR**: I did not manually include generated registry artifacts (`CATALOG.md`, `skills_index.json`, `data/*.json`) in this PR.

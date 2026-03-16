@@ -231,7 +231,7 @@ Rules:
 
 ## 3. 🛡️ Governance & Quality Bar
 
-### A. The 5-Point Quality Check
+### A. The 6-Point Quality Check
 
 Reject any PR that fails this:
 
@@ -239,7 +239,8 @@ Reject any PR that fails this:
 2.  **Safety**: `risk: offensive` used for red-team tools?
 3.  **Clarity**: Does it say _when_ to use it?
 4.  **Examples**: Copy-pasteable code blocks?
-5.  **Limitations / Safety Notes**: Edge cases and risk boundaries are stated clearly.
+5.  **Risk Limits**: If the skill includes shell/network/filesystem/mutation guidance, instructions include explicit prerequisites and warnings.
+6.  **Repo Security Scan**: Run `npm run security:docs` for command-heavy, network-execution, or token-like guidance in `SKILL.md`.
 
 ### B. Risk Labels (V4)
 
