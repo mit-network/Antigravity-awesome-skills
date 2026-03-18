@@ -383,6 +383,7 @@ That will copy the generated skill index into `apps/web-app/public/skills.json`,
 
 - [Discussions](https://github.com/sickn33/antigravity-awesome-skills/discussions) for questions, ideas, showcase posts, and community feedback.
 - [Issues](https://github.com/sickn33/antigravity-awesome-skills/issues) for reproducible bugs and concrete, actionable improvement requests.
+- [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) for community expectations and moderation standards.
 - [`SECURITY.md`](SECURITY.md) for security reporting.
 
 ## Support the Project
