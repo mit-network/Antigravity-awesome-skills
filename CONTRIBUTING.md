@@ -50,9 +50,9 @@ You don't need to be an expert! Here are ways anyone can help:
 - Translate documentation to other languages
 
 ### 2. Report Issues
-- Found something confusing? Tell us!
-- Skill not working? Let us know!
-- Have suggestions? We want to hear them!
+- Found a reproducible bug? Open an Issue.
+- Need help, want feedback, or have an early-stage idea? Start a Discussion.
+- Skill not working? If you can reproduce it, open an Issue. If you're unsure, start in Q&A.
 
 ### 3. Create New Skills
 - Share your expertise as a skill
