@@ -1,7 +1,29 @@
 ---
 name: gha-security-review
-description: GitHub Actions security review for workflow exploitation vulnerabilities. Use when asked to "review GitHub Actions", "audit workflows", "check CI security", "GHA security", "workflow security review", or review .github/workflows/ for pwn requests, expression injection,...
+description: >
+  GitHub Actions security review for workflow exploitation vulnerabilities. 
+  Use when asked to "review GitHub Actions", "audit workflows", 
+  "check CI security", "GHA security", "workflow security review", 
+  or review .github/workflows/ for pwn requests, expression injection.
+risk: safe
+source: community
+date_added: 2026-03-16
 ---
+
+## When to Use
+
+- **External Threat Auditing:** Reviewing `.github/workflows/*.yml` for vulnerabilities exploitable by users without write access (e.g., via fork PRs, issue comments, or issue creation).
+- **Pwn Request Investigations:** Specifically analyzing `pull_request_target` triggers where the workflow checks out fork code or local actions from the PR head.
+- **Shell Injection Detection:** Identifying `${{ }}` expressions used inside shell `run:` blocks where the value is attacker-controlled (PR titles, branch names, comment bodies).
+- **Credential Escalation Audits:** Reviewing the blast radius of elevated credentials (PATs, deploy keys) and checking for overly broad `permissions:` scopes.
+- **Config & Build Poisoning:** Checking if workflows load untrusted configuration files from PRs, such as `Makefile`, `CLAUDE.md`, or scripts under `.github/`.
+
+## When NOT to Use
+
+- **Direct Write-Access Events:** Auditing `workflow_dispatch` or `push` events to protected branches (as these require internal write access and fall outside the external threat model).
+- **Actions Runtime Evaluations:** Flagging `${{ }}` expressions in `if:`, `with:`, or job-level `env:` blocks (these are evaluated safely by the Actions runtime).
+- **Safe Event Data:** Flagging non-injectable data like `${{ github.event.pull_request.number }}`, numeric IDs, or SHAs.
+- **Low-Confidence Audits:** Reporting issues where a complete 5-element exploitation scenario (Entry point, Payload, Mechanism, Impact, PoC) cannot be constructed.
 
 <!--
 Attack patterns and real-world examples sourced from the HackerBot Claw campaign analysis
