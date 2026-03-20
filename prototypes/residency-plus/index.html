@@ -2305,8 +2305,9 @@
     let sourcePresets = []; // { id, name, sources: string[] }
     function getEntitledSources() {
       const list = currentEntitlements?.unlockedSources;
-      if (Array.isArray(list) && list.length) return list;
-      return ["soundcloud"];
+      let entitled = (Array.isArray(list) && list.length) ? list : ["soundcloud"];
+      if (PRODUCTION_UPLOADS_ENABLED && !entitled.includes("uploads")) entitled = [...entitled, "uploads"];
+      return entitled;
     }
     function getLockedSources() {
       const entitled = getEntitledSources();
@@ -3903,6 +3904,17 @@
           wrap.addEventListener("click", (e) => {
             e.preventDefault();
             const hintEl = document.getElementById("sourceLockedHint");
+            if (id === "uploads" && PRODUCTION_UPLOADS_ENABLED) {
+              if (hintEl) {
+                hintEl.innerHTML = "";
+                hintEl.appendChild(document.createTextNode("User Uploads is enabled in Residency+ Core."));
+                hintEl.style.display = "block";
+                clearTimeout(window._sourceLockedHintTimer);
+                window._sourceLockedHintTimer = setTimeout(() => { hintEl.style.display = "none"; hintEl.innerHTML = ""; }, 8000);
+              }
+              return;
+            }
+
             const unlock = DISCOVERY_SOURCE_UNLOCKED_BY[id] || "Residency+";
             if (hintEl) {
               hintEl.innerHTML = "";
