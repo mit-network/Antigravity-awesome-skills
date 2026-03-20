@@ -2207,24 +2207,71 @@
         return { collection: [], _source: "internet_archive" };
       }
     }
+
+    const UPLOADS_SEARCH_CACHE_TTL_MS = 3000;
+    let uploadsSearchCacheKey = null;
+    let uploadsSearchCacheTs = 0;
+    let uploadsSearchCacheValue = null;
+    let uploadsSearchInFlightKey = null;
+    let uploadsSearchInFlightPromise = null;
+
     async function searchUploads(q, limit) {
-      try {
-        const url = `/.netlify/functions/search-uploads?q=${encodeURIComponent(q)}&limit=${Math.min(50, limit)}`;
-        const opts = { cache: "no-store" };
-        if (PRODUCTION_UPLOADS_ENABLED && typeof getUploadsAccessToken === "function") {
-          const token = await getUploadsAccessToken();
-          if (token) opts.headers = { Authorization: `Bearer ${token}` };
-        }
-        const r = await fetch(url, opts);
-        const text = await r.text();
-        if (!r.ok) return { collection: [], _source: "uploads" };
-        const data = JSON.parse(text);
-        const col = Array.isArray(data?.collection) ? data.collection : [];
-        if (PRODUCTION_UPLOADS_ENABLED && typeof console !== "undefined" && console.log) console.log("[Uploads] search count", col.length);
-        return { collection: col.map(it => ({ ...it, _source: "uploads" })), _source: "uploads" };
-      } catch {
-        return { collection: [], _source: "uploads" };
+      const safeLimit = Math.min(50, limit);
+      const cacheKey = `${q}::${safeLimit}`;
+      const now = Date.now();
+
+      if (uploadsSearchCacheKey === cacheKey && (now - uploadsSearchCacheTs) < UPLOADS_SEARCH_CACHE_TTL_MS && uploadsSearchCacheValue) {
+        if (PRODUCTION_UPLOADS_ENABLED && typeof console !== "undefined" && console.log) console.log("[Uploads][Discovery] cache hit", { cacheKey });
+        return uploadsSearchCacheValue;
       }
+
+      if (uploadsSearchInFlightKey === cacheKey && uploadsSearchInFlightPromise) {
+        if (PRODUCTION_UPLOADS_ENABLED && typeof console !== "undefined" && console.log) console.log("[Uploads][Discovery] request skipped", { cacheKey });
+        return uploadsSearchInFlightPromise;
+      }
+
+      uploadsSearchInFlightKey = cacheKey;
+      uploadsSearchInFlightPromise = (async () => {
+        try {
+          const url = `/.netlify/functions/search-uploads?q=${encodeURIComponent(q)}&limit=${safeLimit}`;
+          const opts = { cache: "no-store" };
+          if (PRODUCTION_UPLOADS_ENABLED && typeof getUploadsAccessToken === "function") {
+            const token = await getUploadsAccessToken();
+            if (token) opts.headers = { Authorization: `Bearer ${token}` };
+          }
+
+          if (PRODUCTION_UPLOADS_ENABLED && typeof console !== "undefined" && console.log) console.log("[Uploads][Discovery] request start", { cacheKey });
+          const r = await fetch(url, opts);
+          const text = await r.text();
+          if (!r.ok) {
+            const res = { collection: [], _source: "uploads" };
+            uploadsSearchCacheKey = cacheKey;
+            uploadsSearchCacheTs = Date.now();
+            uploadsSearchCacheValue = res;
+            return res;
+          }
+
+          const data = JSON.parse(text);
+          const col = Array.isArray(data?.collection) ? data.collection : [];
+          const res = { collection: col.map(it => ({ ...it, _source: "uploads" })), _source: "uploads" };
+          if (PRODUCTION_UPLOADS_ENABLED && typeof console !== "undefined" && console.log) console.log("[Uploads] search count", col.length);
+          uploadsSearchCacheKey = cacheKey;
+          uploadsSearchCacheTs = Date.now();
+          uploadsSearchCacheValue = res;
+          return res;
+        } catch {
+          const res = { collection: [], _source: "uploads" };
+          uploadsSearchCacheKey = cacheKey;
+          uploadsSearchCacheTs = Date.now();
+          uploadsSearchCacheValue = res;
+          return res;
+        } finally {
+          uploadsSearchInFlightKey = null;
+          uploadsSearchInFlightPromise = null;
+        }
+      })();
+
+      return uploadsSearchInFlightPromise;
     }
     function searchScaffold(sourceId) {
       return async () => ({ collection: [], _source: sourceId });
@@ -2247,6 +2294,7 @@
       loadDiscoverySourcesState();
       const sources = getActiveDiscoverySources();
       if (PRODUCTION_UPLOADS_ENABLED && sources.includes("uploads") && typeof console !== "undefined" && console.log) console.log("[Uploads] source selected for discovery");
+      const uploadsSelected = PRODUCTION_UPLOADS_ENABLED && sources.includes("uploads");
       const tasks = (sources.length ? sources : ["soundcloud"])
         .filter(id => SOURCE_ADAPTERS[id])
         .map(id => () => SOURCE_ADAPTERS[id](q, kind, limit, isPool));
@@ -2267,6 +2315,7 @@
           });
         }
       }
+      if (uploadsSelected && typeof console !== "undefined" && console.log) console.log("[Uploads][Discovery] merged count", { total: collection.length });
       return { collection, bySource };
     }
 
