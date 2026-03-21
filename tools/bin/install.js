@@ -201,9 +201,17 @@ function installForTarget(tempDir, target) {
       console.log(`  Migrating from full-repo install to skills-only layout…`);
       const backupPath = `${target.path}_backup_${Date.now()}`;
       try { 
+        const stats = fs.lstatSync(target.path);
+        const isSymlink = stats.isSymbolicLink();
+        const symlinkTarget = isSymlink ? 
+        fs.readlinkSync(target.path) : null;
         fs.renameSync(target.path, backupPath);
         console.log(`  ⚠️  Safety Backup created at: ${backupPath}`);
-        fs.mkdirSync(target.path, { recursive: true });
+        if (isSymlink) {
+          fs.symlinkSync(symlinkTarget, target.path, 'dir');
+        } else {
+          fs.mkdirSync(target.path, { recursive: true, mode: stats.mode });
+        }
       } catch (err) {
         console.error(`  Migration Error: ${err.message}`);
         process.exit(1);
