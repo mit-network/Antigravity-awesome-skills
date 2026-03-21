@@ -4,8 +4,8 @@
   "description": "1,306+ agentic skills for Claude Code, Gemini CLI, Cursor, Antigravity & more. Installer CLI.",
   "license": "MIT",
   "scripts": {
-    "validate": "node tools/scripts/run-python.js tools/scripts/validate_skills.py",
-    "validate:strict": "node tools/scripts/run-python.js tools/scripts/validate_skills.py --strict",
+    "validate": "pip install pyyaml --quiet && node tools/scripts/run-python.js tools/scripts/validate_skills.py",
+    "validate:strict": "pip install pyyaml --quiet && node tools/scripts/run-python.js tools/scripts/validate_skills.py --strict",
     "audit:skills": "node tools/scripts/run-python.js tools/scripts/audit_skills.py",
     "audit:skills:strict": "node tools/scripts/run-python.js tools/scripts/audit_skills.py --strict",
     "fix:missing-sections": "node tools/scripts/run-python.js tools/scripts/fix_missing_skill_sections.py",
