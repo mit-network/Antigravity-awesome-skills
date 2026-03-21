@@ -414,6 +414,7 @@ That will copy the generated skill index into `apps/web-app/public/skills.json`,
 - Follow the contributor guide in [`CONTRIBUTING.md`](CONTRIBUTING.md).
 - Use the template in [`docs/contributors/skill-template.md`](docs/contributors/skill-template.md).
 - Validate with `npm run validate` before opening a PR.
+- Keep community PRs source-only: do not commit generated registry artifacts like `CATALOG.md`, `skills_index.json`, or `data/*.json`.
 - If your PR changes `SKILL.md`, expect the automated `skill-review` check on GitHub in addition to the usual validation and security scans.
 
 ## Community

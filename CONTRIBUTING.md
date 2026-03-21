@@ -34,6 +34,7 @@ git push origin my-branch
 
 Open the PR with the default template and enable **Allow edits from maintainers** so conflicts can be resolved without extra back-and-forth.
 If your PR adds or edits `SKILL.md`, GitHub will also run the automated `skill-review` workflow on the pull request.
+Community PRs should stay **source-only**: do not include generated registry artifacts such as `CATALOG.md`, `skills_index.json`, or `data/*.json`.
 
 If you only want to improve docs, editing directly in GitHub is still perfectly fine.
 
@@ -211,8 +212,10 @@ More examples...
 
 1. **Copy it to your AI tool's skills directory:**
    ```bash
-   cp -r skills/my-awesome-skill ~/.agent/skills/
+   cp -r skills/my-awesome-skill ~/.gemini/antigravity/skills/
    ```
+
+   Or copy it into the specific tool path you are testing against, such as `~/.claude/skills/`, `~/.cursor/skills/`, or a custom workspace path like `.agent/skills/`.
 
 2. **Try using it:**
    ```
@@ -242,6 +245,8 @@ npm run validate
 npm run validate:references
 npm test
 ```
+
+For **any normal community PR**, keep the branch source-only and leave generated registry artifacts out of the diff. `main` canonicalizes those after merge.
 
 Optional maintainer-style preflight:
 
