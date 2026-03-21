@@ -2,58 +2,73 @@
  * billing-create-checkout.js — Stripe Checkout session via REST API (no stripe npm package).
  *
  * Uses fetch() to call Stripe API so the function has no external runtime deps.
- * Returns Web API Response in every path. Top-level try/catch prevents 502 HTML.
+ * Returns plain { statusCode, headers, body } in every path. Top-level try/catch prevents 502 HTML.
  */
 
-import { allowOrigin, logTelemetry } from "./lib/sc-auth-lib.js";
-import { getJwtUser } from "./sc-supabase-lib.js";
+const { allowOrigin, logTelemetry } = require("./lib/sc-auth-lib.js");
+const { getJwtUser } = require("./lib/sc-supabase-cjs.js");
 
 const BILLING_ENABLED = process.env.BILLING_ENABLED === "true";
 const STRIPE_PRICE_RESIDENCY_PLUS = process.env.STRIPE_PRICE_RESIDENCY_PLUS;
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 
 function responseJson(status, body, origin) {
-  const headers = {
-    "content-type": "application/json",
-    "access-control-allow-origin": origin || "*",
-    "access-control-allow-headers": "content-type, authorization",
-    "access-control-allow-methods": "POST,OPTIONS",
+  return {
+    statusCode: status,
+    headers: {
+      "content-type": "application/json",
+      "access-control-allow-origin": origin || "*",
+      "access-control-allow-headers": "content-type, authorization",
+      "access-control-allow-methods": "POST,OPTIONS",
+    },
+    body: JSON.stringify(body)
   };
-  return new Response(JSON.stringify(body), { status, headers });
 }
 
-function getOrigin(req) {
-  try {
-    return allowOrigin(req.headers.get("origin"));
-  } catch {
-    return "*";
-  }
+function buildReqFromEvent(event) {
+  const headers = event.headers || {};
+  return {
+    headers: {
+      get: (name) => {
+        const k = Object.keys(headers).find(x => x.toLowerCase() === name.toLowerCase());
+        return k ? headers[k] : null;
+      }
+    }
+  };
 }
 
-export default async function handler(req) {
-  const origin = getOrigin(req);
+exports.handler = async function (event) {
+  const headers = event.headers || {};
+  const rawOrigin = headers.origin || headers.Origin || "";
+  const origin = (function () {
+    try { return allowOrigin(rawOrigin); } catch { return "*"; }
+  })();
+
   try {
-    return await handle(req, origin);
+    return await handle(event, origin, rawOrigin);
   } catch (err) {
     console.error("[billing-create-checkout] uncaught", err?.message || err);
     return responseJson(500, { error: err?.message || "Checkout failed.", billing_enabled: true }, origin);
   }
-}
+};
 
-async function handle(req, origin) {
-  if (req.method === "OPTIONS") {
-    return new Response("", {
-      status: 204,
+async function handle(event, origin, rawOrigin) {
+  const method = event.httpMethod;
+
+  if (method === "OPTIONS") {
+    return {
+      statusCode: 204,
       headers: {
         "access-control-allow-origin": origin || "*",
         "access-control-allow-headers": "content-type, authorization",
         "access-control-allow-methods": "POST,OPTIONS",
-      },
-    });
+        vary: "Origin"
+      }
+    };
   }
 
-  if (!origin && req.headers.get("origin")) return responseJson(403, { error: "Origin not permitted." }, null);
-  if (req.method !== "POST") return responseJson(405, { error: "Method not allowed" }, origin);
+  if (!origin && rawOrigin) return responseJson(403, { error: "Origin not permitted." }, null);
+  if (method !== "POST") return responseJson(405, { error: "Method not allowed" }, origin);
 
   console.log("[billing-create-checkout] billing_enabled=" + BILLING_ENABLED + " has_stripe_secret=" + !!STRIPE_SECRET_KEY + " has_price_id=" + !!STRIPE_PRICE_RESIDENCY_PLUS);
 
@@ -64,7 +79,7 @@ async function handle(req, origin) {
 
   let user;
   try {
-    user = getJwtUser(req);
+    user = getJwtUser(buildReqFromEvent(event));
   } catch (e) {
     console.error("[billing-create-checkout] getJwtUser error", e?.message || e);
     return responseJson(401, { error: "Missing or invalid token", billing_enabled: true }, origin);
@@ -77,7 +92,7 @@ async function handle(req, origin) {
   console.log("[billing-create-checkout] user id=" + (user.uid || "") + " email=" + (user.email ? "(present)" : "(none)"));
 
   try {
-    const body = await req.json().catch(() => ({}));
+    const body = JSON.parse(event.body || "{}");
     const successUrl = body.success_url || process.env.BILLING_SUCCESS_URL;
     const cancelUrl = body.cancel_url || process.env.BILLING_CANCEL_URL;
 

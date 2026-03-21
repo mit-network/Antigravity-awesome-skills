@@ -189,7 +189,8 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      flex-wrap: nowrap;
+      flex-wrap: wrap;
+      row-gap: 8px;
       padding: 10px 12px;
       border-radius: 999px;
       background: linear-gradient(180deg, rgba(255, 255, 255, .09), rgba(255, 255, 255, .03));
@@ -212,7 +213,8 @@
       min-width: 0;
     }
     .right {
-      flex: 1 1 0;
+      flex: 1 1 auto;
+      flex-wrap: wrap;
     }
 
     #vibeInput {
@@ -1029,7 +1031,7 @@
             </select>
           </div>
           <button id="makeStationBtn" class="btn" disabled>Station</button>
-          <div class="field" style="min-width:220px; max-width:260px;">
+          <div class="field" style="flex:1 1 160px; min-width:100px; max-width:260px;">
             <input
               id="vibeInput"
               name="vibe_query"

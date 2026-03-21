@@ -8,27 +8,43 @@
  *   the authenticated user.
  */
 
-import { allowOrigin, json, logTelemetry } from "./lib/sc-auth-lib.js";
-import { getJwtUser } from "./sc-supabase-lib.js";
+const { allowOrigin, json, logTelemetry } = require("./lib/sc-auth-lib.js");
+const { getJwtUser } = require("./lib/sc-supabase-cjs.js");
 
 const BILLING_ENABLED = process.env.BILLING_ENABLED === "true";
 
-export default async function handler(req) {
-  if (req.method === "OPTIONS") {
-    const origin = allowOrigin(req.headers.get("origin"));
-    return new Response("", {
-      status: 204,
-      headers: {
-        "access-control-allow-origin": origin || "*",
-        "access-control-allow-headers": "content-type, authorization",
-        "access-control-allow-methods": "POST,OPTIONS"
+function buildReqFromEvent(event) {
+  const headers = event.headers || {};
+  return {
+    headers: {
+      get: (name) => {
+        const k = Object.keys(headers).find(x => x.toLowerCase() === name.toLowerCase());
+        return k ? headers[k] : null;
       }
-    });
+    }
+  };
+}
+
+exports.handler = async function (event) {
+  const method = event.httpMethod;
+  const headers = event.headers || {};
+  const origin = headers.origin || headers.Origin || "";
+  const allowed = allowOrigin(origin) || null;
+
+  if (method === "OPTIONS") {
+    return {
+      statusCode: 204,
+      headers: {
+        "access-control-allow-origin": allowed || "*",
+        "access-control-allow-headers": "content-type, authorization",
+        "access-control-allow-methods": "POST,OPTIONS",
+        vary: "Origin"
+      }
+    };
   }
 
-  const origin = allowOrigin(req.headers.get("origin"));
-  if (!origin && req.headers.get("origin")) return json(403, { error: "Origin not permitted." });
-  if (req.method !== "POST") return json(405, { error: "Method not allowed" }, origin);
+  if (!allowed && origin) return json(403, { error: "Origin not permitted." }, "*");
+  if (method !== "POST") return json(405, { error: "Method not allowed" }, allowed || "*");
 
   if (
     !BILLING_ENABLED ||
@@ -36,25 +52,25 @@ export default async function handler(req) {
     !process.env.STRIPE_BILLING_PORTAL_RETURN_URL
   ) {
     logTelemetry("billing_portal_disabled", { endpoint: "billing-create-portal-session", origin });
-    return json(200, { billing_enabled: false }, origin);
+    return json(200, { billing_enabled: false }, allowed || "*");
   }
 
   try {
-    const user = getJwtUser(req);
+    const user = getJwtUser(buildReqFromEvent(event));
     if (!user) {
       logTelemetry("billing_portal_auth_invalid", {
         endpoint: "billing-create-portal-session",
         origin
       });
-      return json(401, { error: "Missing or invalid token" }, origin);
+      return json(401, { error: "Missing or invalid token" }, allowed || "*");
     }
 
-    const StripeModule = await import("stripe");
-    const stripe = new StripeModule.default(process.env.STRIPE_SECRET_KEY, {
+    const Stripe = require("stripe");
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: "2023-10-16"
     });
 
-    const body = await req.json().catch(() => ({}));
+    const body = JSON.parse(event.body || "{}");
 
     const canonicalSiteUrl =
       process.env.BILLING_SITE_URL ||
@@ -93,7 +109,7 @@ export default async function handler(req) {
         billing_enabled: true,
         url: session.url
       },
-      origin
+      allowed || "*"
     );
   } catch (err) {
     logTelemetry("billing_portal_error", {
@@ -101,7 +117,6 @@ export default async function handler(req) {
       origin,
       error: err.message
     });
-    return json(500, { error: err.message || "Billing portal session failed." }, origin);
+    return json(500, { error: err.message || "Billing portal session failed." }, allowed || "*");
   }
-}
-
+};
