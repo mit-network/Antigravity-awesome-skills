@@ -184,9 +184,18 @@ session = Session.builder.configs({
 
 ## dbt on Snowflake
 
+Dynamic table materialization (streaming/near-real-time marts):
 ```sql
 {{ config(materialized='dynamic_table', snowflake_warehouse='transforming', target_lag='1 hour') }}
+```
+
+Incremental materialization (large fact tables):
+```sql
 {{ config(materialized='incremental', unique_key='event_id') }}
+```
+
+Snowflake-specific configs (combine with any materialization):
+```sql
 {{ config(transient=true, copy_grants=true, query_tag='team_daily') }}
 ```
 
