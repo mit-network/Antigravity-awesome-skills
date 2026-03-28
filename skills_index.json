@@ -21195,7 +21195,7 @@
     "date_added": "2026-03-25",
     "plugin": {
       "targets": {
-        "codex": "blocked",
+        "codex": "supported",
         "claude": "blocked"
       },
       "setup": {
@@ -21204,7 +21204,6 @@
         "docs": null
       },
       "reasons": [
-        "absolute_host_path",
         "target_specific_home_path"
       ]
     }
