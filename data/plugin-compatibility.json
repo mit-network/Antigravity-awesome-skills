@@ -19558,6 +19558,25 @@
       "runtime_files": []
     },
     {
+      "id": "saas-multi-tenant",
+      "path": "skills/saas-multi-tenant",
+      "targets": {
+        "codex": "supported",
+        "claude": "supported"
+      },
+      "setup": {
+        "type": "none",
+        "summary": "",
+        "docs": null
+      },
+      "reasons": [],
+      "blocked_reasons": {
+        "codex": [],
+        "claude": []
+      },
+      "runtime_files": []
+    },
+    {
       "id": "saas-mvp-launcher",
       "path": "skills/saas-mvp-launcher",
       "targets": {
@@ -25413,10 +25432,10 @@
     }
   ],
   "summary": {
-    "total_skills": 1329,
+    "total_skills": 1330,
     "supported": {
-      "codex": 1300,
-      "claude": 1315
+      "codex": 1301,
+      "claude": 1316
     },
     "blocked": {
       "codex": 29,

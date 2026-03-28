@@ -2,7 +2,7 @@
 
 Generated at: 2026-02-08T00:00:00.000Z
 
-Total skills: 1329
+Total skills: 1330
 
 ## architecture (88)
 
@@ -1068,7 +1068,7 @@ Total skills: 1329
 | `whatsapp-cloud-api` | Integracao com WhatsApp Business Cloud API (Meta). Mensagens, templates, webhooks HMAC-SHA256, automacao de atendimento. Boilerplates Node.js e Python. | messaging, whatsapp, meta, webhooks | messaging, whatsapp, meta, webhooks, cloud, api, integracao, com, business, mensagens, hmac, sha256 |
 | `x-twitter-scraper` | X (Twitter) data platform skill — tweet search, user lookup, follower extraction, engagement metrics, giveaway draws, monitoring, webhooks, 19 extraction too... | [twitter, x-api, scraping, mcp, social-media, data-extraction, giveaway, monitoring, webhooks] | [twitter, x-api, scraping, mcp, social-media, data-extraction, giveaway, monitoring, webhooks], twitter, scraper, data |
 
-## security (165)
+## security (166)
 
 | Skill | Description | Tags | Triggers |
 | --- | --- | --- | --- |
@@ -1186,6 +1186,7 @@ Total skills: 1329
 | `red-team-tools` | Implement proven methodologies and tool workflows from top security researchers for effective reconnaissance, vulnerability discovery, and bug bounty hunting... | red, team | red, team, proven, methodologies, top, security, researchers, effective, reconnaissance, vulnerability, discovery, bug |
 | `risk-manager` | Monitor portfolio risk, R-multiples, and position limits. Creates hedging strategies, calculates expectancy, and implements stop-losses. | risk, manager | risk, manager, monitor, portfolio, multiples, position, limits, creates, hedging, calculates, expectancy, implements |
 | `risk-metrics-calculation` | Calculate portfolio risk metrics including VaR, CVaR, Sharpe, Sortino, and drawdown analysis. Use when measuring portfolio risk, implementing risk limits, or... | risk, metrics, calculation | risk, metrics, calculation, calculate, portfolio, including, var, cvar, sharpe, sortino, drawdown, analysis |
+| `saas-multi-tenant` | Design and implement multi-tenant SaaS architectures with row-level security, tenant-scoped queries, shared-schema isolation, and safe cross-tenant admin pat... | multi-tenancy, saas, row-level-security, postgresql, tenant-isolation | multi-tenancy, saas, row-level-security, postgresql, tenant-isolation, multi, tenant, architectures, row, level, security, scoped |
 | `saas-mvp-launcher` | Use when planning or building a SaaS MVP from scratch. Provides a structured roadmap covering tech stack, architecture, auth, payments, and launch checklist. | saas, mvp, launcher | saas, mvp, launcher, planning, building, scratch, provides, structured, roadmap, covering, tech, stack |
 | `sast-configuration` | Static Application Security Testing (SAST) tool setup, configuration, and custom rule creation for comprehensive security scanning across multiple programmin... | sast, configuration | sast, configuration, static, application, security, testing, setup, custom, rule, creation, scanning, multiple |
 | `scanning-tools` | Master essential security scanning tools for network discovery, vulnerability assessment, web application testing, wireless security, and compliance validati... | scanning | scanning, essential, security, network, discovery, vulnerability, assessment, web, application, testing, wireless, compliance |

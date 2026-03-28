@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-02-08T00:00:00.000Z",
-  "total": 1329,
+  "total": 1330,
   "skills": [
     {
       "id": "00-andruia-consultant",
@@ -25126,6 +25126,34 @@
         "programming"
       ],
       "path": "skills/rust-pro/SKILL.md"
+    },
+    {
+      "id": "saas-multi-tenant",
+      "name": "saas-multi-tenant",
+      "description": "Design and implement multi-tenant SaaS architectures with row-level security, tenant-scoped queries, shared-schema isolation, and safe cross-tenant admin patterns in PostgreSQL and TypeScript.",
+      "category": "security",
+      "tags": [
+        "multi-tenancy",
+        "saas",
+        "row-level-security",
+        "postgresql",
+        "tenant-isolation"
+      ],
+      "triggers": [
+        "multi-tenancy",
+        "saas",
+        "row-level-security",
+        "postgresql",
+        "tenant-isolation",
+        "multi",
+        "tenant",
+        "architectures",
+        "row",
+        "level",
+        "security",
+        "scoped"
+      ],
+      "path": "skills/saas-multi-tenant/SKILL.md"
     },
     {
       "id": "saas-mvp-launcher",
