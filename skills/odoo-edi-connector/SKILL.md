@@ -56,8 +56,8 @@ models = xmlrpc.client.ServerProxy(f"{odoo_url}/xmlrpc/2/object")
 def process_850(edi_file_path):
     """Parse X12 850 Purchase Order and create Odoo Sale Order"""
     with x12file.X12File(edi_file_path) as f:
-                    for transaction in f.get_transaction_sets():
-                        # Extract header info (BEG segment)                     
+        for transaction in f.get_transaction_sets():
+            # Extract header info (BEG segment)                     
             po_number = transaction['BEG'][3]    # Purchase Order Number                                                    
             po_date   = transaction['BEG'][5]    # Purchase Order Date 
 
